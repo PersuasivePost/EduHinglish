@@ -1,0 +1,118 @@
+[
+  {
+    "id": 13,
+    "original_english": "What is the function of the endoplasmic reticulum in the cell?",
+    "hinglish_roman": "Sir, endoplasmic reticulum ka cell mein kya function hota hai?",
+    "hinglish_devanagari": "Sir, endoplasmic reticulum का cell में क्या function होता है?",
+    "word_level_labels": {
+      "Sir": "UNIV",
+      "endoplasmic": "EN",
+      "reticulum": "EN",
+      "ka": "HI",
+      "cell": "EN",
+      "mein": "HI",
+      "kya": "HI",
+      "function": "EN",
+      "hota": "HI",
+      "hai": "HI"
+    },
+    "topic": "Endoplasmic Reticulum",
+    "chapter": "Chapter 5: The Fundamental Unit of Life",
+    "class": "9",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": true,
+    "intent": "explain_concept",
+    "notes": "Natural student doubt — primary input type for M1"
+  },
+  {
+    "id": 14,
+    "original_english": "Why are lysosomes called suicide bags?",
+    "hinglish_roman": "Lysosomes ko suicide bags kyun kehte hain?",
+    "hinglish_devanagari": "Lysosomes को suicide bags क्यों कहते हैं?",
+    "word_level_labels": {
+      "Lysosomes": "EN",
+      "ko": "HI",
+      "suicide": "EN",
+      "bags": "EN",
+      "kyun": "HI",
+      "kehte": "HI",
+      "hain": "HI"
+    },
+    "topic": "Lysosomes",
+    "chapter": "Chapter 5: The Fundamental Unit of Life",
+    "class": "9",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": true,
+    "intent": "explain_concept",
+    "notes": "Short, direct student question — very common doubt"
+  },
+  {
+    "id": 15,
+    "original_english": "Can you explain the difference between diffusion and osmosis?",
+    "hinglish_roman": "Sir diffusion aur osmosis mein kya difference hai, samjha dijiye?",
+    "hinglish_devanagari": "Sir diffusion और osmosis में क्या difference है, समझा दीजिये?",
+    "word_level_labels": {
+      "Sir": "UNIV",
+      "diffusion": "EN",
+      "aur": "HI",
+      "osmosis": "EN",
+      "mein": "HI",
+      "kya": "HI",
+      "difference": "EN",
+      "hai": "HI",
+      "samjha": "HI",
+      "dijiye": "HI"
+    },
+    "topic": "Diffusion and Osmosis",
+    "chapter": "Chapter 5: The Fundamental Unit of Life",
+    "class": "9",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": true,
+    "intent": "compare_concepts",
+    "notes": "Comparison query type"
+  },
+  {
+    "id": 16,
+    "original_english": "What is the formula for calculating osmotic pressure?",
+    "hinglish_roman": "Osmotic pressure ka formula kya hai batao?",
+    "hinglish_devanagari": "Osmotic pressure का formula क्या है बताओ?",
+    "word_level_labels": {
+      "Osmotic": "EN",
+      "pressure": "EN",
+      "ka": "HI",
+      "formula": "EN",
+      "kya": "HI",
+      "hai": "HI",
+      "batao": "HI"
+    },
+    "topic": "Osmotic Pressure",
+    "chapter": "Chapter 5: The Fundamental Unit of Life",
+    "class": "9",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": true,
+    "intent": "formula_request",
+    "notes": "Formula-request intent"
+  },
+  {
+    "id": 17,
+    "original_english": "Give an example of osmosis in daily life.",
+    "hinglish_roman": "Osmosis ka ek daily life example do?",
+    "hinglish_devanagari": "Osmosis का एक daily life example दो?",
+    "word_level_labels": {
+      "Osmosis": "EN",
+      "ka": "HI",
+      "ek": "HI",
+      "daily": "EN",
+      "life": "EN",
+      "example": "EN",
+      "do": "HI"
+    },
+    "topic": "Osmosis",
+    "chapter": "Chapter 5: The Fundamental Unit of Life",
+    "class": "9",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": true,
+    "intent": "give_example",
+    "notes": "Example-request intent"
+  }
+]
