@@ -1,0 +1,70 @@
+# Virtual Environment
+eduhinglish_env/
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data — PDFs and raw files are large, don't commit
+data/raw/*.pdf
+data/raw/*.PDF
+
+# Keep processed outputs but not large model files
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.gguf
+*.ckpt
+
+# Model cache
+models/
+model_cache/
+.cache/
+
+# Vector database (can be regenerated)
+ncert_vectordb/
+chroma_db/
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Environment variables (API keys etc.)
+.env
+.env.local
+*.env
+
+# HuggingFace cache
+~/.cache/huggingface/
+
+# Outputs — keep JSON results, not large files
+outputs/pipeline_results/*.json
+
+# Keep these (force track even if in ignored patterns)
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/hinglish/.gitkeep
+!outputs/pipeline_results/.gitkeep
