@@ -568,17 +568,16 @@ When --chapter is given, fill:
   "class": "9"
 
 Chapter code → title mapping:
-  class9/ch05 → "Chapter 5: The Fundamental Unit of Life"
-  class9/ch06 → "Chapter 6: Tissues"
-  class9/ch07 → "Chapter 7: Diversity in Living Organisms"
-  class9/ch13 → "Chapter 13: Why Do We Fall Ill"
-  class9/ch14 → "Chapter 14: Natural Resources"
-  class9/ch15 → "Chapter 15: Improvement in Food Resources"
-  class10/ch06 → "Chapter 6: Life Processes"
-  class10/ch08 → "Chapter 8: How do Organisms Reproduce?"
-  class10/ch09 → "Chapter 9: Heredity and Evolution"
-  class10/ch15 → "Chapter 15: Our Environment"
-  class10/ch16 → "Chapter 16: Management of Natural Resources"
+  ix_chap1_science → "Entering the World of Secondary Science"
+  ix_chap2_science → "Cell: The Building Block of Life"
+  ix_chap3_science → "Tissues in Action"
+  ix_chap11_science → "Reproduction: How Life Continues"
+  ix_chap12_science → "Patterns in Life: Diversity and Classification"
+  x_chap5_science → "Life Processes"
+  x_chap6_science → "Control and Coordination"
+  x_chap7_science → "How do Organisms Reproduce?"
+  x_chap8_science → "Heredity"
+  x_chap13_science → "Our Environment"
 
 ═══════════════════════════════════════════════════════
 TASK 2 — scripts/chapter_dataset_builder.py
