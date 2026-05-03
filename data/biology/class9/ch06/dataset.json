@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "original_english": "A group of cells that are similar in structure and/or work together to achieve a particular function forms a tissue.",
+    "hinglish_roman": "Cells ka ek group jo structure mein similar hote hain, ek tissue form karte hain.",
+    "word_level_labels": {
+      "Cells": "EN",
+      "ka": "HI",
+      "ek": "HI",
+      "group": "EN",
+      "jo": "HI",
+      "structure": "EN",
+      "mein": "HI",
+      "similar": "EN",
+      "hote": "HI",
+      "hain": "HI",
+      "tissue": "EN",
+      "form": "EN",
+      "karte": "HI"
+    },
+    "topic": "",
+    "chapter": "Chapter 6: Tissues",
+    "class": "9",
+    "code_mixing_type": "inter-sentential",
+    "notes": "q"
+  }
+]

@@ -1,477 +1,385 @@
 """
-EduHinglish — Annotation Helper CLI
-=====================================
-Author  : Ashvatth
-Module  : M1 — Dataset Creation Tool
-Purpose : Fast interactive CLI for creating labeled Hinglish dataset entries
-          one by one. Covers factual statements, student queries, and GEC samples.
-          Output JSON format matches src/hinglish_dataset_creator.py exactly.
+EduHinglish — Hinglish Annotation Helper
+=========================================
+Author  : Jatin
+Module  : M1 — Dataset Creation Tooling
+Purpose : Interactive CLI that makes manual Hinglish sentence annotation fast.
+          Both Jatin and Ashvatth use this tool to annotate sentences for
+          all chapter datasets.
 
-Usage:
-    python scripts/annotation_helper.py --chapter class9/ch06
-    python scripts/annotation_helper.py --chapter class10/ch06
-    python scripts/annotation_helper.py --chapter class9/ch05    # starts IDs at 021
-    python scripts/annotation_helper.py --chapter class9/ch06 --output data/hinglish/custom.json
-    python scripts/annotation_helper.py --chapter class9/ch06 --target 50
+Workflow per sentence
+---------------------
+1. User enters the original English sentence
+2. User enters the Hinglish (Roman script) version
+3. Tool auto-splits Hinglish into words and predicts HI/EN/NE/UNIV label for each
+4. Shows prediction; user hits Enter to accept or types a new label to override
+5. Tool prompts for: topic, is_student_query, intent (if query), is_gec_sample,
+   code_mixing_type, notes
+6. Builds complete entry dict and appends to the output JSON array
+7. Prints running count after each save
+
+CLI usage
+---------
+  python scripts/annotation_helper.py --output data/biology/class9/ch05/dataset_v2.json
+  python scripts/annotation_helper.py \\
+      --chapter class9/ch01 \\
+      --output  data/biology/class9/ch01/dataset.json
+
+  --chapter  : auto-fills "chapter" and "class" fields using built-in mapping
+  --output   : path to the JSON file (created if missing, appended if present)
+  --dry-run  : print entry dict without saving (useful for testing)
 """
 
-# ── Force UTF-8 output on Windows ──────────────────────────────────────────
-import sys
-import io
-if sys.platform == "win32":
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+from __future__ import annotations
 
+import argparse
 import json
 import re
-import argparse
+import sys
+import unicodedata
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).parent.parent
 
 # ─────────────────────────────────────────────────────────────────────────────
-# WORD SETS FOR AUTO-PREDICTION
+# WORD LISTS  (exact as specified in project design doc)
 # ─────────────────────────────────────────────────────────────────────────────
 
-HINDI_WORDS = {
+HINDI_WORDS: set[str] = {
     # Pronouns
     "main", "hum", "tum", "woh", "yeh", "uska", "uski", "iska", "iski",
     "mera", "meri", "tera", "teri", "unka", "unki", "hamara", "tumhara",
-    # Auxiliaries / verbs
+    "iske", "uske", "unke", "inhe", "unhe", "apna", "apni", "apne",
+    # Auxiliaries / copula
     "hai", "hain", "tha", "thi", "the", "hoga", "hogi", "hota", "hoti", "hote",
-    "karta", "karti", "karte", "kiya", "karo", "karna", "karke", "hona",
-    "raha", "rahi", "rahe", "gaya", "gayi", "aata", "aati", "jaata", "jaati",
-    "deta", "deti", "lete", "bana", "bante", "samjhao", "batao", "dekho",
-    "kehte", "kehta", "kehti", "kaha", "dijiye", "hokar", "jinmein", "inmein",
+    # Verbs — karna (to do) forms
+    "kar", "karta", "karti", "karte", "kiya", "karo", "karna", "karke", "karne",
+    "kari", "karein", "karega", "karegi",
+    # Verbs — hona (to be/become) forms
+    "hona", "hokar", "hoke", "honi", "hone",
+    # Verbs — progressive / past
+    "raha", "rahi", "rahe", "gaya", "gayi", "gaye",
+    # Verbs — motion
+    "aata", "aati", "aate", "jaata", "jaati", "jaate", "aana", "jaana",
+    # Verbs — giving / taking
+    "deta", "deti", "dete", "leta", "leti", "lete", "dena", "lena",
+    # Verbs — banana (to make) forms
+    "bana", "bani", "bane", "banta", "banti", "bante",
+    "banata", "banati", "banaye", "banana",
+    # Verbs — knowing / understanding
+    "jaanta", "jaanti", "jaante", "samjha", "samjhi", "samjhe",
+    "samjhao", "samjho", "samajh",
+    # Verbs — telling / seeing / saying
+    "batao", "batata", "batati", "batana",
+    "dekho", "dekhna", "dekhta", "dekhti", "dekha",
+    "kehte", "kehta", "kehti", "kaha", "kehna",
+    # Verbs — milna / rehna / dikhna
+    "milta", "milti", "milte", "milna",
+    "rehta", "rehti", "rehte", "rehna",
+    "dikhta", "dikhti", "dikhte", "dikhna", "dikhai",
+    # Verbs — paana / dalna / rakhna
+    "paaya", "paayi", "paaye", "paana", "pata",
+    "daalta", "daalti", "daalte", "daalna",
+    "rakhta", "rakhti", "rakhte", "rakhna", "rakha",
+    # Verbs — honorific imperatives
+    "dijiye", "kijiye", "lijiye",
     # Postpositions
     "ka", "ki", "ke", "ko", "se", "mein", "par", "tak", "pe", "ne", "me",
-    # Conjunctions
+    # Conjunctions / connectors
     "aur", "ya", "lekin", "kyunki", "isliye", "jabki", "phir", "toh", "bhi",
-    "hi", "sirf", "bas",
+    "hi", "sirf", "bas", "tatha", "parantu", "magar",
     # Question words
-    "kya", "kaise", "kyun", "kahan", "kab", "kaun", "kitna",
+    "kya", "kaise", "kyun", "kahan", "kab", "kaun",
+    "kitna", "kitni", "kitne",
     # Adjectives / adverbs
-    "bahut", "thoda", "zyada", "kam", "achha", "bada", "bade", "badi",
-    "chhota", "naya", "nayi", "pehle", "baad", "andar", "bahar", "upar",
-    "neeche", "yahan", "wahan", "abhi", "tab", "jab",
+    "bahut", "thoda", "zyada", "kam", "achha", "bura",
+    "bada", "bade", "badi", "chhota", "chhoti", "chhote",
+    "naya", "nayi", "naye", "alag", "zaruri", "pura", "puri",
+    "pehle", "pehla", "pehli", "baad",
+    "dusra", "dusri", "dusre",
+    # Spatial / temporal
+    "andar", "bahar", "upar", "neeche", "yahan", "wahan",
+    "abhi", "tab", "jab", "hamesha", "kabhi",
     # Negation
-    "nahi", "nhi", "na", "mat",
-    # Numbers
-    "ek", "do", "teen",
+    "nahi", "nhi", "na", "mat", "bina",
+    # Numbers (Hindi)
+    "ek", "do", "teen", "chaar", "paanch", "dono",
+    # Quantifiers / pronouns
+    "sabhi", "sab", "kuch", "koi", "wala", "wale", "wali",
     # Others
-    "sabhi", "sab", "kuch", "koi", "wala", "wale", "wali", "jaise", "taraf",
-    "beech", "kaam", "saath", "jo", "tarah", "matlab",
+    "jaise", "jaisa", "jaisi", "taraf", "beech", "kaam", "saath",
+    "jinmein", "inmein", "jo", "tarah", "matlab", "yaani",
+    "wajah", "cheez", "jagah", "tarika", "prakar",
 }
 
-UNIVERSAL_WORDS = {
-    "sir", "madam", "ok", "okay", "hello", "hi", "bye", "please", "thanks", "sorry",
+UNIVERSAL_WORDS: set[str] = {
+    "sir", "madam", "ok", "okay", "hello", "hi", "bye",
+    "please", "thanks", "sorry",
 }
 
-VALID_LABELS = {"HI", "EN", "NE", "UNIV", "MIX"}
+VALID_LABELS: tuple[str, ...] = ("HI", "EN", "NE", "UNIV", "MIX")
 
-INTENT_MAP = {
-    "1": "explain_concept",
-    "2": "compare_concepts",
-    "3": "give_example",
-    "4": "formula_request",
-    "5": "definition",
-    "explain":  "explain_concept",
-    "compare":  "compare_concepts",
-    "example":  "give_example",
-    "formula":  "formula_request",
-    "definition": "definition",
+# ─────────────────────────────────────────────────────────────────────────────
+# CHAPTER CODE → TITLE MAPPING  (matches actual PDF filenames on disk)
+# ─────────────────────────────────────────────────────────────────────────────
+
+CHAPTER_MAP: dict[str, tuple[str, str]] = {
+    # (chapter_title, class_number)
+    # Class 9
+    "class9/ch05":  ("Chapter 5: The Fundamental Unit of Life", "9"),
+    "class9/ch06":  ("Chapter 6: Tissues", "9"),
+    "class9/ch07":  ("Chapter 7: Diversity in Living Organisms", "9"),
+    "class9/ch13":  ("Chapter 13: Why Do We Fall Ill", "9"),
+    "class9/ch14":  ("Chapter 14: Natural Resources", "9"),
+    "class9/ch15":  ("Chapter 15: Improvement in Food Resources", "9"),
+    # Class 10
+    "class10/ch06": ("Chapter 6: Life Processes", "10"),
+    "class10/ch08": ("Chapter 8: How do Organisms Reproduce?", "10"),
+    "class10/ch09": ("Chapter 9: Heredity and Evolution", "10"),
+    "class10/ch15": ("Chapter 15: Our Environment", "10"),
+    "class10/ch16": ("Chapter 16: Management of Natural Resources", "10"),
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# CHAPTER METADATA
-# ─────────────────────────────────────────────────────────────────────────────
+INTENT_VALUES: tuple[str, ...] = (
+    "explain_concept",
+    "compare_concepts",
+    "give_example",
+    "formula_request",
+    "definition",
+)
 
-CHAPTER_TITLES = {
-    "class9/ch01": {
-        "title": "Chapter 1: Matter in Our Surroundings",
-        "class": "9", "text_key": "class9_ch01",
-        "id_prefix": "9_01", "start_from": 1,
-    },
-    "class9/ch02": {
-        "title": "Chapter 2: The Fundamental Unit of Life",
-        "class": "9", "text_key": "class9_ch02",
-        "id_prefix": "9_02", "start_from": 1,
-    },
-    "class9/ch03": {
-        "title": "Chapter 3: Tissues",
-        "class": "9", "text_key": "class9_ch03",
-        "id_prefix": "9_03", "start_from": 1,
-    },
-    "class9/ch11": {
-        "title": "Chapter 11: Work and Energy",
-        "class": "9", "text_key": "class9_ch11",
-        "id_prefix": "9_11", "start_from": 1,
-    },
-    "class9/ch12": {
-        "title": "Chapter 12: Sound",
-        "class": "9", "text_key": "class9_ch12",
-        "id_prefix": "9_12", "start_from": 1,
-    },
-    "class10/ch05": {
-        "title": "Chapter 5: Life Processes",
-        "class": "10", "text_key": "class10_ch05",
-        "id_prefix": "10_05", "start_from": 1,
-    },
-    "class10/ch06": {
-        "title": "Chapter 6: Control and Coordination",
-        "class": "10", "text_key": "class10_ch06",
-        "id_prefix": "10_06", "start_from": 1,
-    },
-    "class10/ch07": {
-        "title": "Chapter 7: How do Organisms Reproduce?",
-        "class": "10", "text_key": "class10_ch07",
-        "id_prefix": "10_07", "start_from": 1,
-    },
-    "class10/ch08": {
-        "title": "Chapter 8: Heredity",
-        "class": "10", "text_key": "class10_ch08",
-        "id_prefix": "10_08", "start_from": 1,
-    },
-    "class10/ch13": {
-        "title": "Chapter 13: Our Environment",
-        "class": "10", "text_key": "class10_ch13",
-        "id_prefix": "10_13", "start_from": 1,
-    },
-}
 
 # ─────────────────────────────────────────────────────────────────────────────
-# AUTO-PREDICTION LOGIC
+# HELPERS
 # ─────────────────────────────────────────────────────────────────────────────
 
-def predict_label(word: str, is_first_word: bool = False) -> str:
+def _divider() -> None:
+    print("  " + "─" * 43)
+
+
+def _contains_devanagari(word: str) -> bool:
+    """Return True if word contains any Devanagari Unicode character."""
+    return any(unicodedata.category(ch) == "Lo" and "\u0900" <= ch <= "\u097F"
+               for ch in word)
+
+
+def _is_number(word: str) -> bool:
+    """Return True for purely numeric tokens (integers, decimals, years)."""
+    return bool(re.fullmatch(r"[\d,.\-]+", word))
+
+
+def predict_label(word: str, position: int) -> str:
     """
-    Predict HI / EN / NE / UNIV / MIX for a single word.
+    Predict HI / EN / NE / UNIV for a single word using rule-based logic.
 
-    Priority order:
-      1. Contains Devanagari chars → HI
-      2. In UNIVERSAL_WORDS → UNIV
-      3. In HINDI_WORDS → HI
-      4. Is purely numeric → UNIV
-      5. Starts with capital (and not first word) → NE (candidate)
-      6. Otherwise → EN
+    Rules (in priority order):
+      1. Contains Devanagari → HI
+      2. Lowercase form in UNIVERSAL_WORDS → UNIV
+      3. Lowercase form in HINDI_WORDS → HI
+      4. Is a number → UNIV
+      5. All-uppercase token (e.g. ATP, DNA, RNA) → EN (science abbreviation)
+      6. Starts with capital AND not the first word → NE (candidate)
+      7. Otherwise → EN
     """
-    clean = re.sub(r"[^\w]", "", word)
-    if not clean:
-        return "EN"
+    clean = word.strip(".,?!;:\"'()")
 
-    # Rule 1: Devanagari
-    if any("\u0900" <= c <= "\u097F" for c in clean):
-        roman_chars = sum(1 for c in clean if c.isascii() and c.isalpha())
-        devanagari_chars = sum(1 for c in clean if "\u0900" <= c <= "\u097F")
-        if roman_chars > 0 and devanagari_chars > 0:
-            return "MIX"
+    if _contains_devanagari(clean):
         return "HI"
 
     lower = clean.lower()
 
-    # Rule 2: Universal words
     if lower in UNIVERSAL_WORDS:
         return "UNIV"
 
-    # Rule 3: Hindi word list
     if lower in HINDI_WORDS:
         return "HI"
 
-    # Rule 4: Pure number
-    if clean.isdigit():
+    if _is_number(clean):
         return "UNIV"
 
-    # Rule 5: Capitalized non-first word → Named Entity candidate
-    if not is_first_word and clean[0].isupper():
+    # All-uppercase (len > 1) → science abbreviation, tag EN (not NE)
+    if clean.isupper() and len(clean) > 1:
+        return "EN"
+
+    # Capital-initial AND not the very first token → Named Entity candidate
+    if position > 0 and clean and clean[0].isupper():
         return "NE"
 
-    # Default
     return "EN"
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# REFERENCE SENTENCES FROM CLEANED TEXT
-# ─────────────────────────────────────────────────────────────────────────────
-
-def load_reference_sentences(text_key: str, n: int = 5) -> list:
+def tokenise_hinglish(hinglish: str) -> list[str]:
     """
-    Load n diverse reference sentences from the chapter's cleaned_text.txt.
-    Returns list of sentence strings. Returns [] if file not found.
+    Split Hinglish sentence into individual word tokens.
+    Preserves hyphenated compounds as single tokens (well-defined).
+    Strips trailing punctuation from each token.
     """
-    text_path = PROJECT_ROOT / "data" / "processed" / text_key / "cleaned_text.txt"
+    raw_tokens = hinglish.split()
+    tokens: list[str] = []
+    for tok in raw_tokens:
+        # Strip only sentence-boundary punctuation, keep hyphens inside
+        cleaned = tok.strip(".,?!;:\"'()")
+        if cleaned:
+            tokens.append(cleaned)
+    return tokens
 
-    if not text_path.exists():
-        return []
 
+def _prompt(message: str, default: str = "") -> str:
+    """Show a prompt and return stripped user input."""
     try:
-        with open(text_path, "r", encoding="utf-8") as f:
-            text = f.read()
-    except UnicodeDecodeError:
-        with open(text_path, "r", encoding="latin-1") as f:
-            text = f.read()
-
-    # Split into sentences on . or \n
-    raw = re.split(r"(?<=[.!?])\s+|\n", text)
-    sentences = [s.strip() for s in raw if len(s.strip()) > 55]
-
-    if not sentences:
-        return []
-
-    # Pick evenly spaced sentences for variety
-    step = max(1, len(sentences) // n)
-    selected = [sentences[i * step] for i in range(min(n, len(sentences)))]
-
-    # Trim to max 120 chars for display
-    return [s[:120] + ("..." if len(s) > 120 else "") for s in selected]
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# DATASET FILE MANAGEMENT
-# ─────────────────────────────────────────────────────────────────────────────
-
-def load_dataset(output_path: Path) -> list:
-    """Load existing entries from the output JSON file."""
-    if not output_path.exists():
-        return []
-    try:
-        with open(output_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return data if isinstance(data, list) else []
-    except (json.JSONDecodeError, Exception):
-        return []
-
-
-def save_dataset(output_path: Path, entries: list):
-    """Save all entries to the output JSON file with UTF-8 encoding."""
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(entries, f, indent=2, ensure_ascii=False)
-
-
-def next_entry_id(entries: list, id_prefix: str, start_from: int) -> str:
-    """
-    Compute the next ID string.
-    Format: {id_prefix}_{number:03d}  e.g. "9_06_001"
-
-    Finds the highest existing numeric suffix for this prefix and adds 1.
-    If no entries yet, uses start_from.
-    """
-    existing_nums = []
-    pattern = re.compile(rf"^{re.escape(id_prefix)}_(\d+)$")
-    for entry in entries:
-        entry_id = str(entry.get("id", ""))
-        m = pattern.match(entry_id)
-        if m:
-            existing_nums.append(int(m.group(1)))
-
-    if existing_nums:
-        next_num = max(existing_nums) + 1
-    else:
-        next_num = start_from
-
-    return f"{id_prefix}_{next_num:03d}"
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# DISPLAY HELPERS
-# ─────────────────────────────────────────────────────────────────────────────
-
-SEP = "-" * 55
-
-def hr():
-    print(SEP)
-
-def prompt(msg: str, default: str = "") -> str:
-    """Input with flush to ensure it shows on Windows."""
-    sys.stdout.flush()
-    val = input(msg)
+        val = input(message)
+    except EOFError:
+        return default
     return val.strip() if val.strip() else default
 
-def show_banner(chapter_info: dict, output_path: Path, target: int, entry_count: int):
-    print()
-    print("=" * 55)
-    print("  EduHinglish -- Annotation Helper")
-    print("=" * 55)
-    print(f"  Chapter : {chapter_info['title']}")
-    print(f"  Class   : {chapter_info['class']}")
-    print(f"  Output  : {output_path.relative_to(PROJECT_ROOT)}")
-    print(f"  Saved   : {entry_count} / {target} entries")
-    print("=" * 55)
-
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ANNOTATION FLOW — ONE ENTRY
+# CORE ANNOTATION SESSION
 # ─────────────────────────────────────────────────────────────────────────────
 
-def annotate_one_entry(
-    chapter_info: dict,
-    ref_sentences: list,
-    entries: list,
-    output_path: Path,
-    target: int,
-) -> bool:
+def annotate_sentence(
+    chapter_title: str | None,
+    class_num: str | None,
+    entry_number: int,
+    prefilled_english: str | None = None,
+) -> dict | str | None:
     """
-    Run the interactive annotation flow for ONE entry.
-
-    Returns True to continue, False to quit.
+    Run one full annotation session for a single sentence.
+    Returns the completed entry dict, "QUIT" if requested, or None if skipped/aborted.
     """
-
-    # ── Show reference sentences ──────────────────────────────────────────────
     print()
-    hr()
-    print("  REFERENCE SENTENCES (from NCERT cleaned text):")
-    hr()
-    if ref_sentences:
-        for i, s in enumerate(ref_sentences, 1):
-            print(f"  [{i}] {s}")
+    _divider()
+    print(f"  SENTENCE #{entry_number}")
+    _divider()
+
+    # ── English source ────────────────────────────────────────────────────────
+    if prefilled_english:
+        original_english = prefilled_english
     else:
-        print("  (No cleaned text found for this chapter yet.)")
-        print("  Run batch_pdf_extractor.py first to extract chapter text.")
-    hr()
-
-    # ── English sentence ──────────────────────────────────────────────────────
-    print()
-    print("  STEP 1 / 7 -- English sentence")
-    print("  (Type the NCERT English sentence you want to convert, or 'q' to quit)")
-    english = prompt("  English > ")
-    if english.lower() == "q":
-        return False
-    if not english:
-        print("  [SKIP] Empty input, skipping.")
-        return True
+        original_english = _prompt("  Original English (leave blank to quit): ")
+        if not original_english:
+            return None
 
     # ── Hinglish version ──────────────────────────────────────────────────────
+    if prefilled_english:
+        hinglish_roman = _prompt("  Hinglish (Roman script) [or 's' to skip, 'q' to quit]: ")
+        if hinglish_roman.lower() == 'q':
+            return "QUIT"
+        if not hinglish_roman or hinglish_roman.lower() == 's':
+            print("  [SKIP] Skipping this sentence.")
+            return None
+    else:
+        hinglish_roman = _prompt("  Hinglish (Roman script): ")
+        if not hinglish_roman:
+            print("  [SKIP] Empty Hinglish — skipping this sentence.")
+            return None
+
+    # ── Optional Devanagari ───────────────────────────────────────────────────
+    hinglish_devanagari = _prompt(
+        "  Hinglish (Devanagari, optional — press Enter to skip): "
+    )
+
     print()
-    print("  STEP 2 / 7 -- Your Hinglish version of the sentence above")
-    hinglish = prompt("  Hinglish > ")
-    if not hinglish:
-        print("  [SKIP] Empty input, skipping.")
-        return True
 
-    # ── Word-level labeling ───────────────────────────────────────────────────
-    print()
-    print("  STEP 3 / 7 -- Word-level labeling")
-    print(f"  Sentence: \"{hinglish}\"")
-    hr()
-    print("  For each word: press Enter to accept prediction, OR type a label")
-    print("  Valid labels: HI  EN  NE  UNIV  MIX")
-    hr()
+    # ── Word-level annotation ─────────────────────────────────────────────────
+    tokens = tokenise_hinglish(hinglish_roman)
+    word_level_labels: dict[str, str] = {}
 
-    words = hinglish.split()
-    labels: dict = {}
+    for idx, word in enumerate(tokens):
+        prediction = predict_label(word, idx)
+        _divider()
+        total = len(tokens)
+        print(f"  Word {idx + 1}/{total}: \"{word}\"")
+        print(f"  Prediction: {prediction}  ← accept? "
+              f"[Enter=yes / type label to change ({'/'.join(VALID_LABELS)})]: ",
+              end="")
+        try:
+            user_input = input().strip().upper()
+        except EOFError:
+            user_input = ""
 
-    for i, word in enumerate(words):
-        clean_word = re.sub(r"[^\w]", "", word)
-        if not clean_word:
-            labels[word] = "EN"
-            continue
-
-        prediction = predict_label(word, is_first_word=(i == 0))
-        raw = prompt(
-            f"  Word {i+1}/{len(words)}: \"{word}\"  "
-            f"[predicted: {prediction}]  Accept? (Enter) or type label: "
-        )
-
-        if raw == "":
-            labels[word] = prediction
+        if user_input == "":
+            label = prediction
+        elif user_input in VALID_LABELS:
+            label = user_input
         else:
-            override = raw.strip().upper()
-            if override in VALID_LABELS:
-                labels[word] = override
-            else:
-                print(f"  [WARN] '{override}' is not a valid label. Using prediction '{prediction}'.")
-                labels[word] = prediction
+            print(f"  [WARN] '{user_input}' is not a valid label. "
+                  f"Keeping prediction '{prediction}'.")
+            label = prediction
 
-    print()
-    hr()
-    print("  Labels assigned:")
-    for w, lbl in labels.items():
-        print(f"    {w:<28} {lbl}")
-    hr()
+        word_level_labels[word] = label
 
-    # ── Devanagari version (optional) ─────────────────────────────────────────
-    print()
-    print("  STEP 4 / 7 -- Devanagari version (optional, press Enter to skip)")
-    devanagari = prompt("  Devanagari > ")
+    # ── Summary + metadata ────────────────────────────────────────────────────
+    _divider()
+    print(f"  Labels: {word_level_labels}")
+    _divider()
 
-    # ── Topic ─────────────────────────────────────────────────────────────────
-    print()
-    print("  STEP 5 / 7 -- Topic")
-    print("  Examples: Cell Membrane, Nucleus, Osmosis, Tissues, Life Processes")
-    topic = prompt("  Topic > ")
-    if not topic:
-        topic = chapter_info["title"]
+    topic = _prompt("  Topic: ")
 
-    # ── Student query? ────────────────────────────────────────────────────────
-    print()
-    print("  STEP 6 / 7 -- Entry type")
-    is_student_query = False
-    intent = None
-    q_flag = prompt("  Is this a student query? (y/n) [default: n] > ", default="n").lower()
-    if q_flag in ("y", "yes"):
-        is_student_query = True
-        print("  Intent options:")
-        print("    1 / explain   -> explain_concept")
-        print("    2 / compare   -> compare_concepts")
-        print("    3 / example   -> give_example")
-        print("    4 / formula   -> formula_request")
-        print("    5 / definition -> definition")
-        intent_raw = prompt("  Intent (1-5 or name) [default: 1] > ", default="1")
-        intent = INTENT_MAP.get(intent_raw.lower(), INTENT_MAP.get(intent_raw, "explain_concept"))
-        print(f"  Intent set to: {intent}")
+    # Chapter / class auto-filled or prompted
+    if chapter_title and class_num:
+        chapter = chapter_title
+        klass = class_num
+        print(f"  Chapter: {chapter}  (auto-filled)")
+        print(f"  Class:   {klass}    (auto-filled)")
+    else:
+        chapter = _prompt("  Chapter (e.g. 'Chapter 5: The Fundamental Unit of Life'): ")
+        klass   = _prompt("  Class (e.g. 9 or 10): ")
 
-    # ── GEC sample? ───────────────────────────────────────────────────────────
-    is_gec_sample = False
-    hinglish_with_error = None
-    error_description = None
+    # Code mixing type
+    cmt_raw = _prompt("  Code mixing type [intra/inter] (default: intra): ", "intra")
+    code_mixing_type = "intra-sentential" if cmt_raw.lower().startswith("intr") \
+                       else "inter-sentential"
 
-    gec_flag = prompt("  Is this a GEC sample? (y/n) [default: n] > ", default="n").lower()
-    if gec_flag in ("y", "yes"):
-        is_gec_sample = True
-        print("  Paste the version WITH the grammar error:")
-        hinglish_with_error = prompt("  Hinglish with error > ")
-        print("  Error word (the wrong word):")
-        error_word = prompt("    Error word > ")
-        print("  Correct word (what it should be):")
-        correct_word = prompt("    Correct word > ")
-        print("  Error type (e.g. 'gender agreement', 'verb tense', 'subject-verb agreement'):")
-        error_type = prompt("    Error type > ")
-        print("  Brief explanation:")
-        explanation = prompt("    Explanation > ")
+    # Student query?
+    is_student_query_raw = _prompt("  Is student query? [y/n]: ", "n").lower()
+    is_student_query = is_student_query_raw == "y"
+
+    intent: str | None = None
+    if is_student_query:
+        print(f"  Intent options: {', '.join(INTENT_VALUES)}")
+        intent_raw = _prompt("  Intent: ", "explain_concept").lower().strip()
+        # Fuzzy match
+        matched = next((v for v in INTENT_VALUES if intent_raw == v or
+                        intent_raw in v), "explain_concept")
+        intent = matched
+
+    # GEC sample?
+    is_gec_raw = _prompt("  Is GEC sample? [y/n]: ", "n").lower()
+    is_gec_sample = is_gec_raw == "y"
+
+    hinglish_with_error: str | None = None
+    error_description: dict | None = None
+    if is_gec_sample:
+        hinglish_with_error = _prompt(
+            "  Hinglish WITH error (erroneous version): "
+        )
+        error_word = _prompt("  Error word / phrase: ")
+        correct_word = _prompt("  Correct word / phrase: ")
+        error_type = _prompt("  Error type (e.g. 'gender agreement'): ")
+        explanation = _prompt("  Explanation: ")
         error_description = {
-            "error_word"  : error_word,
+            "error_word":   error_word,
             "correct_word": correct_word,
-            "error_type"  : error_type,
-            "explanation" : explanation,
+            "error_type":   error_type,
+            "explanation":  explanation,
         }
 
-    # ── Code mixing type ──────────────────────────────────────────────────────
-    code_mix_raw = prompt(
-        "  Code mixing type: intra/inter [default: intra] > ", default="intra"
-    ).lower()
-    code_mix = "inter-sentential" if "inter" in code_mix_raw else "intra-sentential"
+    notes = _prompt("  Notes (optional): ")
 
-    # ── Notes ─────────────────────────────────────────────────────────────────
-    print()
-    print("  STEP 7 / 7 -- Notes (optional, press Enter to skip)")
-    notes = prompt("  Notes > ")
-
-    # ── Build entry dict ───────────────────────────────────────────────────────
-    entry_id = next_entry_id(entries, chapter_info["id_prefix"], chapter_info["start_from"])
-
-    entry = {
-        "id"                : entry_id,
-        "original_english"  : english,
-        "hinglish_roman"    : hinglish,
-        "word_level_labels" : labels,
-        "topic"             : topic,
-        "chapter"           : chapter_info["title"],
-        "class"             : chapter_info["class"],
-        "code_mixing_type"  : code_mix,
+    # ── Build entry dict ──────────────────────────────────────────────────────
+    entry: dict = {
+        "id":                entry_number,
+        "original_english":  original_english,
+        "hinglish_roman":    hinglish_roman,
+        "word_level_labels": word_level_labels,
+        "topic":             topic,
+        "chapter":           chapter,
+        "class":             klass,
+        "code_mixing_type":  code_mixing_type,
     }
 
-    if devanagari:
-        entry["hinglish_devanagari"] = devanagari
+    if hinglish_devanagari:
+        entry["hinglish_devanagari"] = hinglish_devanagari
 
     if is_student_query:
         entry["is_student_query"] = True
@@ -487,136 +395,198 @@ def annotate_one_entry(
     if notes:
         entry["notes"] = notes
 
-    # ── Save ──────────────────────────────────────────────────────────────────
-    entries.append(entry)
-    save_dataset(output_path, entries)
-
-    total_now = len(entries)
-    print()
-    print("=" * 55)
-    print(f"  [SAVED] Entry {entry_id}")
-    print(f"  Total in file : {total_now}")
-    print(f"  Target        : {target}")
-    remaining = max(0, target - total_now)
-    bar_done  = min(20, int(20 * total_now / target))
-    bar       = "#" * bar_done + "." * (20 - bar_done)
-    print(f"  Progress      : [{bar}] {total_now}/{target}")
-    if remaining > 0:
-        print(f"  Still needed  : {remaining} more entries")
-    else:
-        print(f"  TARGET REACHED! All {target} entries complete.")
-    print("=" * 55)
-
-    return True
+    return entry
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# MAIN
+# JSON I/O
 # ─────────────────────────────────────────────────────────────────────────────
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="EduHinglish Annotation Helper -- fast CLI for building Hinglish datasets",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python scripts/annotation_helper.py --chapter class9/ch06
-  python scripts/annotation_helper.py --chapter class10/ch06
-  python scripts/annotation_helper.py --chapter class9/ch05   # IDs start at 9_05_021
-  python scripts/annotation_helper.py --chapter class9/ch06 --target 30
-        """,
-    )
-    parser.add_argument(
-        "--chapter",
-        type=str,
-        required=True,
-        help='Chapter key, e.g. class9/ch06 or class10/ch08',
-    )
-    parser.add_argument(
-        "--output",
-        type=str,
-        default=None,
-        help="Custom output JSON file path (default: data/hinglish/<chapter_key>_dataset.json)",
-    )
-    parser.add_argument(
-        "--target",
-        type=int,
-        default=50,
-        help="Target number of entries for this chapter (default: 50)",
-    )
-
-    args = parser.parse_args()
-
-    # ── Validate chapter ──────────────────────────────────────────────────────
-    # Normalize: replace backslash, strip trailing slashes
-    chapter_arg = args.chapter.replace("\\", "/").strip("/")
-
-    if chapter_arg not in CHAPTER_TITLES:
-        print(f"\n[ERROR] Unknown chapter: '{chapter_arg}'")
-        print("  Valid chapter keys:")
-        for k in CHAPTER_TITLES:
-            print(f"    {k}")
-        sys.exit(1)
-
-    chapter_info = CHAPTER_TITLES[chapter_arg]
-
-    # ── Resolve output path ───────────────────────────────────────────────────
-    if args.output:
-        output_path = Path(args.output)
-    else:
-        # e.g. class9/ch06 -> class9_ch06_dataset.json
-        file_key = chapter_arg.replace("/", "_")
-        output_path = PROJECT_ROOT / "data" / "hinglish" / f"{file_key}_dataset.json"
-
-    # ── Load existing data ────────────────────────────────────────────────────
-    entries = load_dataset(output_path)
-
-    # ── Load reference sentences ──────────────────────────────────────────────
-    ref_sentences = load_reference_sentences(chapter_info["text_key"])
-
-    # ── Show banner ───────────────────────────────────────────────────────────
-    show_banner(chapter_info, output_path, args.target, len(entries))
-
-    if not ref_sentences:
-        print(f"\n  [NOTE] No cleaned text found for '{chapter_info['text_key']}'.")
-        print(f"         Run batch_pdf_extractor.py first, or add a PDF for this chapter.")
-        print(f"         You can still annotate without reference sentences.\n")
-
-    print(f"\n  Annotation session started. Type 'q' at any prompt to quit.\n")
-
-    # ── Main annotation loop ──────────────────────────────────────────────────
-    while True:
+def load_existing(path: Path) -> list[dict]:
+    """Load existing JSON array from file, or return empty list."""
+    if path.exists():
         try:
-            keep_going = annotate_one_entry(
-                chapter_info=chapter_info,
-                ref_sentences=ref_sentences,
-                entries=entries,
-                output_path=output_path,
-                target=args.target,
-            )
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+            if isinstance(data, list):
+                return data
+            print(f"  [WARN] {path} does not contain a JSON array — starting fresh.")
+        except json.JSONDecodeError as exc:
+            print(f"  [WARN] Could not parse {path}: {exc} — starting fresh.")
+    return []
 
-            if not keep_going:
-                break
 
-            print()
-            next_flag = prompt("  Next entry? (Enter = yes, q = quit) > ", default="y").lower()
-            if next_flag in ("q", "quit", "exit"):
-                break
+def save_dataset(path: Path, dataset: list[dict]) -> None:
+    """Write dataset to JSON with pretty-printing and UTF-8 encoding."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(dataset, f, indent=2, ensure_ascii=False)
 
-        except (KeyboardInterrupt, EOFError):
-            print("\n\n  [EXIT] Session ended by user.")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# STATISTICS HELPERS
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _label_stats(dataset: list[dict]) -> str:
+    """Return a one-line label distribution summary."""
+    from collections import Counter
+    counter: Counter = Counter()
+    for entry in dataset:
+        counter.update(entry.get("word_level_labels", {}).values())
+    total = sum(counter.values()) or 1
+    parts = [f"{lbl}={counter[lbl]}({counter[lbl]*100//total}%)"
+             for lbl in VALID_LABELS if counter[lbl]]
+    return "  " + " | ".join(parts)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MAIN SESSION LOOP
+# ─────────────────────────────────────────────────────────────────────────────
+
+def run_session(
+    output_path: Path,
+    chapter_code: str | None = None,
+    dry_run: bool = False,
+) -> None:
+    """
+    Main annotation loop.
+    Continues until user enters 'q' at the "Next sentence?" prompt.
+    """
+    # Resolve chapter metadata
+    chapter_title: str | None = None
+    class_num: str | None = None
+    if chapter_code:
+        if chapter_code not in CHAPTER_MAP:
+            print(f"\n  [ERROR] Unknown chapter code '{chapter_code}'.")
+            print("  Available codes:")
+            for code in CHAPTER_MAP:
+                title, cls = CHAPTER_MAP[code]
+                print(f"    {code}  →  {title}  (Class {cls})")
+            sys.exit(1)
+        chapter_title, class_num = CHAPTER_MAP[chapter_code]
+
+    # Load existing data
+    dataset: list[dict] = [] if dry_run else load_existing(output_path)
+    next_id = len(dataset) + 1
+
+    # Header
+    print()
+    print("  ╔══════════════════════════════════════════════╗")
+    print("  ║     EduHinglish — Annotation Helper          ║")
+    print("  ╚══════════════════════════════════════════════╝")
+    if chapter_title:
+        print(f"  Chapter : {chapter_title}  (Class {class_num})")
+    print(f"  Output  : {output_path}")
+    print(f"  Existing: {len(dataset)} entries")
+    if dry_run:
+        print("  Mode    : DRY RUN (nothing will be saved)")
+    print()
+    print("  Tip — valid labels: HI | EN | NE | UNIV | MIX")
+    print("        Leave label prompt blank to accept the prediction.")
+    print("        Enter blank English sentence at any time to quit.")
+
+    session_count = 0
+
+    while True:
+        entry = annotate_sentence(chapter_title, class_num, next_id)
+
+        if entry is None:
+            # User left English sentence blank → quit
             break
 
-    # ── Final summary ─────────────────────────────────────────────────────────
+        if dry_run:
+            _divider()
+            print("  [DRY-RUN] Entry would be saved as:")
+            print("  " + json.dumps(entry, ensure_ascii=False, indent=4)
+                  .replace("\n", "\n  "))
+        else:
+            dataset.append(entry)
+            save_dataset(output_path, dataset)
+            _divider()
+            print(f"  [SAVED] Entry #{next_id} → {output_path}")
+            print(f"  Total entries in file: {len(dataset)}")
+            print(_label_stats(dataset))
+
+        session_count += 1
+        next_id += 1
+
+        _divider()
+        cont = _prompt("  Next sentence? [Enter=continue / q=quit]: ", "")
+        if cont.lower() == "q":
+            break
+
+    # Session summary
     print()
-    print("=" * 55)
-    print("  SESSION SUMMARY")
-    print("=" * 55)
-    print(f"  Chapter : {chapter_info['title']}")
-    print(f"  Entries : {len(entries)} / {args.target}")
-    print(f"  Saved to: {output_path}")
-    print("=" * 55)
-    print()
+    _divider()
+    print(f"  Session complete — {session_count} sentence(s) annotated this session.")
+    if not dry_run:
+        print(f"  File now has {len(dataset)} total entries: {output_path}")
+    _divider()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ENTRY POINT
+# ─────────────────────────────────────────────────────────────────────────────
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="annotation_helper",
+        description=(
+            "EduHinglish interactive Hinglish annotation tool.\n"
+            "Annotate sentences word-by-word with HI/EN/NE/UNIV/MIX labels\n"
+            "and save to a JSON dataset file."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "--output", "-o",
+        required=False,
+        default=None,
+        metavar="PATH",
+        help="Path to output JSON file (appended to if it exists).",
+    )
+    parser.add_argument(
+        "--chapter", "-c",
+        metavar="CODE",
+        help=(
+            "Chapter code to auto-fill chapter title and class. "
+            f"Options: {', '.join(CHAPTER_MAP.keys())}"
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the resulting entry dict without saving to file.",
+    )
+    parser.add_argument(
+        "--list-chapters",
+        action="store_true",
+        help="List all known chapter codes and exit.",
+    )
+    return parser
+
+
+def main() -> None:
+    parser = build_parser()
+    args = parser.parse_args()
+
+    if args.list_chapters:
+        print("\n  Known chapter codes:\n")
+        for code, (title, cls) in CHAPTER_MAP.items():
+            print(f"    {code:<20}  Class {cls}  →  {title}")
+        print()
+        sys.exit(0)
+
+    if not args.output:
+        parser.error("--output / -o is required unless --list-chapters is used.")
+
+    output_path = Path(args.output)
+
+    run_session(
+        output_path=output_path,
+        chapter_code=args.chapter,
+        dry_run=args.dry_run,
+    )
 
 
 if __name__ == "__main__":
