@@ -240,10 +240,11 @@ def annotate_sentence(
     chapter_title: str | None,
     class_num: str | None,
     entry_number: int,
-) -> dict | None:
+    prefilled_english: str | None = None,
+) -> dict | str | None:
     """
     Run one full annotation session for a single sentence.
-    Returns the completed entry dict, or None if user aborts.
+    Returns the completed entry dict, "QUIT" if requested, or None if skipped/aborted.
     """
     print()
     _divider()
@@ -251,15 +252,26 @@ def annotate_sentence(
     _divider()
 
     # ── English source ────────────────────────────────────────────────────────
-    original_english = _prompt("  Original English (leave blank to quit): ")
-    if not original_english:
-        return None
+    if prefilled_english:
+        original_english = prefilled_english
+    else:
+        original_english = _prompt("  Original English (leave blank to quit): ")
+        if not original_english:
+            return None
 
     # ── Hinglish version ──────────────────────────────────────────────────────
-    hinglish_roman = _prompt("  Hinglish (Roman script): ")
-    if not hinglish_roman:
-        print("  [SKIP] Empty Hinglish — skipping this sentence.")
-        return None
+    if prefilled_english:
+        hinglish_roman = _prompt("  Hinglish (Roman script) [or 's' to skip, 'q' to quit]: ")
+        if hinglish_roman.lower() == 'q':
+            return "QUIT"
+        if not hinglish_roman or hinglish_roman.lower() == 's':
+            print("  [SKIP] Skipping this sentence.")
+            return None
+    else:
+        hinglish_roman = _prompt("  Hinglish (Roman script): ")
+        if not hinglish_roman:
+            print("  [SKIP] Empty Hinglish — skipping this sentence.")
+            return None
 
     # ── Optional Devanagari ───────────────────────────────────────────────────
     hinglish_devanagari = _prompt(
