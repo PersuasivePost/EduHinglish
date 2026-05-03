@@ -45,162 +45,97 @@ from pdf_extractor import NCERTPDFExtractor  # Ashvatth's existing extractor
 # ─────────────────────────────────────────────────────────────
 # CHAPTER MAP
 # ─────────────────────────────────────────────────────────────
-# Maps chapter_key → chapter metadata + expected PDF filename(s).
+# Maps every PDF in data/raw/biology/ to its chapter metadata.
+# Keys are named by content (what the chapter IS about), not the
+# filename number, since this edition uses different numbering.
 #
-# HOW TO READ THIS:
-#   "chapter_key"  → the folder name under data/processed/
-#   "pdf_names"    → list of filenames to look for in data/raw/
-#                    (searches recursively; first match wins)
-#   "title"        → human-readable chapter title
-#   "class"        → "9" or "10"
-#   "chapter_num"  → NCERT chapter number
-#
-# ADDING A NEW PDF:
-#   If you have the PDF but with a different filename, add it to the
-#   "pdf_names" list for that chapter. The script tries each name
-#   in order and uses the first one it finds.
-#
-# STANDARD NAMING CONVENTION (what to name your PDFs when you add them):
-#   Class 9 : bio_9_ch05.pdf, bio_9_ch06.pdf, ... bio_9_ch15.pdf
-#   Class 10: bio_10_ch06.pdf, bio_10_ch08.pdf, ... bio_10_ch16.pdf
+# PDFs confirmed present in data/raw/biology/:
+#   class_ix/ix_chap1_science.pdf   → Ch1 Exploration (Intro)
+#   class_ix/ix_chap2_science.pdf   → Ch2 Cell: Fundamental Unit of Life
+#   class_ix/ix_chap3_science.pdf   → Ch3 Tissues in Action
+#   class_ix/ix_chap11_science.pdf  → Ch11 Reproduction: How Life Continues
+#   class_ix/ix_chap12_science.pdf  → Ch12 Diversity and Classification
+#   class_x/x_chap5_science.pdf    → Ch5 Life Processes
+#   class_x/x_chap6_science.pdf    → Ch6 Control and Coordination
+#   class_x/x_chap7_science.pdf    → Ch7 How do Organisms Reproduce?
+#   class_x/x_chap8_science.pdf    → Ch8 Heredity
+#   class_x/x_chap13_science.pdf   → Ch13 Our Environment
 # ─────────────────────────────────────────────────────────────
 
 CHAPTER_MAP = {
 
     # ── Class 9 Biology ──────────────────────────────────────────────────────
 
-    "class9_ch05": {
-        "title"      : "The Fundamental Unit of Life",
+    "class9_ch01": {
+        "title"      : "Exploration: Entering the World of Secondary Science",
         "class"      : "9",
-        "chapter_num": "05",
-        "pdf_names"  : [
-            "bio_9_ch05.pdf",         # standard name (add your PDF with this name)
-            "ix_chap5_science.pdf",   # alternate NCERT naming
-            "class9_ch5.pdf",
-            "ch5_class9.pdf",
-        ],
+        "chapter_num": "01",
+        "pdf_names"  : ["ix_chap1_science.pdf"],
     },
 
-    "class9_ch06": {
-        "title"      : "Tissues",
+    "class9_ch02": {
+        "title"      : "Cell: The Building Block of Life (Fundamental Unit)",
         "class"      : "9",
-        "chapter_num": "06",
-        "pdf_names"  : [
-            "bio_9_ch06.pdf",
-            "ix_chap6_science.pdf",
-            "class9_ch6.pdf",
-            "ch6_class9.pdf",
-        ],
+        "chapter_num": "02",
+        "pdf_names"  : ["ix_chap2_science.pdf"],
     },
 
-    "class9_ch07": {
-        "title"      : "Diversity in Living Organisms",
+    "class9_ch03": {
+        "title"      : "Tissues in Action",
         "class"      : "9",
-        "chapter_num": "07",
-        "pdf_names"  : [
-            "bio_9_ch07.pdf",
-            "ix_chap7_science.pdf",
-            "class9_ch7.pdf",
-            "ch7_class9.pdf",
-        ],
+        "chapter_num": "03",
+        "pdf_names"  : ["ix_chap3_science.pdf"],
     },
 
-    "class9_ch13": {
-        "title"      : "Why Do We Fall Ill",
+    "class9_ch11": {
+        "title"      : "Reproduction: How Life Continues",
         "class"      : "9",
-        "chapter_num": "13",
-        "pdf_names"  : [
-            "bio_9_ch13.pdf",
-            "ix_chap13_science.pdf",
-            "class9_ch13.pdf",
-            "ch13_class9.pdf",
-        ],
+        "chapter_num": "11",
+        "pdf_names"  : ["ix_chap11_science.pdf"],
     },
 
-    "class9_ch14": {
-        "title"      : "Natural Resources",
+    "class9_ch12": {
+        "title"      : "Patterns in Life: Diversity and Classification",
         "class"      : "9",
-        "chapter_num": "14",
-        "pdf_names"  : [
-            "bio_9_ch14.pdf",
-            "ix_chap14_science.pdf",
-            "class9_ch14.pdf",
-            "ch14_class9.pdf",
-        ],
-    },
-
-    "class9_ch15": {
-        "title"      : "Improvement in Food Resources",
-        "class"      : "9",
-        "chapter_num": "15",
-        "pdf_names"  : [
-            "bio_9_ch15.pdf",
-            "ix_chap15_science.pdf",
-            "class9_ch15.pdf",
-            "ch15_class9.pdf",
-        ],
+        "chapter_num": "12",
+        "pdf_names"  : ["ix_chap12_science.pdf"],
     },
 
     # ── Class 10 Biology ─────────────────────────────────────────────────────
 
-    "class10_ch06": {
+    "class10_ch05": {
         "title"      : "Life Processes",
         "class"      : "10",
+        "chapter_num": "05",
+        "pdf_names"  : ["x_chap5_science.pdf"],
+    },
+
+    "class10_ch06": {
+        "title"      : "Control and Coordination",
+        "class"      : "10",
         "chapter_num": "06",
-        "pdf_names"  : [
-            "bio_10_ch06.pdf",
-            "x_chap6_science.pdf",    # this file EXISTS in data/raw/biology/class_x/
-            "class10_ch6.pdf",
-            "ch6_class10.pdf",
-        ],
+        "pdf_names"  : ["x_chap6_science.pdf"],
+    },
+
+    "class10_ch07": {
+        "title"      : "How do Organisms Reproduce?",
+        "class"      : "10",
+        "chapter_num": "07",
+        "pdf_names"  : ["x_chap7_science.pdf"],
     },
 
     "class10_ch08": {
-        "title"      : "How do Organisms Reproduce?",
+        "title"      : "Heredity",
         "class"      : "10",
         "chapter_num": "08",
-        "pdf_names"  : [
-            "bio_10_ch08.pdf",
-            "x_chap8_science.pdf",    # this file EXISTS in data/raw/biology/class_x/
-            "class10_ch8.pdf",
-            "ch8_class10.pdf",
-        ],
+        "pdf_names"  : ["x_chap8_science.pdf"],
     },
 
-    "class10_ch09": {
-        "title"      : "Heredity and Evolution",
-        "class"      : "10",
-        "chapter_num": "09",
-        "pdf_names"  : [
-            "bio_10_ch09.pdf",
-            "x_chap9_science.pdf",
-            "class10_ch9.pdf",
-            "ch9_class10.pdf",
-        ],
-    },
-
-    "class10_ch15": {
+    "class10_ch13": {
         "title"      : "Our Environment",
         "class"      : "10",
-        "chapter_num": "15",
-        "pdf_names"  : [
-            "bio_10_ch15.pdf",
-            "x_chap15_science.pdf",
-            "class10_ch15.pdf",
-            "ch15_class10.pdf",
-        ],
-    },
-
-    "class10_ch16": {
-        "title"      : "Management of Natural Resources",
-        "class"      : "10",
-        "chapter_num": "16",
-        "pdf_names"  : [
-            "bio_10_ch16.pdf",
-            "x_chap16_science.pdf",
-            "class10_ch16.pdf",
-            "ch16_class10.pdf",
-        ],
+        "chapter_num": "13",
+        "pdf_names"  : ["x_chap13_science.pdf"],
     },
 }
 
