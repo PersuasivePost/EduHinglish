@@ -2,8 +2,8 @@
 
 ### AI-Powered Learning Companion for Hinglish-Speaking Indian Students
 
-> **Final Year Engineering Project** | K.J. Somaiya College of Engineering, Mumbai  
-> **Team:** Ashvatth & Jatin | **Batch:** 2027 | **Honours:** Mobile & Software Application Development
+> **Final Year Engineering Project** | K.J. Somaiya College of Engineering, Mumbai
+> **Team:** Ashvatth & Jatin | **Batch:** 2027
 
 ---
 
@@ -21,21 +21,130 @@ A student who naturally asks _"Sir, Newton ka third law samjhao please"_ has no 
 
 A 5-module integrated AI system:
 
-| Module                     | What It Does                                                          | Status         |
-| -------------------------- | --------------------------------------------------------------------- | -------------- |
-| **M1: Input Processing**   | Script detection → Normalization → Word-level LID → Intent extraction | 🔨 In Progress |
-| **M2: NCERT Retriever**    | RAG pipeline over NCERT textbook chunks                               | 📋 Planned     |
-| **M3: Hinglish Generator** | LLM-powered Hinglish explanations (LLaMA 3.1 8B)                      | 📋 Planned     |
-| **M4: GEC Engine**         | Code-mix-aware grammar error correction                               | 📋 Planned     |
-| **M5: Web Interface**      | Streamlit chat UI                                                     | 📋 Planned     |
+| Module | What It Does | Status |
+| --- | --- | --- |
+| **M1: Input Processing** | Script detection → Normalization → Word-level LID → Intent extraction | ✅ Complete |
+| **M2: NCERT Retriever** | RAG pipeline over NCERT textbook chunks | 📋 Planned |
+| **M3: Hinglish Generator** | Fine-tuned IndicBART seq2seq Hinglish explanations | 📋 Planned |
+| **M4: GEC Engine** | Code-mix-aware grammar error correction | 📋 Planned |
+| **M5: Web Interface** | Streamlit chat UI | 📋 Planned |
 
 ---
 
-## Current Phase: Preprocessing Pipeline
+## Current Phase: Phase 2 — Multi-Chapter Dataset Pipeline ✅
 
-**Scope:** NCERT Class 9 Science — Chapter 5: _The Fundamental Unit of Life_ (Biology)
+**Scope:** 10 chapters across NCERT Class 9 & Class 10 Science — **950 labeled sentences** with word-level HI/EN/NE/UNIV/MIX annotations.
 
-### Pipeline Steps
+### Dataset Coverage
+
+| Chapter Code | Chapter | Class | Entries |
+| --- | --- | --- | --- |
+| class9/ch01 | Matter in Our Surroundings | 9 | 95 |
+| class9/ch02 | Is Matter Around Us Pure | 9 | 95 |
+| class9/ch03 | Atoms and Molecules | 9 | 95 |
+| class9/ch11 | Work and Energy | 9 | 95 |
+| class9/ch12 | Sound | 9 | 95 |
+| class10/ch05 | Periodic Classification of Elements | 10 | 95 |
+| class10/ch06 | Life Processes | 10 | 95 |
+| class10/ch07 | Control and Coordination | 10 | 95 |
+| class10/ch08 | How do Organisms Reproduce? | 10 | 95 |
+| class10/ch13 | Our Environment | 10 | 95 |
+| **Total** | | | **950** |
+
+### Label Distribution (unified dataset)
+
+```
+HI     9,558 tokens  (60%)  ████████████████████
+EN     5,956 tokens  (37%)  ████████████
+NE       140 tokens  ( 0%)
+UNIV      53 tokens  ( 0%)
+MIX        6 tokens  ( 0%)
+```
+
+### Entry Schema
+
+Each entry in the dataset follows this structure:
+
+```json
+{
+  "id": "10_06_001",
+  "original_english": "The food we eat provides energy for all life processes.",
+  "hinglish_roman": "Jo khana hum khate hain woh saare life processes ke liye energy deta hai.",
+  "word_level_labels": {
+    "Jo": "HI",
+    "khana": "HI",
+    "hum": "HI",
+    "khate": "HI",
+    "hain": "HI",
+    "woh": "HI",
+    "saare": "HI",
+    "life": "EN",
+    "processes": "EN",
+    "ke": "HI",
+    "liye": "HI",
+    "energy": "EN",
+    "deta": "HI",
+    "hai": "HI"
+  },
+  "topic": "Life Processes - Introduction",
+  "chapter": "Chapter 6: Life Processes",
+  "class": "10",
+  "code_mixing_type": "intra-sentential"
+}
+```
+
+Optional fields: `is_student_query`, `intent`, `is_gec_sample`, `gec_data`, `hinglish_devanagari`, `notes`.
+
+---
+
+## Dataset Scripts
+
+### annotation_helper.py — interactive word-level annotation
+
+```bash
+# Annotate sentences one by one for any chapter
+python scripts/annotation_helper.py --chapter class10/ch06 \
+    --output data/processed/class10_ch06/dataset.json
+
+# List all available chapter codes
+python scripts/annotation_helper.py --list-chapters
+
+# Dry-run (print entry without saving)
+python scripts/annotation_helper.py --dry-run
+```
+
+### chapter_dataset_builder.py — guided batch annotation + unified merge
+
+```bash
+# Guided annotation for a chapter (reads cleaned_text.txt as prompts)
+python scripts/chapter_dataset_builder.py --chapter class10/ch06
+
+# Set a custom entry target (default: 50)
+python scripts/chapter_dataset_builder.py --chapter class9/ch05 --target 75
+
+# Merge all ready chapters into the unified dataset
+python scripts/chapter_dataset_builder.py --merge
+
+# Show all chapters with current entry counts
+python scripts/chapter_dataset_builder.py --list-chapters
+```
+
+### Other scripts
+
+```bash
+# Validate label consistency and compute CMI stats
+python scripts/validate_dataset.py
+
+# Augment existing sentences with rule-based variants
+python scripts/augment_dataset.py
+
+# Extract and clean text from NCERT PDFs in batch
+python scripts/batch_pdf_extractor.py
+```
+
+---
+
+## Pipeline (Phase 1 — M1 Input Processing)
 
 ```
 Input (English / Hinglish / Mixed Script)
@@ -79,32 +188,47 @@ Structured Output (JSON with step-by-step trace)
 EduHinglish/
 │
 ├── data/
-│   ├── raw/                          # NCERT PDFs (not committed to git)
-│   ├── processed/                    # Extracted & cleaned text
-│   └── hinglish/                     # Labeled Hinglish dataset
+│   ├── raw/                              # NCERT PDFs (not committed to git)
+│   ├── processed/                        # Per-chapter datasets
+│   │   ├── class9_ch01/dataset.json      # 95 entries each
+│   │   ├── class9_ch02/dataset.json
+│   │   ├── class9_ch03/dataset.json
+│   │   ├── class9_ch11/dataset.json
+│   │   ├── class9_ch12/dataset.json
+│   │   ├── class10_ch05/dataset.json
+│   │   ├── class10_ch06/dataset.json
+│   │   ├── class10_ch07/dataset.json
+│   │   ├── class10_ch08/dataset.json
+│   │   └── class10_ch13/dataset.json
+│   ├── hinglish/                         # Legacy / misc labeled data
+│   └── unified_biology_dataset.json      # All chapters merged (950 entries)
+│
+├── scripts/
+│   ├── annotation_helper.py              # Interactive word-level annotation CLI
+│   ├── chapter_dataset_builder.py        # Batch annotation + --merge tool
+│   ├── augment_dataset.py                # Rule-based sentence augmentation
+│   ├── batch_pdf_extractor.py            # Process all NCERT PDFs at once
+│   ├── validate_dataset.py               # Label consistency + CMI stats
+│   └── download_nltk_data.py             # One-time NLTK data setup
 │
 ├── src/
-│   ├── pdf_extractor.py              # NCERT PDF → clean text (Ashvatth)
-│   ├── preprocessing.py              # English NLP pipeline (Ashvatth)
-│   ├── script_detector.py            # Script detection + LID (Jatin)
-│   ├── normalizer.py                 # Hinglish normalization (Jatin)
-│   ├── hinglish_dataset_creator.py   # Labeled dataset creation (Jatin)
-│   └── pipeline.py                   # Unified pipeline (Both)
-│
-├── notebooks/
-│   ├── 01_pdf_extraction.ipynb
-│   ├── 02_preprocessing_english.ipynb
-│   ├── 03_hinglish_dataset.ipynb
-│   ├── 04_script_and_lid.ipynb
-│   └── 05_full_pipeline_demo.ipynb
+│   ├── pdf_extractor.py                  # NCERT PDF → clean text (Ashvatth)
+│   ├── preprocessing.py                  # English NLP pipeline (Ashvatth)
+│   ├── script_detector.py                # Script detection + LID (Jatin)
+│   ├── normalizer.py                     # Hinglish normalization (Jatin)
+│   ├── hinglish_dataset_creator.py       # Legacy dataset creation (Jatin)
+│   └── pipeline.py                       # Unified pipeline (Both)
 │
 ├── outputs/
-│   └── pipeline_results/             # All JSON outputs saved here
+│   └── pipeline_results/                 # JSON pipeline outputs
 │
 ├── tests/
 │   ├── test_preprocessing.py
 │   ├── test_script_detector.py
 │   └── test_pipeline.py
+│
+├── workspace/
+│   └── phases.md                         # Full 8-phase project plan
 │
 ├── requirements.txt
 ├── .gitignore
@@ -124,16 +248,16 @@ EduHinglish/
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/EduHinglish.git
+git clone https://github.com/PersuasivePost/EduHinglish.git
 cd EduHinglish
 
 # Create virtual environment with Python 3.10
-py -3.10 -m venv eduhinglish_env          # Windows
-# python3.10 -m venv eduhinglish_env      # Mac/Linux
+python3.10 -m venv eduhinglish_env        # Mac/Linux
+# py -3.10 -m venv eduhinglish_env        # Windows
 
 # Activate
-eduhinglish_env\Scripts\activate           # Windows
-# source eduhinglish_env/bin/activate      # Mac/Linux
+source eduhinglish_env/bin/activate       # Mac/Linux
+# eduhinglish_env\Scripts\activate        # Windows
 
 # Install dependencies
 pip install -r requirements.txt
@@ -145,30 +269,22 @@ python scripts/download_nltk_data.py
 python -m spacy download en_core_web_sm
 ```
 
-### Get the NCERT PDF
+### Get NCERT PDFs
 
-Download NCERT Class 9 Science from [ncert.nic.in](https://ncert.nic.in/textbook.php)  
-Place it at: `data/raw/ncert_class9_science.pdf`
+Download Class 9 & Class 10 Science from [ncert.nic.in](https://ncert.nic.in/textbook.php)
+Place them at: `data/raw/`
 
 ---
 
 ## Running the Pipeline
 
 ```bash
-cd src/
+# Run the full unified pipeline
+python src/pipeline.py
 
-# Step 1: Extract text from NCERT PDF (Ashvatth)
-python pdf_extractor.py
-
-# Step 2: Create Hinglish dataset (Jatin)
-python hinglish_dataset_creator.py
-
-# Step 3: Test individual modules
-python preprocessing.py
-python script_detector.py
-
-# Step 4: Run the full unified pipeline
-python pipeline.py
+# Test individual modules
+python src/script_detector.py
+python src/preprocessing.py
 ```
 
 ---
@@ -200,26 +316,26 @@ python pipeline.py
 
 ## Tech Stack
 
-| Layer           | Technology                            |
-| --------------- | ------------------------------------- |
-| NLP             | NLTK, spaCy, HuggingFace Transformers |
-| LID Model       | MuRIL (Google) + Token Classification |
-| Transliteration | IndicXlit (AI4Bharat)                 |
-| Vector DB       | ChromaDB                              |
-| Embeddings      | BGE-base-en-v1.5                      |
-| LLM (later)     | LLaMA 3.1 8B (QLoRA fine-tuned)       |
-| Fine-tuning     | PEFT + QLoRA (4-bit)                  |
-| UI (later)      | Streamlit → React + FastAPI           |
-| Language        | Python 3.10                           |
+| Layer | Technology |
+| --- | --- |
+| NLP | NLTK, spaCy, HuggingFace Transformers |
+| LID (rule-based) | Custom WordLevelLID (HINDI_WORDS lexicon) |
+| LID (trained) | MuRIL (Google) + LoRA — Phase 4 |
+| Seq2Seq | IndicBART (AI4Bharat) — Phase 6 |
+| Vector DB | ChromaDB — Phase 5 |
+| Embeddings | multilingual-MiniLM-L12-v2 — Phase 5 |
+| Fine-tuning | PEFT + LoRA |
+| UI | Streamlit — Phase 8 |
+| Language | Python 3.10 |
 
 ---
 
 ## Team
 
-| Name     | Role                                                                   |
-| -------- | ---------------------------------------------------------------------- |
+| Name | Role |
+| --- | --- |
 | Ashvatth | PDF extraction, English preprocessing pipeline, unified pipeline class |
-| Jatin    | Hinglish dataset creation, script detection, normalization, LID module |
+| Jatin | Hinglish dataset creation, script detection, normalization, LID module, annotation tooling |
 
 ---
 
@@ -228,9 +344,11 @@ python pipeline.py
 - [x] Literature survey (11 papers)
 - [x] Market analysis & gap identification
 - [x] System architecture design
-- [ ] **Preprocessing pipeline (current)**
-- [ ] NCERT vector database (RAG)
-- [ ] Hinglish explanation generator
-- [ ] GEC module
-- [ ] Web interface
-- [ ] Evaluation & human study
+- [x] **Phase 1 — M1 Preprocessing pipeline**
+- [x] **Phase 2 — Multi-chapter dataset pipeline (950 entries, 10 chapters)**
+- [ ] Phase 3 — spaCy model training (LID, NER, Intent)
+- [ ] Phase 4 — MuRIL fine-tuning (Colab T4)
+- [ ] Phase 5 — NCERT ChromaDB knowledge base
+- [ ] Phase 6 — IndicBART Hinglish generator fine-tuning
+- [ ] Phase 7 — GEC engine
+- [ ] Phase 8 — Full pipeline integration + Streamlit UI
