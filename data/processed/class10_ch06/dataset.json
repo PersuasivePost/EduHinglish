@@ -1,6 +1,6 @@
 [
   {
-    "id": "9_06_001",
+    "id": "10_06_001",
     "original_english": "Control and coordination are the functions of the nervous system and hormones in our bodies.",
     "hinglish_roman": "Control aur coordination hamare body mein nervous system aur hormones ka kaam hai.",
     "word_level_labels": {
@@ -23,7 +23,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_002",
+    "id": "10_06_002",
     "original_english": "All information from our environment is detected by the specialised tips of some nerve cells.",
     "hinglish_roman": "Hamare environment ki saari information kuch special nerve cells ke tips se detect hoti hai.",
     "word_level_labels": {
@@ -49,7 +49,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_003",
+    "id": "10_06_003",
     "original_english": "Receptors are usually located in our sense organs such as the inner ear, the nose, and the tongue.",
     "hinglish_roman": "Receptors aamtaur par hamare sense organs mein hote hain jaise inner ear, naak aur jeebh.",
     "word_level_labels": {
@@ -75,7 +75,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_004",
+    "id": "10_06_004",
     "original_english": "Gustatory receptors will detect taste while olfactory receptors will detect smell.",
     "hinglish_roman": "Gustatory receptors taste detect karte hain jabki olfactory receptors smell detect karte hain.",
     "word_level_labels": {
@@ -95,7 +95,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_005",
+    "id": "10_06_005",
     "original_english": "Information acquired at the dendritic tip sets off a chemical reaction that creates an electrical impulse.",
     "hinglish_roman": "Dendritic tip par mili information ek chemical reaction shuru karti hai jo electrical impulse create karta hai.",
     "word_level_labels": {
@@ -122,7 +122,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_006",
+    "id": "10_06_006",
     "original_english": "The electrical impulse travels from the dendrite to the cell body and then along the axon to its end.",
     "hinglish_roman": "Electrical impulse dendrite se cell body tak aur phir axon ke saath uske end tak travel karta hai.",
     "word_level_labels": {
@@ -150,7 +150,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_007",
+    "id": "10_06_007",
     "original_english": "At the end of the axon, the electrical impulse sets off the release of some chemicals.",
     "hinglish_roman": "Axon ke end par, electrical impulse kuch chemicals release karta hai.",
     "word_level_labels": {
@@ -172,7 +172,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_008",
+    "id": "10_06_008",
     "original_english": "These chemicals cross the gap or synapse and start a similar electrical impulse in the next neuron.",
     "hinglish_roman": "Yeh chemicals gap ya synapse cross karke agle neuron mein ek similar electrical impulse shuru karte hain.",
     "word_level_labels": {
@@ -200,7 +200,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_009",
+    "id": "10_06_009",
     "original_english": "Nervous tissue is made up of an organised network of nerve cells or neurons.",
     "hinglish_roman": "Nervous tissue nerve cells ya neurons ke ek organised network se bana hota hai.",
     "word_level_labels": {
@@ -225,7 +225,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_010",
+    "id": "10_06_010",
     "original_english": "A reflex is a sudden action in response to something in the environment without thinking about it.",
     "hinglish_roman": "Reflex ek aisi sudden action hai jo environment mein kisi cheez ke response mein bina soche hoti hai.",
     "word_level_labels": {
@@ -253,7 +253,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_011",
+    "id": "10_06_011",
     "original_english": "Touching a flame is an urgent and dangerous situation that requires a quick reflex response.",
     "hinglish_roman": "Aag ko chhoona ek urgent aur dangerous situation hai jisme quick reflex response chahiye.",
     "word_level_labels": {
@@ -278,7 +278,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_012",
+    "id": "10_06_012",
     "original_english": "A reflex arc is a connection between the input nerve and the output nerve made in the spinal cord.",
     "hinglish_roman": "Reflex arc spinal cord mein input nerve aur output nerve ke beech ek connection hota hai.",
     "word_level_labels": {
@@ -304,7 +304,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_013",
+    "id": "10_06_013",
     "original_english": "Nerves from all over the body meet in a bundle in the spinal cord on their way to the brain.",
     "hinglish_roman": "Poore body se nerves ek bundle mein spinal cord mein milti hain jab woh brain ki taraf jaati hain.",
     "word_level_labels": {
@@ -332,7 +332,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_014",
+    "id": "10_06_014",
     "original_english": "Reflex arcs are formed in the spinal cord itself although the information also goes on to reach the brain.",
     "hinglish_roman": "Reflex arcs spinal cord mein hi form hote hain lekin information brain tak bhi pahunchti hai.",
     "word_level_labels": {
@@ -359,7 +359,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_015",
+    "id": "10_06_015",
     "original_english": "The brain and spinal cord together constitute the central nervous system.",
     "hinglish_roman": "Brain aur spinal cord milkar central nervous system banate hain.",
     "word_level_labels": {
@@ -380,7 +380,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_016",
+    "id": "10_06_016",
     "original_english": "The brain has three major parts: the fore-brain, mid-brain and hind-brain.",
     "hinglish_roman": "Brain ke teen major parts hain: fore-brain, mid-brain aur hind-brain.",
     "word_level_labels": {
@@ -401,7 +401,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_017",
+    "id": "10_06_017",
     "original_english": "The fore-brain is the main thinking part of the brain with regions that receive sensory impulses.",
     "hinglish_roman": "Fore-brain brain ka main thinking part hai jisme sensory impulses receive karne ke regions hote hain.",
     "word_level_labels": {
@@ -428,7 +428,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_018",
+    "id": "10_06_018",
     "original_english": "Separate areas of the fore-brain are specialised for hearing, smell, sight and so on.",
     "hinglish_roman": "Fore-brain ke alag-alag areas hearing, smell, sight aur baaki cheezein ke liye specialised hote hain.",
     "word_level_labels": {
@@ -454,7 +454,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_019",
+    "id": "10_06_019",
     "original_english": "Many involuntary actions are controlled by the mid-brain and hind-brain.",
     "hinglish_roman": "Bahut saari involuntary actions mid-brain aur hind-brain ke dwara control hoti hain.",
     "word_level_labels": {
@@ -477,7 +477,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_020",
+    "id": "10_06_020",
     "original_english": "Involuntary actions including blood pressure, salivation and vomiting are controlled by the medulla in the hind-brain.",
     "hinglish_roman": "Blood pressure, salivation aur vomiting jaise involuntary actions hind-brain ke medulla se control hote hain.",
     "word_level_labels": {
@@ -503,7 +503,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_021",
+    "id": "10_06_021",
     "original_english": "The cerebellum is responsible for precision of voluntary actions and maintaining the posture and balance of the body.",
     "hinglish_roman": "Cerebellum voluntary actions ki precision aur body ka posture aur balance maintain karne ke liye responsible hai.",
     "word_level_labels": {
@@ -530,7 +530,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_022",
+    "id": "10_06_022",
     "original_english": "The brain sits inside a bony box and is surrounded by a fluid-filled balloon for shock absorption.",
     "hinglish_roman": "Brain ek bony box ke andar hota hai aur shock absorption ke liye fluid-filled balloon se ghira hota hai.",
     "word_level_labels": {
@@ -558,7 +558,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_023",
+    "id": "10_06_023",
     "original_english": "The vertebral column or backbone protects the spinal cord.",
     "hinglish_roman": "Vertebral column ya backbone spinal cord ki raksha karta hai.",
     "word_level_labels": {
@@ -579,7 +579,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_024",
+    "id": "10_06_024",
     "original_english": "Muscle cells have special proteins that change their shape and arrangement in response to nervous electrical impulses.",
     "hinglish_roman": "Muscle cells mein special proteins hote hain jo nervous electrical impulses ke response mein apni shape aur arrangement change karte hain.",
     "word_level_labels": {
@@ -611,7 +611,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_025",
+    "id": "10_06_025",
     "original_english": "Plants also use electrical-chemical means to convey information from cell to cell.",
     "hinglish_roman": "Plants bhi ek cell se doosre cell tak information pahunchane ke liye electrical-chemical tarike use karte hain.",
     "word_level_labels": {
@@ -638,7 +638,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_026",
+    "id": "10_06_026",
     "original_english": "Plants show two different types of movement: one dependent on growth and the other independent of growth.",
     "hinglish_roman": "Plants do alag tarah ki movement dikhate hain: ek growth par dependent aur doosri growth se independent.",
     "word_level_labels": {
@@ -665,7 +665,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_027",
+    "id": "10_06_027",
     "original_english": "The leaves of the sensitive plant move very quickly in response to touch without any growth.",
     "hinglish_roman": "Sensitive plant ki pattiyan bina kisi growth ke touch ke response mein bahut jaldi hilti hain.",
     "word_level_labels": {
@@ -692,7 +692,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_028",
+    "id": "10_06_028",
     "original_english": "Plant cells change shape by changing the amount of water in them, resulting in swelling or shrinking.",
     "hinglish_roman": "Plant cells mein paani ki maatra badalne se unka shape change hota hai, jiske wajah se woh phoolte ya sikudte hain.",
     "word_level_labels": {
@@ -724,7 +724,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_029",
+    "id": "10_06_029",
     "original_english": "Environmental triggers such as light or gravity change the directions that plant parts grow in.",
     "hinglish_roman": "Light ya gravity jaise environmental triggers plant ke parts ki growth ki direction change karte hain.",
     "word_level_labels": {
@@ -751,7 +751,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_030",
+    "id": "10_06_030",
     "original_english": "In phototropic movement, shoots respond by bending towards light while roots respond by bending away from it.",
     "hinglish_roman": "Phototropic movement mein shoots light ki taraf jhuk jaate hain jabki roots usse door jhuk jaati hain.",
     "word_level_labels": {
@@ -777,7 +777,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_031",
+    "id": "10_06_031",
     "original_english": "Geotropism is the upward and downward growth of shoots and roots respectively in response to gravity.",
     "hinglish_roman": "Geotropism gravity ke response mein shoots ka upar aur roots ka neeche growth hai.",
     "word_level_labels": {
@@ -802,7 +802,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_032",
+    "id": "10_06_032",
     "original_english": "Chemotropism is the growth of pollen tubes towards ovules.",
     "hinglish_roman": "Chemotropism pollen tubes ka ovules ki taraf growth hai.",
     "word_level_labels": {
@@ -822,7 +822,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_033",
+    "id": "10_06_033",
     "original_english": "Electrical impulses are an excellent means for fast information transfer but can only reach cells connected by nervous tissue.",
     "hinglish_roman": "Electrical impulses fast information transfer ke liye bahut achha tarika hai lekin yeh sirf nervous tissue se connected cells tak pahunch sakta hai.",
     "word_level_labels": {
@@ -855,7 +855,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_034",
+    "id": "10_06_034",
     "original_english": "Hormones are chemicals used by multicellular organisms for control and coordination.",
     "hinglish_roman": "Hormones woh chemicals hain jo multicellular organisms control aur coordination ke liye use karte hain.",
     "word_level_labels": {
@@ -881,7 +881,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_035",
+    "id": "10_06_035",
     "original_english": "Different plant hormones help to coordinate growth, development and responses to the environment.",
     "hinglish_roman": "Alag-alag plant hormones growth, development aur environment ke response ko coordinate karne mein madad karte hain.",
     "word_level_labels": {
@@ -908,7 +908,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_036",
+    "id": "10_06_036",
     "original_english": "Auxin is a hormone synthesised at the shoot tip that helps the cells to grow longer.",
     "hinglish_roman": "Auxin ek hormone hai jo shoot tip par banta hai aur cells ko lamba hone mein madad karta hai.",
     "word_level_labels": {
@@ -938,7 +938,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_037",
+    "id": "10_06_037",
     "original_english": "When light comes from one side, auxin diffuses towards the shady side of the shoot causing it to bend towards light.",
     "hinglish_roman": "Jab ek taraf se light aati hai, auxin shoot ke chhaon wale side ki taraf diffuse hota hai aur shoot light ki taraf jhuk jaata hai.",
     "word_level_labels": {
@@ -972,7 +972,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_038",
+    "id": "10_06_038",
     "original_english": "Gibberellins help in the growth of the stem similar to auxins.",
     "hinglish_roman": "Gibberellins auxins ki tarah stem ki growth mein madad karte hain.",
     "word_level_labels": {
@@ -994,7 +994,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_039",
+    "id": "10_06_039",
     "original_english": "Cytokinins promote cell division and are present in greater concentration in fruits and seeds.",
     "hinglish_roman": "Cytokinins cell division badhate hain aur fruits aur seeds mein zyada concentration mein hote hain.",
     "word_level_labels": {
@@ -1020,7 +1020,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_040",
+    "id": "10_06_040",
     "original_english": "Abscisic acid is a plant hormone that inhibits growth and causes wilting of leaves.",
     "hinglish_roman": "Abscisic acid ek plant hormone hai jo growth rok deta hai aur pattiyon ko murjha deta hai.",
     "word_level_labels": {
@@ -1047,7 +1047,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_041",
+    "id": "10_06_041",
     "original_english": "Adrenaline is a hormone secreted from the adrenal glands directly into the blood.",
     "hinglish_roman": "Adrenaline ek hormone hai jo adrenal glands se seedha khoon mein secrete hota hai.",
     "word_level_labels": {
@@ -1071,7 +1071,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_042",
+    "id": "10_06_042",
     "original_english": "Adrenaline causes the heart to beat faster resulting in supply of more oxygen to muscles.",
     "hinglish_roman": "Adrenaline ki wajah se dil tez dhadakta hai jisse muscles ko zyada oxygen milti hai.",
     "word_level_labels": {
@@ -1097,7 +1097,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_043",
+    "id": "10_06_043",
     "original_english": "Blood to the digestive system and skin is reduced due to contraction of muscles around small arteries.",
     "hinglish_roman": "Chhoti arteries ke aas-paas muscles ke sikudne se digestive system aur skin mein khoon ka flow kam ho jaata hai.",
     "word_level_labels": {
@@ -1128,7 +1128,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_044",
+    "id": "10_06_044",
     "original_english": "The breathing rate also increases because of the contractions of the diaphragm and the rib muscles.",
     "hinglish_roman": "Diaphragm aur rib muscles ke sikudne ki wajah se saans lene ki dhar bhi tej ho jaati hai.",
     "word_level_labels": {
@@ -1157,7 +1157,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_045",
+    "id": "10_06_045",
     "original_english": "The endocrine system constitutes a second way of control and coordination in our body.",
     "hinglish_roman": "Endocrine system hamare body mein control aur coordination ka doosra tarika hai.",
     "word_level_labels": {
@@ -1180,7 +1180,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_046",
+    "id": "10_06_046",
     "original_english": "Iodine is necessary for the thyroid gland to make thyroxin hormone.",
     "hinglish_roman": "Thyroid gland ko thyroxin hormone banane ke liye iodine zaroori hai.",
     "word_level_labels": {
@@ -1202,7 +1202,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_047",
+    "id": "10_06_047",
     "original_english": "Thyroxin regulates carbohydrate, protein and fat metabolism in the body to provide the best balance for growth.",
     "hinglish_roman": "Thyroxin body mein carbohydrate, protein aur fat metabolism ko regulate karke growth ke liye best balance deta hai.",
     "word_level_labels": {
@@ -1231,7 +1231,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_048",
+    "id": "10_06_048",
     "original_english": "If iodine is deficient in our diet, we might suffer from goitre, a disease causing a swollen neck.",
     "hinglish_roman": "Agar hamare khane mein iodine ki kami ho, toh hum goitre se pareshan ho sakte hain jisme gala sooj jaata hai.",
     "word_level_labels": {
@@ -1263,7 +1263,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_049",
+    "id": "10_06_049",
     "original_english": "Growth hormone is secreted by the pituitary gland and regulates growth and development of the body.",
     "hinglish_roman": "Growth hormone pituitary gland se secrete hota hai aur body ke growth aur development ko regulate karta hai.",
     "word_level_labels": {
@@ -1292,7 +1292,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_050",
+    "id": "10_06_050",
     "original_english": "If there is a deficiency of growth hormone in childhood it leads to dwarfism.",
     "hinglish_roman": "Agar bachpan mein growth hormone ki kami ho, toh dwarfism ho sakta hai.",
     "word_level_labels": {
@@ -1316,7 +1316,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_051",
+    "id": "10_06_051",
     "original_english": "Changes associated with puberty are because of the secretion of testosterone in males and oestrogen in females.",
     "hinglish_roman": "Puberty ke saath hone wale changes ladkon mein testosterone aur ladkiyon mein oestrogen ke secretion ki wajah se hote hain.",
     "word_level_labels": {
@@ -1347,7 +1347,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_052",
+    "id": "10_06_052",
     "original_english": "Insulin is a hormone produced by the pancreas that helps in regulating blood sugar levels.",
     "hinglish_roman": "Insulin pancreas se banna ek hormone hai jo blood sugar levels ko regulate karne mein madad karta hai.",
     "word_level_labels": {
@@ -1376,7 +1376,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_053",
+    "id": "10_06_053",
     "original_english": "If insulin is not secreted in proper amounts, the sugar level in the blood rises causing harmful effects.",
     "hinglish_roman": "Agar insulin sahi maatra mein secrete na ho, toh blood mein sugar level badh jaata hai jo haanikaarak hai.",
     "word_level_labels": {
@@ -1406,7 +1406,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_054",
+    "id": "10_06_054",
     "original_english": "The timing and amount of hormone released are regulated by feedback mechanisms.",
     "hinglish_roman": "Hormone kitni maatra mein aur kab release hoga yeh feedback mechanisms se regulate hota hai.",
     "word_level_labels": {
@@ -1432,7 +1432,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_055",
+    "id": "10_06_055",
     "original_english": "If blood sugar levels rise, the pancreas produces more insulin, and as sugar levels fall, insulin secretion is reduced.",
     "hinglish_roman": "Jab blood sugar level badhe, pancreas zyada insulin banata hai, aur jab sugar level ghate, insulin secretion kam hoti hai.",
     "word_level_labels": {
@@ -1462,7 +1462,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_056",
+    "id": "10_06_056",
     "original_english": "Movement in response to the environment is carefully controlled in living organisms.",
     "hinglish_roman": "Jeevit praaniyon mein environment ke response mein movement bahut carefully control hoti hai.",
     "word_level_labels": {
@@ -1486,7 +1486,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_057",
+    "id": "10_06_057",
     "original_english": "Specialised tissues are used to provide control and coordination activities in multicellular organisms.",
     "hinglish_roman": "Multicellular organisms mein control aur coordination ke liye specialised tissues use hote hain.",
     "word_level_labels": {
@@ -1510,7 +1510,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_058",
+    "id": "10_06_058",
     "original_english": "In animals, control and coordination are provided by nervous and muscular tissues.",
     "hinglish_roman": "Jaanwaron mein control aur coordination nervous aur muscular tissues se milta hai.",
     "word_level_labels": {
@@ -1533,7 +1533,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_059",
+    "id": "10_06_059",
     "original_english": "The communication between the central nervous system and the other parts of the body is facilitated by the peripheral nervous system.",
     "hinglish_roman": "Central nervous system aur body ke baaki hisson ke beech communication peripheral nervous system ke zariye hota hai.",
     "word_level_labels": {
@@ -1562,7 +1562,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_060",
+    "id": "10_06_060",
     "original_english": "Writing, talking, and moving a chair are examples of voluntary actions based on deciding what to do next.",
     "hinglish_roman": "Likhna, bolna aur kursi hilana voluntary actions ke examples hain jo aage kya karna hai, iske faisle par based hain.",
     "word_level_labels": {
@@ -1593,7 +1593,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_061",
+    "id": "10_06_061",
     "original_english": "Walking in a straight line, riding a bicycle and picking up a pencil are possible due to the cerebellum.",
     "hinglish_roman": "Seedhi line mein chalna, cycle chalana aur pencil uthana cerebellum ki wajah se possible hai.",
     "word_level_labels": {
@@ -1619,7 +1619,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_062",
+    "id": "10_06_062",
     "original_english": "Our hearts beat without our thinking about it as an involuntary action.",
     "hinglish_roman": "Hamaara dil bina soche ek involuntary action ki tarah dhadakta rehta hai.",
     "word_level_labels": {
@@ -1642,7 +1642,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_063",
+    "id": "10_06_063",
     "original_english": "Pea plant tendrils are sensitive to touch and coil around any support they come in contact with.",
     "hinglish_roman": "Matar ke plant ki tendrils touch ke liye sensitive hoti hain aur jis bhi support se milti hain uske aas-paas lapet jaati hain.",
     "word_level_labels": {
@@ -1676,7 +1676,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_064",
+    "id": "10_06_064",
     "original_english": "The part of the tendril in contact with the object does not grow as rapidly as the part away from the object.",
     "hinglish_roman": "Tendril ka jo part object se contact mein hai woh utni tezi se nahi badhta jitna door wala part badhta hai.",
     "word_level_labels": {
@@ -1708,7 +1708,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_065",
+    "id": "10_06_065",
     "original_english": "Hormones produced in one part of an organism move to another part to achieve the desired effect.",
     "hinglish_roman": "Ek organism ke ek hisse mein bane hormones doosre hisse mein jaake desired effect hasil karte hain.",
     "word_level_labels": {
@@ -1736,7 +1736,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_066",
+    "id": "10_06_066",
     "original_english": "A chemical signal released by stimulated cells can diffuse all around and be detected by nearby cells.",
     "hinglish_roman": "Stimulated cells se release hua chemical signal aas-paas diffuse hota hai aur nearby cells usse detect kar leti hain.",
     "word_level_labels": {
@@ -1766,7 +1766,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_067",
+    "id": "10_06_067",
     "original_english": "The nervous system gets information from our sense organs and acts through our muscles.",
     "hinglish_roman": "Nervous system hamare sense organs se information leta hai aur hamare muscles ke zariye kaam karta hai.",
     "word_level_labels": {
@@ -1794,7 +1794,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_068",
+    "id": "10_06_068",
     "original_english": "The responses of the nervous system can be classified as reflex action, voluntary action or involuntary action.",
     "hinglish_roman": "Nervous system ke responses ko reflex action, voluntary action ya involuntary action mein classify kiya jaata hai.",
     "word_level_labels": {
@@ -1822,7 +1822,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_069",
+    "id": "10_06_069",
     "original_english": "Hypothalamus plays an important role in the release of many hormones.",
     "hinglish_roman": "Hypothalamus bahut se hormones ke release mein important role play karta hai.",
     "word_level_labels": {
@@ -1845,7 +1845,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_070",
+    "id": "10_06_070",
     "original_english": "When the level of growth hormone is low, the hypothalamus releases growth hormone releasing factor.",
     "hinglish_roman": "Jab growth hormone ka level kam ho, hypothalamus growth hormone releasing factor release karta hai.",
     "word_level_labels": {
@@ -1871,7 +1871,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_071",
+    "id": "10_06_071",
     "original_english": "Plant cells change shape by changing the amount of water in them resulting in swelling or shrinking.",
     "hinglish_roman": "Plant cells apne andar paani ki maatra badal kar apni shape change karte hain, jisse woh phoolte ya simatat hain.",
     "word_level_labels": {
@@ -1902,7 +1902,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_072",
+    "id": "10_06_072",
     "original_english": "The roots of a plant always grow downwards while the shoots grow upwards in response to gravity.",
     "hinglish_roman": "Gravity ke response mein plant ki roots hamesha neeche badhti hain jabki shoots upar badhte hain.",
     "word_level_labels": {
@@ -1929,7 +1929,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_073",
+    "id": "10_06_073",
     "original_english": "The thinking tissue in our body consists of dense networks of intricately arranged neurons in the brain.",
     "hinglish_roman": "Hamare body mein thinking tissue brain mein bahut ghane aur pechida tarike se arrange neurons ke network se bana hota hai.",
     "word_level_labels": {
@@ -1961,7 +1961,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_074",
+    "id": "10_06_074",
     "original_english": "Plants respond to stimuli slowly by growing in a particular direction which appears as movement.",
     "hinglish_roman": "Plants dheere-dheere ek specific direction mein growth karke stimuli ka response dete hain jo movement jaisa lagta hai.",
     "word_level_labels": {
@@ -1990,7 +1990,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_075",
+    "id": "10_06_075",
     "original_english": "Chemical coordination in plants and animals involves hormones that are synthesised at one place and act at another.",
     "hinglish_roman": "Plants aur animals mein chemical coordination mein aise hormones hote hain jo ek jagah banate hain aur doosri jagah kaam karte hain.",
     "word_level_labels": {
@@ -2023,7 +2023,7 @@
     "code_mixing_type": "intra-sentential"
   },
   {
-    "id": "9_06_Q001",
+    "id": "10_06_Q001",
     "original_english": "What is the difference between a reflex action and walking?",
     "hinglish_roman": "Reflex action aur walking mein kya antar hai?",
     "word_level_labels": {
@@ -2044,7 +2044,7 @@
     "query_intent": "compare_concepts"
   },
   {
-    "id": "9_06_Q002",
+    "id": "10_06_Q002",
     "original_english": "What happens at the synapse between two neurons?",
     "hinglish_roman": "Do neurons ke beech synapse par kya hota hai?",
     "word_level_labels": {
@@ -2066,7 +2066,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q003",
+    "id": "10_06_Q003",
     "original_english": "Which part of the brain maintains posture and equilibrium of the body?",
     "hinglish_roman": "Brain ka kaun sa part body ka posture aur equilibrium maintain karta hai?",
     "word_level_labels": {
@@ -2092,7 +2092,7 @@
     "query_intent": "definition"
   },
   {
-    "id": "9_06_Q004",
+    "id": "10_06_Q004",
     "original_english": "How do we detect the smell of an agarbatti?",
     "hinglish_roman": "Hum agarbatti ki smell kaise detect karte hain?",
     "word_level_labels": {
@@ -2113,7 +2113,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q005",
+    "id": "10_06_Q005",
     "original_english": "What is the role of the brain in reflex action?",
     "hinglish_roman": "Reflex action mein brain ka kya role hota hai?",
     "word_level_labels": {
@@ -2135,7 +2135,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q006",
+    "id": "10_06_Q006",
     "original_english": "What are plant hormones?",
     "hinglish_roman": "Plant hormones kya hote hain?",
     "word_level_labels": {
@@ -2153,7 +2153,7 @@
     "query_intent": "definition"
   },
   {
-    "id": "9_06_Q007",
+    "id": "10_06_Q007",
     "original_english": "How is the movement of leaves of the sensitive plant different from the movement of a shoot towards light?",
     "hinglish_roman": "Sensitive plant ki pattiyon ki movement aur shoot ki light ki taraf movement mein kya fark hai?",
     "word_level_labels": {
@@ -2183,7 +2183,7 @@
     "query_intent": "compare_concepts"
   },
   {
-    "id": "9_06_Q008",
+    "id": "10_06_Q008",
     "original_english": "Give an example of a plant hormone that promotes growth.",
     "hinglish_roman": "Ek aisi plant hormone ka example do jo growth promote kare.",
     "word_level_labels": {
@@ -2207,7 +2207,7 @@
     "query_intent": "give_example"
   },
   {
-    "id": "9_06_Q009",
+    "id": "10_06_Q009",
     "original_english": "Why is the use of iodised salt advisable?",
     "hinglish_roman": "Iodised salt use karna kyun zaroori hai?",
     "word_level_labels": {
@@ -2227,7 +2227,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q010",
+    "id": "10_06_Q010",
     "original_english": "How does our body respond when adrenaline is secreted into the blood?",
     "hinglish_roman": "Jab adrenaline khoon mein secrete hota hai toh hamara body kaise respond karta hai?",
     "word_level_labels": {
@@ -2254,7 +2254,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q011",
+    "id": "10_06_Q011",
     "original_english": "Why are some patients of diabetes treated by giving injections of insulin?",
     "hinglish_roman": "Kuch diabetes patients ko insulin ke injections kyun diye jaate hain?",
     "word_level_labels": {
@@ -2278,7 +2278,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q012",
+    "id": "10_06_Q012",
     "original_english": "What is the function of receptors in our body?",
     "hinglish_roman": "Hamare body mein receptors ka kya kaam hota hai?",
     "word_level_labels": {
@@ -2300,7 +2300,7 @@
     "query_intent": "definition"
   },
   {
-    "id": "9_06_Q013",
+    "id": "10_06_Q013",
     "original_english": "How does phototropism occur in plants?",
     "hinglish_roman": "Plants mein phototropism kaise hota hai?",
     "word_level_labels": {
@@ -2319,7 +2319,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_Q014",
+    "id": "10_06_Q014",
     "original_english": "Compare and contrast nervous and hormonal mechanisms for control and coordination in animals.",
     "hinglish_roman": "Animals mein nervous aur hormonal mechanisms ko control aur coordination ke liye compare karo.",
     "word_level_labels": {
@@ -2346,7 +2346,7 @@
     "query_intent": "compare_concepts"
   },
   {
-    "id": "9_06_Q015",
+    "id": "10_06_Q015",
     "original_english": "How do auxins promote the growth of a tendril around a support?",
     "hinglish_roman": "Auxins kaise tendril ko support ke aas-paas badhne mein help karte hain?",
     "word_level_labels": {
@@ -2371,7 +2371,7 @@
     "query_intent": "explain_concept"
   },
   {
-    "id": "9_06_GEC001",
+    "id": "10_06_GEC001",
     "original_english": "Reflex actions are controlled by the spinal cord not the brain.",
     "hinglish_roman": "Reflex actions brain se nahi, spinal cord se control hoti hain.",
     "hinglish_with_error": "Reflex actions brain se nahi, spinal cord se controls hoti hain.",
@@ -2399,7 +2399,7 @@
     "gec_explanation": "In Hindi-English code-mixed sentences, English verbs paired with Hindi auxiliaries like 'hoti hain' should remain in base form. 'controls' is incorrect; the base form 'control' is needed since the auxiliary 'hoti hain' carries the tense and agreement."
   },
   {
-    "id": "9_06_GEC002",
+    "id": "10_06_GEC002",
     "original_english": "Adrenaline is released when we are in a scary or dangerous situation.",
     "hinglish_roman": "Jab hum ek scary ya dangerous situation mein hote hain tab adrenaline release hota hai.",
     "hinglish_with_error": "Jab hum ek scary ya dangerous situation mein hoti hain tab adrenaline release hota hai.",
@@ -2431,7 +2431,7 @@
     "gec_explanation": "'Hum' (we) in Hindi is treated as masculine or neutral plural; the correct auxiliary is 'hote hain' not 'hoti hain'. 'Hoti' is the feminine form and is grammatically incorrect when the subject 'hum' is generic or masculine."
   },
   {
-    "id": "9_06_GEC003",
+    "id": "10_06_GEC003",
     "original_english": "Neurons transmit electrical impulses from one part of the body to another.",
     "hinglish_roman": "Neurons electrical impulses ek body part se doosre mein transmit karte hain.",
     "hinglish_with_error": "Neurons electrical impulses ek body part se doosre mein transmits karte hain.",
@@ -2460,7 +2460,7 @@
     "gec_explanation": "When an English verb is used with Hindi compound verb structure ('karte hain'), the English verb should be in its base/infinitive form. 'Transmits' includes the third-person singular inflection which is redundant and incorrect when followed by 'karte hain' which itself carries subject agreement."
   },
   {
-    "id": "9_06_GEC004",
+    "id": "10_06_GEC004",
     "original_english": "The pituitary gland secretes growth hormone which regulates body development.",
     "hinglish_roman": "Pituitary gland growth hormone secrete karta hai jo body development regulate karta hai.",
     "hinglish_with_error": "Pituitary gland growth hormone secrete karti hai jo body development regulate karta hai.",
@@ -2490,7 +2490,7 @@
     "gec_explanation": "In Hindi, 'gland' is treated as a masculine noun (or defaults to masculine in code-mixed usage), so the auxiliary should be 'karta hai' (masculine) not 'karti hai' (feminine). Using 'karti' creates a gender agreement error with the subject 'pituitary gland'."
   },
   {
-    "id": "9_06_GEC005",
+    "id": "10_06_GEC005",
     "original_english": "Auxin hormone helps the shoot to bend towards light by promoting cell elongation.",
     "hinglish_roman": "Auxin hormone shoot ko light ki taraf jhukne mein madad karta hai cell elongation promote karke.",
     "hinglish_with_error": "Auxin hormone shoot ko light ki taraf jhukne mein madad karta hai cell elongation promotes karke.",
