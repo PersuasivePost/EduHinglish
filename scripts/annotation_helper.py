@@ -45,22 +45,70 @@ from pathlib import Path
 # ─────────────────────────────────────────────────────────────────────────────
 
 HINDI_WORDS: set[str] = {
+    # Pronouns
     "main", "hum", "tum", "woh", "yeh", "uska", "uski", "iska", "iski",
     "mera", "meri", "tera", "teri", "unka", "unki", "hamara", "tumhara",
+    "iske", "uske", "unke", "inhe", "unhe", "apna", "apni", "apne",
+    # Auxiliaries / copula
     "hai", "hain", "tha", "thi", "the", "hoga", "hogi", "hota", "hoti", "hote",
-    "karta", "karti", "karte", "kiya", "karo", "karna", "karke", "hona",
-    "raha", "rahi", "rahe", "gaya", "gayi", "aata", "aati", "jaata", "jaati",
-    "deta", "deti", "lete", "bana", "bante", "samjhao", "batao", "dekho",
-    "kehte", "kehta", "kehti", "kaha", "dijiye", "hokar", "jinmein", "inmein",
+    # Verbs — karna (to do) forms
+    "kar", "karta", "karti", "karte", "kiya", "karo", "karna", "karke", "karne",
+    "kari", "karein", "karega", "karegi",
+    # Verbs — hona (to be/become) forms
+    "hona", "hokar", "hoke", "honi", "hone",
+    # Verbs — progressive / past
+    "raha", "rahi", "rahe", "gaya", "gayi", "gaye",
+    # Verbs — motion
+    "aata", "aati", "aate", "jaata", "jaati", "jaate", "aana", "jaana",
+    # Verbs — giving / taking
+    "deta", "deti", "dete", "leta", "leti", "lete", "dena", "lena",
+    # Verbs — banana (to make) forms
+    "bana", "bani", "bane", "banta", "banti", "bante",
+    "banata", "banati", "banaye", "banana",
+    # Verbs — knowing / understanding
+    "jaanta", "jaanti", "jaante", "samjha", "samjhi", "samjhe",
+    "samjhao", "samjho", "samajh",
+    # Verbs — telling / seeing / saying
+    "batao", "batata", "batati", "batana",
+    "dekho", "dekhna", "dekhta", "dekhti", "dekha",
+    "kehte", "kehta", "kehti", "kaha", "kehna",
+    # Verbs — milna / rehna / dikhna
+    "milta", "milti", "milte", "milna",
+    "rehta", "rehti", "rehte", "rehna",
+    "dikhta", "dikhti", "dikhte", "dikhna", "dikhai",
+    # Verbs — paana / dalna / rakhna
+    "paaya", "paayi", "paaye", "paana", "pata",
+    "daalta", "daalti", "daalte", "daalna",
+    "rakhta", "rakhti", "rakhte", "rakhna", "rakha",
+    # Verbs — honorific imperatives
+    "dijiye", "kijiye", "lijiye",
+    # Postpositions
     "ka", "ki", "ke", "ko", "se", "mein", "par", "tak", "pe", "ne", "me",
+    # Conjunctions / connectors
     "aur", "ya", "lekin", "kyunki", "isliye", "jabki", "phir", "toh", "bhi",
-    "hi", "sirf", "bas", "kya", "kaise", "kyun", "kahan", "kab", "kaun",
-    "kitna", "bahut", "thoda", "zyada", "kam", "achha", "bada", "bade", "badi",
-    "chhota", "naya", "nayi", "pehle", "baad", "andar", "bahar", "upar",
-    "neeche", "yahan", "wahan", "abhi", "tab", "jab", "nahi", "nhi", "na",
-    "mat", "ek", "do", "teen", "sabhi", "sab", "kuch", "koi", "wala", "wale",
-    "wali", "jaise", "taraf", "beech", "kaam", "saath", "jinmein", "inmein",
-    "jo", "jabki", "tarah", "matlab", "yaani",
+    "hi", "sirf", "bas", "tatha", "parantu", "magar",
+    # Question words
+    "kya", "kaise", "kyun", "kahan", "kab", "kaun",
+    "kitna", "kitni", "kitne",
+    # Adjectives / adverbs
+    "bahut", "thoda", "zyada", "kam", "achha", "bura",
+    "bada", "bade", "badi", "chhota", "chhoti", "chhote",
+    "naya", "nayi", "naye", "alag", "zaruri", "pura", "puri",
+    "pehle", "pehla", "pehli", "baad",
+    "dusra", "dusri", "dusre",
+    # Spatial / temporal
+    "andar", "bahar", "upar", "neeche", "yahan", "wahan",
+    "abhi", "tab", "jab", "hamesha", "kabhi",
+    # Negation
+    "nahi", "nhi", "na", "mat", "bina",
+    # Numbers (Hindi)
+    "ek", "do", "teen", "chaar", "paanch", "dono",
+    # Quantifiers / pronouns
+    "sabhi", "sab", "kuch", "koi", "wala", "wale", "wali",
+    # Others
+    "jaise", "jaisa", "jaisi", "taraf", "beech", "kaam", "saath",
+    "jinmein", "inmein", "jo", "tarah", "matlab", "yaani",
+    "wajah", "cheez", "jagah", "tarika", "prakar",
 }
 
 UNIVERSAL_WORDS: set[str] = {
@@ -71,21 +119,24 @@ UNIVERSAL_WORDS: set[str] = {
 VALID_LABELS: tuple[str, ...] = ("HI", "EN", "NE", "UNIV", "MIX")
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CHAPTER CODE → TITLE MAPPING  (updated to match actual PDF filenames)
+# CHAPTER CODE → TITLE MAPPING  (matches actual PDF filenames on disk)
 # ─────────────────────────────────────────────────────────────────────────────
 
 CHAPTER_MAP: dict[str, tuple[str, str]] = {
     # (chapter_title, class_number)
-    "class9/ch01":  ("ix_chap1_science",  "9"),
-    "class9/ch02":  ("ix_chap2_science",  "9"),
-    "class9/ch03":  ("ix_chap3_science",  "9"),
-    "class9/ch11":  ("ix_chap11_science", "9"),
-    "class9/ch12":  ("ix_chap12_science", "9"),
-    "class10/ch05": ("x_chap5_science",   "10"),
-    "class10/ch06": ("x_chap6_science",   "10"),
-    "class10/ch07": ("x_chap7_science",   "10"),
-    "class10/ch08": ("x_chap8_science",   "10"),
-    "class10/ch13": ("x_chap13_science",  "10"),
+    # Class 9
+    "class9/ch05":  ("Chapter 5: The Fundamental Unit of Life", "9"),
+    "class9/ch06":  ("Chapter 6: Tissues", "9"),
+    "class9/ch07":  ("Chapter 7: Diversity in Living Organisms", "9"),
+    "class9/ch13":  ("Chapter 13: Why Do We Fall Ill", "9"),
+    "class9/ch14":  ("Chapter 14: Natural Resources", "9"),
+    "class9/ch15":  ("Chapter 15: Improvement in Food Resources", "9"),
+    # Class 10
+    "class10/ch06": ("Chapter 6: Life Processes", "10"),
+    "class10/ch08": ("Chapter 8: How do Organisms Reproduce?", "10"),
+    "class10/ch09": ("Chapter 9: Heredity and Evolution", "10"),
+    "class10/ch15": ("Chapter 15: Our Environment", "10"),
+    "class10/ch16": ("Chapter 16: Management of Natural Resources", "10"),
 }
 
 INTENT_VALUES: tuple[str, ...] = (
@@ -189,10 +240,11 @@ def annotate_sentence(
     chapter_title: str | None,
     class_num: str | None,
     entry_number: int,
-) -> dict | None:
+    prefilled_english: str | None = None,
+) -> dict | str | None:
     """
     Run one full annotation session for a single sentence.
-    Returns the completed entry dict, or None if user aborts.
+    Returns the completed entry dict, "QUIT" if requested, or None if skipped/aborted.
     """
     print()
     _divider()
@@ -200,15 +252,26 @@ def annotate_sentence(
     _divider()
 
     # ── English source ────────────────────────────────────────────────────────
-    original_english = _prompt("  Original English (leave blank to quit): ")
-    if not original_english:
-        return None
+    if prefilled_english:
+        original_english = prefilled_english
+    else:
+        original_english = _prompt("  Original English (leave blank to quit): ")
+        if not original_english:
+            return None
 
     # ── Hinglish version ──────────────────────────────────────────────────────
-    hinglish_roman = _prompt("  Hinglish (Roman script): ")
-    if not hinglish_roman:
-        print("  [SKIP] Empty Hinglish — skipping this sentence.")
-        return None
+    if prefilled_english:
+        hinglish_roman = _prompt("  Hinglish (Roman script) [or 's' to skip, 'q' to quit]: ")
+        if hinglish_roman.lower() == 'q':
+            return "QUIT"
+        if not hinglish_roman or hinglish_roman.lower() == 's':
+            print("  [SKIP] Skipping this sentence.")
+            return None
+    else:
+        hinglish_roman = _prompt("  Hinglish (Roman script): ")
+        if not hinglish_roman:
+            print("  [SKIP] Empty Hinglish — skipping this sentence.")
+            return None
 
     # ── Optional Devanagari ───────────────────────────────────────────────────
     hinglish_devanagari = _prompt(

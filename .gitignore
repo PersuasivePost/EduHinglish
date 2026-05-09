@@ -17,8 +17,9 @@ __pycache__/
 *.ipynb_checkpoints
 
 # Data — PDFs and raw files are large, don't commit
-# data/raw/*.pdf
-# data/raw/*.PDF
+data/raw/**/*.pdf
+data/raw/**/*.PDF
+*.pdf
 
 # Keep processed outputs but not large model files
 *.bin
@@ -48,6 +49,9 @@ chroma_db/
 Thumbs.db
 desktop.ini
 
+# Presentations
+ppt/
+
 # Logs
 *.log
 logs/
@@ -58,7 +62,7 @@ logs/
 *.env
 
 # HuggingFace cache
-~/.cache/huggingface/
+.cache/huggingface/
 
 # Outputs — keep JSON results, not large files
 outputs/pipeline_results/*.json

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "10_06_001",
+    "original_english": "Nutrition is the process by which an organism obtains energy from food.",
+    "hinglish_roman": "Nutrition woh process hai jisme ek organism food se energy obtain karta hai.",
+    "word_level_labels": {
+      "Nutrition": "EN",
+      "woh": "HI",
+      "process": "EN",
+      "hai": "HI",
+      "jisme": "EN",
+      "ek": "HI",
+      "organism": "EN",
+      "food": "EN",
+      "se": "HI",
+      "energy": "EN",
+      "obtain": "EN",
+      "karta": "HI",
+      "hai.": "HI"
+    },
+    "topic": "Nutrition",
+    "chapter": "Chapter 6: Life Processes",
+    "class": "10",
+    "code_mixing_type": "intra-sentential",
+    "notes": "Definition-style entry; woh=pronoun here referring to process"
+  }
+]
