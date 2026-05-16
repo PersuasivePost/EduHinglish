@@ -34,10 +34,11 @@ from collections import Counter
 from pathlib import Path
 
 # Ensure stdout can handle UTF-8 on Windows
-if sys.platform == "win32":
-    sys.stdout = io.TextIOWrapper(
-        sys.stdout.buffer, encoding="utf-8", errors="replace"
-    )
+if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DEPENDENCY CHECK
