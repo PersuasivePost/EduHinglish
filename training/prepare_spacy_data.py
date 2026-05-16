@@ -142,6 +142,11 @@ def tokenise_roman(text: str) -> list[str]:
     return [t for t in (strip_punct(w) for w in text.split()) if t]
 
 
+def is_punct_token(token_text: str) -> bool:
+    """Check if a token is purely punctuation."""
+    return all(ch in '.,?!;:"\'()-–—…/' for ch in token_text) and len(token_text) > 0
+
+
 def split_train_dev(items: list, dev_ratio: float = 0.2):
     """Shuffle and split into (train, dev)."""
     random.seed(SEED)
@@ -158,11 +163,14 @@ def split_train_dev(items: list, dev_ratio: float = 0.2):
 def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
     """
     Convert word_level_labels into token-level tagged Docs.
+    Uses spaCy's built-in tokenizer so punctuation tokens are present.
+    Punctuation tokens are labeled as UNIV (language-independent).
     Uses spaCy's 'tag' attribute to store HI/EN/NE/UNIV/MIX.
     """
     print()
     _thick()
     print("  Preparing LID (token classification) data")
+    print("  Using spaCy tokenizer (punctuation included as UNIV)")
     _thick()
 
     docs: list[Doc] = []
@@ -176,17 +184,33 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
             skipped += 1
             continue
 
-        tokens = tokenise_roman(hinglish)
-        # Build label list aligned with tokens
+        # Use spaCy's tokenizer to match inference-time behavior
+        spacy_doc = nlp(hinglish)
+        tokens = [tok.text for tok in spacy_doc]
+
+        # Build label list aligned with spaCy tokens
         tags: list[str] = []
-        valid = True
-        for tok in tokens:
-            # Try exact match first, then case-insensitive
-            lbl = labels_dict.get(tok) or labels_dict.get(tok.lower()) or labels_dict.get(tok.capitalize())
+        for tok_text in tokens:
+            # Punctuation tokens → UNIV
+            if is_punct_token(tok_text):
+                tags.append("UNIV")
+                label_counter["UNIV"] += 1
+                continue
+
+            # Try exact match first, then case-insensitive, then stripped
+            cleaned = strip_punct(tok_text)
+            lbl = (
+                labels_dict.get(tok_text)
+                or labels_dict.get(tok_text.lower())
+                or labels_dict.get(tok_text.capitalize())
+                or labels_dict.get(cleaned)
+                or labels_dict.get(cleaned.lower())
+                or labels_dict.get(cleaned.capitalize())
+            )
             if lbl is None:
                 # Fuzzy: check if any key matches after stripping punct
                 for k, v in labels_dict.items():
-                    if strip_punct(k).lower() == tok.lower():
+                    if strip_punct(k).lower() == cleaned.lower():
                         lbl = v
                         break
             if lbl is None:
@@ -196,7 +220,7 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
             tags.append(lbl)
             label_counter[lbl] += 1
 
-        # Create spaCy Doc with custom tokenization
+        # Create spaCy Doc with spaCy-tokenized words
         doc = Doc(nlp.vocab, words=tokens)
         for i, tag in enumerate(tags):
             doc[i].tag_ = tag
@@ -242,10 +266,13 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
 def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
     """
     Use phrase matching against NER_CATEGORIES to create entity-annotated Docs.
+    Uses spaCy's tokenizer so punctuation tokens are present in training data,
+    preventing the model from including punctuation in entity spans.
     """
     print()
     _thick()
     print("  Preparing NER (science entities) data")
+    print("  Using spaCy tokenizer (punctuation-aware entity boundaries)")
     _thick()
 
     # Build phrase lists per category (sorted longest-first for greedy matching)
@@ -264,23 +291,36 @@ def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
             skipped += 1
             continue
 
-        tokens = tokenise_roman(hinglish)
-        text_lower = " ".join(tokens).lower()
+        # Use spaCy's tokenizer to match inference-time behavior
+        spacy_doc = nlp(hinglish)
+        tokens = [tok.text for tok in spacy_doc]
 
-        # Find entity spans: (start_token, end_token, label)
+        # Build a list of non-punct tokens with their original indices
+        # This lets us match phrases on clean tokens while mapping back to
+        # the full token list (which includes punctuation)
+        content_tokens: list[tuple[int, str]] = []  # (original_index, lowercase_text)
+        for i, tok_text in enumerate(tokens):
+            if not is_punct_token(tok_text):
+                content_tokens.append((i, tok_text.lower()))
+
+        # Find entity spans: (start_token_idx, end_token_idx, label)
+        # These indices refer to the FULL token list (including punct)
         spans: list[tuple[int, int, str]] = []
 
         for cat, phrases in category_phrases.items():
             for phrase in phrases:
                 phrase_tokens = phrase.lower().split()
                 phrase_len = len(phrase_tokens)
-                tokens_lower = [t.lower() for t in tokens]
 
-                # Slide window to find matches
-                for i in range(len(tokens_lower) - phrase_len + 1):
-                    if tokens_lower[i:i + phrase_len] == phrase_tokens:
+                # Slide window over content tokens only
+                for ci in range(len(content_tokens) - phrase_len + 1):
+                    window = [content_tokens[ci + j][1] for j in range(phrase_len)]
+                    if window == phrase_tokens:
+                        # Map back to original token indices
+                        new_start = content_tokens[ci][0]
+                        new_end = content_tokens[ci + phrase_len - 1][0] + 1
+
                         # Check no overlap with existing spans
-                        new_start, new_end = i, i + phrase_len
                         overlaps = False
                         for s_start, s_end, _ in spans:
                             if not (new_end <= s_start or new_start >= s_end):
@@ -293,19 +333,12 @@ def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
         if not spans:
             continue
 
-        # Create Doc with entities
+        # Create Doc with entities using token-based Span (reliable)
+        from spacy.tokens import Span
         doc = Doc(nlp.vocab, words=tokens)
         ents = []
         for start, end, label in spans:
-            span = doc.char_span(
-                sum(len(tokens[j]) + 1 for j in range(start)),
-                sum(len(tokens[j]) + 1 for j in range(end)) - 1,
-                label=label,
-            )
-            # char_span can fail, fall back to token-based Span
-            if span is None:
-                from spacy.tokens import Span
-                span = Span(doc, start, end, label=label)
+            span = Span(doc, start, end, label=label)
             ents.append(span)
 
         try:
@@ -380,7 +413,9 @@ def prepare_intent(dataset: list[dict], nlp: spacy.Language) -> None:
         if not hinglish:
             continue
 
-        tokens = tokenise_roman(hinglish)
+        # Use spaCy's tokenizer for consistency with inference
+        spacy_doc = nlp(hinglish)
+        tokens = [tok.text for tok in spacy_doc]
         doc = Doc(nlp.vocab, words=tokens)
         # Set cats: one-hot encoding
         doc.cats = {lbl: 1.0 if lbl == intent else 0.0 for lbl in INTENT_LABELS}
