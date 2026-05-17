@@ -241,7 +241,7 @@ def train(
 
     # -- Apply LoRA -------------------------------------------------------
     lora_config = LoraConfig(
-        task_type=TaskType.TOKEN_CL,
+        task_type=TaskType.TOKEN_CLS,
         r=lora_r,
         lora_alpha=lora_alpha,
         lora_dropout=0.1,

@@ -330,7 +330,7 @@ def train(
 
     # -- Apply LoRA -------------------------------------------------------
     lora_config = LoraConfig(
-        task_type=TaskType.SEQ_CL,
+        task_type=TaskType.SEQ_CLS,
         r=lora_r,
         lora_alpha=lora_alpha,
         lora_dropout=0.15,

@@ -19,3 +19,9 @@ doc = nlp('Nucleus cell ka control centre hai')
 for tok in doc:
     print(f'{tok.text:15} → {tok.tag_}')
 "
+
+Muril commands
+
+python training/evaluate_muril.py
+python training/evaluate_muril.py --lid-only
+python training/evaluate_muril.py --intent-only
