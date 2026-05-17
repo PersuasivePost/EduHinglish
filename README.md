@@ -27,7 +27,7 @@ A 5-module integrated AI system:
 | **M2: NCERT Retriever** | RAG pipeline over NCERT textbook chunks | 📋 Planned |
 | **M3: Hinglish Generator** | Fine-tuned IndicBART seq2seq Hinglish explanations | 📋 Planned |
 | **M4: GEC Engine** | Code-mix-aware grammar error correction | 📋 Planned |
-| **M5: Web Interface** | Streamlit chat UI | 📋 Planned |
+| **M5: Web Interface** | Flutter UI with FastAPI backend | 📋 Planned |
 
 ---
 
@@ -325,7 +325,7 @@ python src/preprocessing.py
 | Vector DB | ChromaDB — Phase 5 |
 | Embeddings | multilingual-MiniLM-L12-v2 — Phase 5 |
 | Fine-tuning | PEFT + LoRA |
-| UI | Streamlit — Phase 8 |
+| UI | Flutter & FastAPI — Phase 8 |
 | Language | Python 3.10 |
 
 ---
@@ -351,4 +351,4 @@ python src/preprocessing.py
 - [ ] Phase 5 — NCERT ChromaDB knowledge base
 - [ ] Phase 6 — IndicBART Hinglish generator fine-tuning
 - [ ] Phase 7 — GEC engine
-- [ ] Phase 8 — Full pipeline integration + Streamlit UI
+- [ ] Phase 8 — Full pipeline integration + Flutter/FastAPI UI
