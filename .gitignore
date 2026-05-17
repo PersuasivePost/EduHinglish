@@ -35,6 +35,7 @@ model_cache/
 # Vector database (can be regenerated)
 ncert_vectordb/
 chroma_db/
+src/knowledge_base/
 
 # IDE
 .vscode/settings.json
