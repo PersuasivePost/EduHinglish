@@ -316,17 +316,24 @@ python src/preprocessing.py
 
 ## Tech Stack
 
-| Layer | Technology |
-| --- | --- |
-| NLP | NLTK, spaCy, HuggingFace Transformers |
-| LID (rule-based) | Custom WordLevelLID (HINDI_WORDS lexicon) |
-| LID (trained) | MuRIL (Google) + LoRA — Phase 4 |
-| Seq2Seq | IndicBART (AI4Bharat) — Phase 6 |
-| Vector DB | ChromaDB — Phase 5 |
-| Embeddings | multilingual-MiniLM-L12-v2 — Phase 5 |
-| Fine-tuning | PEFT + LoRA |
-| UI | Flutter & FastAPI — Phase 8 |
-| Language | Python 3.10 |
+| Module | Component | Technology | Rationale |
+| --- | --- | --- | --- |
+| M1 | Script Detection | Unicode range analysis (Python) | Zero dependency; handles all three script types reliably |
+| M1 | Transliteration | IndicXlit (AI4Bharat) | Best-in-class Devanagari→Roman for Indic scripts |
+| M1 | LID — Phase 1 | Rule-based lexicon (WordLevelLID) | 120+ Hindi + 80+ science terms; fast baseline |
+| M1 | LID — Phase 2 | MuRIL + token classifier (HuggingFace) | Best Hinglish LID accuracy (Winata et al. 2022) |
+| M1 | Intent Classifier | spaCy textcat / MuRIL [CLS] | Lightweight; 6-class intent classification |
+| M2 | PDF Extraction | pdfplumber | Superior NCERT table/multi-column handling vs PyPDF2 |
+| M2 | Embeddings | BGE-base-en-v1.5 (BAAI) | Top MTEB-ranked embeddings; 768D; runs on CPU |
+| M2 | Vector DB | ChromaDB (dev) / Pinecone (production) | Fully local in development; Pinecone provides managed vector search in production with no infrastructure overhead |
+| M2 | Re-ranker | cross-encoder/ms-marco-MiniLM-L-12-v2 | Lightweight cross-encoder; improves precision@3 significantly |
+| M3 | Generator | LLaMA 3.1 8B (Meta) | Proven Hinglish generation quality (Pandey et al. 2025) |
+| M3 | Fine-tuning | QLoRA via PEFT (HuggingFace) | 4-bit quantization; fits on Colab T4 |
+| M4 | English GEC | GECToR (BEA-2019 + Lang-8) | Best English GEC F1; token edit-based, not seq2seq |
+| M4 | Hindi GEC | Rule-based (gender/verb agreement) | Handles 3 most common Hinglish grammar error types |
+| M5 | UI Prototype | Flutter | Rapid iteration; minimal JS; good for demos |
+| M5 | UI Production | Flutter + FastAPI + Pydantic | Cross-platform (Android/iOS/Web) from single codebase; Pydantic enforces API schema and validates LLM structured outputs |
+| All | Runtime | Python 3.10, PyTorch 2.1 | Standard ML stack; all dependencies open-source |
 
 ---
 

@@ -57,9 +57,7 @@ class EduHinglishPipeline:
     }
 
     def __init__(self):
-        print("=" * 70)
         print("  EduHinglish — Preprocessing Pipeline  v1.0")
-        print("=" * 70)
 
         self.en_proc   = EnglishPreprocessor()
         self.detector  = ScriptDetector()
@@ -67,7 +65,6 @@ class EduHinglishPipeline:
         self.lid        = WordLevelLID()
 
         print("\n[OK] All modules loaded. Pipeline ready.")
-        print("=" * 70)
 
     # ── Routing ───────────────────────────────────────────────────────────────
 
@@ -88,10 +85,8 @@ class EduHinglishPipeline:
 
     def process_english(self, sentence: str) -> dict:
         """Run standard NLP pipeline on a monolingual English sentence."""
-        print(f"\n{'█'*70}")
-        print(f"█  PIPELINE MODE : ENGLISH")
-        print(f"█  Input         : \"{sentence[:65]}{'...' if len(sentence)>65 else ''}\"")
-        print(f"{'█'*70}")
+        print(f"\n[PIPELINE MODE] ENGLISH")
+        print(f"  Input: \"{sentence[:65]}{'...' if len(sentence)>65 else ''}\"")
 
         steps: dict = {}
 
@@ -119,10 +114,8 @@ class EduHinglishPipeline:
 
     def process_hinglish(self, sentence: str) -> dict:
         """Run Hinglish-aware pipeline on a code-mixed sentence."""
-        print(f"\n{'█'*70}")
-        print(f"█  PIPELINE MODE : HINGLISH")
-        print(f"█  Input         : \"{sentence[:65]}{'...' if len(sentence)>65 else ''}\"")
-        print(f"{'█'*70}")
+        print(f"\n[PIPELINE MODE] HINGLISH")
+        print(f"  Input: \"{sentence[:65]}{'...' if len(sentence)>65 else ''}\"")
 
         steps: dict = {}
 
@@ -222,9 +215,7 @@ class EduHinglishPipeline:
         Process both versions and show a side-by-side summary.
         This is the PRIMARY output for the mentor presentation.
         """
-        print(f"\n{'▓'*70}")
-        print(f"▓  COMPARISON — English vs Hinglish")
-        print(f"{'▓'*70}")
+        print(f"\n[COMPARISON — English vs Hinglish")
         print(f"\n  English : \"{english}\"")
         print(f"  Hinglish: \"{hinglish}\"")
 
@@ -232,9 +223,7 @@ class EduHinglishPipeline:
         hi_result = self.process_hinglish(hinglish)
 
         # ── Summary table ─────────────────────────────────────
-        print(f"\n{'='*70}")
         print("COMPARISON SUMMARY")
-        print(f"{'='*70}")
 
         en_tok   = en_result["steps"]["tokenization"]
         hi_tok   = hi_result["steps"]["tokenization"]
@@ -257,7 +246,6 @@ class EduHinglishPipeline:
         ]
         for row in rows:
             print(f"  {row[0]:<32} {row[1]:<32} {row[2]}")
-        print(f"{'='*70}")
 
         return {"english": en_result, "hinglish": hi_result}
 
@@ -299,9 +287,7 @@ DEMOS = {
 
 def run_demo(pipeline: EduHinglishPipeline, demo_id: int) -> dict:
     d = DEMOS[demo_id]
-    print(f"\n\n{'▓'*70}")
-    print(f"▓  DEMO {demo_id} — {d['title']}")
-    print(f"{'▓'*70}")
+    print(f"\n[DEMO {demo_id} — {d['title']}")
 
     if "english" in d and "hinglish" in d:
         return pipeline.compare(d["english"], d["hinglish"])
@@ -342,11 +328,8 @@ def main():
         / "outputs" / "pipeline_results"
         / f"pipeline_run_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     )
-    pipeline.save(results, str(out_path))
 
-    print(f"\n{'='*70}")
     print("ALL DEMOS COMPLETE")
-    print(f"{'='*70}")
 
 
 if __name__ == "__main__":

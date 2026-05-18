@@ -76,9 +76,7 @@ class ScriptDetector:
                 "distribution"  : { roman_pct, devanagari_pct, mixed_pct }
             }
         """
-        print(f"\n{'='*60}")
         print("SCRIPT DETECTION")
-        print(f"{'='*60}")
         print(f"  Input : \"{text}\"")
 
         words         = text.split()
@@ -210,9 +208,7 @@ class HinglishNormalizer:
         Normalize spelling variants in a Hinglish sentence.
         Returns: (normalized_text, list_of_changes)
         """
-        print(f"\n{'='*60}")
         print("SPELLING NORMALIZATION")
-        print(f"{'='*60}")
         print(f"  Input: \"{text}\"")
 
         words, changes = text.split(), []
@@ -250,9 +246,7 @@ class HinglishNormalizer:
             3. Collapse repeated punctuation
             4. Spelling normalization
         """
-        print(f"\n{'='*60}")
         print("SENTENCE NORMALIZATION (complete)")
-        print(f"{'='*60}")
         print(f"  Input: \"{text}\"")
 
         # 1 – Whitespace
@@ -409,9 +403,7 @@ class WordLevelLID:
                 "language_distribution": { "HI": n, "EN": n, ... }
             }
         """
-        print(f"\n{'='*60}")
         print("WORD-LEVEL LANGUAGE IDENTIFICATION (LID)")
-        print(f"{'='*60}")
         print(f"  Input: \"{sentence}\"\n")
 
         ICONS = {"HI": "🟠", "EN": "🔵", "NE": "🟢",
@@ -471,9 +463,7 @@ if __name__ == "__main__":
     lid        = WordLevelLID()
 
     # ── Script Detection ─────────────────────────────────────
-    print("\n" + "#"*70)
     print("# DEMO 1 — SCRIPT DETECTION")
-    print("#"*70)
 
     script_tests = [
         "All living organisms are made up of cells.",                          # Pure English
@@ -485,9 +475,7 @@ if __name__ == "__main__":
         detector.detect(t)
 
     # ── Normalization ─────────────────────────────────────────
-    print("\n" + "#"*70)
     print("# DEMO 2 — NORMALIZATION")
-    print("#"*70)
 
     norm_tests = [
         "Sir osmosis kia hota h? plz smjhao",
@@ -498,9 +486,7 @@ if __name__ == "__main__":
         normalizer.normalize_sentence(t)
 
     # ── Language Identification ───────────────────────────────
-    print("\n" + "#"*70)
     print("# DEMO 3 — WORD-LEVEL LANGUAGE IDENTIFICATION")
-    print("#"*70)
 
     lid_tests = [
         "All living organisms are made up of cells.",
