@@ -327,8 +327,8 @@ python src/preprocessing.py
 | M2 | Embeddings | BGE-base-en-v1.5 (BAAI) | Top MTEB-ranked embeddings; 768D; runs on CPU |
 | M2 | Vector DB | ChromaDB (dev) / Pinecone (production) | Fully local in development; Pinecone provides managed vector search in production with no infrastructure overhead |
 | M2 | Re-ranker | cross-encoder/ms-marco-MiniLM-L-12-v2 | Lightweight cross-encoder; improves precision@3 significantly |
-| M3 | Generator | LLaMA 3.1 8B (Meta) | Proven Hinglish generation quality (Pandey et al. 2025) |
-| M3 | Fine-tuning | QLoRA via PEFT (HuggingFace) | 4-bit quantization; fits on Colab T4 |
+| M3 | Generator | IndicBART (AI4Bharat) | 244M parameter seq2seq model pre-trained on 11 Indic languages + English; handles Hinglish natively |
+| M3 | Fine-tuning | LoRA via PEFT (HuggingFace) | Fits easily on Colab T4 GPU; fast training time for seq2seq task |
 | M4 | English GEC | GECToR (BEA-2019 + Lang-8) | Best English GEC F1; token edit-based, not seq2seq |
 | M4 | Hindi GEC | Rule-based (gender/verb agreement) | Handles 3 most common Hinglish grammar error types |
 | M5 | UI Prototype | Flutter | Rapid iteration; minimal JS; good for demos |
