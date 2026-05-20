@@ -61,3 +61,8 @@ peft>=0.10.0
 accelerate>=0.29.3
 sentencepiece>=0.2.0
 # torch — install separately: pip install torch (auto-installed on Colab)
+
+# --- Phase 5: NCERT Knowledge Base (RAG) ---
+chromadb>=0.4.24
+sentence-transformers>=2.7.0
+tqdm>=4.66.2
