@@ -51,6 +51,17 @@ python training/test_models_quick.py --model intent   # Test only Intent
 python training/test_models_quick.py --model all --text "Sir, chloroplast ka function kya hai?"
 ```
 
+### Direct Python Execution (Importing Baseline Model)
+```bash
+python -c "
+import spacy
+nlp = spacy.load('models/lid_v1')
+doc = nlp('Nucleus cell ka control centre hai')
+for tok in doc:
+    print(f'{tok.text:15} → {tok.tag_}')
+"
+```
+
 ---
 
 ## Phase 4: MuRIL Fine-Tuned Models
