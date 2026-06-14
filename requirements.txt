@@ -53,3 +53,16 @@ indic-transliteration==2.3.79
 langdetect==1.0.9
 colorama==0.4.6
 tabulate==0.9.0
+
+# --- Phase 4: MuRIL Fine-tuning (Colab + local inference) ---
+transformers>=4.40.0
+datasets>=2.19.0
+peft>=0.10.0
+accelerate>=0.29.3
+sentencepiece>=0.2.0
+# torch — install separately: pip install torch (auto-installed on Colab)
+
+# --- Phase 5: NCERT Knowledge Base (RAG) ---
+chromadb>=0.4.24
+sentence-transformers>=2.7.0
+tqdm>=4.66.2

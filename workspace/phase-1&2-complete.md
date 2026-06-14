@@ -1,6 +1,12 @@
-First follow workspace-setup.md. This file contains instructions for both Ashvatth and Jatin.
-Then start workiing on this exact prompts
+# ✅ PHASE 1 & 2 — COMPLETE
 
+> **Status:** Done — both phases delivered and merged to `develop`.
+> **Unified dataset:** `data/unified_biology_dataset.json` — 950 entries, 10 chapters.
+> **Next phase:** See `phase-3-prompts.md`
+
+---
+
+Below are the original prompts used for Phase 1 & 2 (archived for reference).
 
 Here are two complete, self-contained prompts. Ashvatth pastes Prompt A into his Claude Code session. Jatin pastes Prompt B into his. Neither needs to wait for the other to start.
 

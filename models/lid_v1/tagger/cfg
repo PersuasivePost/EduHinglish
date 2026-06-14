@@ -1,0 +1,11 @@
+{
+  "label_smoothing":0.0,
+  "labels":[
+    "EN",
+    "HI",
+    "NE",
+    "UNIV"
+  ],
+  "neg_prefix":"!",
+  "overwrite":false
+}

@@ -27,7 +27,7 @@ A 5-module integrated AI system:
 | **M2: NCERT Retriever** | RAG pipeline over NCERT textbook chunks | 📋 Planned |
 | **M3: Hinglish Generator** | Fine-tuned IndicBART seq2seq Hinglish explanations | 📋 Planned |
 | **M4: GEC Engine** | Code-mix-aware grammar error correction | 📋 Planned |
-| **M5: Web Interface** | Streamlit chat UI | 📋 Planned |
+| **M5: Web Interface** | Flutter UI with FastAPI backend | 📋 Planned |
 
 ---
 
@@ -316,17 +316,24 @@ python src/preprocessing.py
 
 ## Tech Stack
 
-| Layer | Technology |
-| --- | --- |
-| NLP | NLTK, spaCy, HuggingFace Transformers |
-| LID (rule-based) | Custom WordLevelLID (HINDI_WORDS lexicon) |
-| LID (trained) | MuRIL (Google) + LoRA — Phase 4 |
-| Seq2Seq | IndicBART (AI4Bharat) — Phase 6 |
-| Vector DB | ChromaDB — Phase 5 |
-| Embeddings | multilingual-MiniLM-L12-v2 — Phase 5 |
-| Fine-tuning | PEFT + LoRA |
-| UI | Streamlit — Phase 8 |
-| Language | Python 3.10 |
+| Module | Component | Technology | Rationale |
+| --- | --- | --- | --- |
+| M1 | Script Detection | Unicode range analysis (Python) | Zero dependency; handles all three script types reliably |
+| M1 | Transliteration | IndicXlit (AI4Bharat) | Best-in-class Devanagari→Roman for Indic scripts |
+| M1 | LID — Phase 1 | Rule-based lexicon (WordLevelLID) | 120+ Hindi + 80+ science terms; fast baseline |
+| M1 | LID — Phase 2 | MuRIL + token classifier (HuggingFace) | Best Hinglish LID accuracy (Winata et al. 2022) |
+| M1 | Intent Classifier | spaCy textcat / MuRIL [CLS] | Lightweight; 6-class intent classification |
+| M2 | PDF Extraction | pdfplumber | Superior NCERT table/multi-column handling vs PyPDF2 |
+| M2 | Embeddings | BGE-base-en-v1.5 (BAAI) | Top MTEB-ranked embeddings; 768D; runs on CPU |
+| M2 | Vector DB | ChromaDB (dev) / Pinecone (production) | Fully local in development; Pinecone provides managed vector search in production with no infrastructure overhead |
+| M2 | Re-ranker | cross-encoder/ms-marco-MiniLM-L-12-v2 | Lightweight cross-encoder; improves precision@3 significantly |
+| M3 | Generator | IndicBART (AI4Bharat) | 244M parameter seq2seq model pre-trained on 11 Indic languages + English; handles Hinglish natively |
+| M3 | Fine-tuning | LoRA via PEFT (HuggingFace) | Fits easily on Colab T4 GPU; fast training time for seq2seq task |
+| M4 | English GEC | GECToR (BEA-2019 + Lang-8) | Best English GEC F1; token edit-based, not seq2seq |
+| M4 | Hindi GEC | Rule-based (gender/verb agreement) | Handles 3 most common Hinglish grammar error types |
+| M5 | UI Prototype | Flutter | Rapid iteration; minimal JS; good for demos |
+| M5 | UI Production | Flutter + FastAPI + Pydantic | Cross-platform (Android/iOS/Web) from single codebase; Pydantic enforces API schema and validates LLM structured outputs |
+| All | Runtime | Python 3.10, PyTorch 2.1 | Standard ML stack; all dependencies open-source |
 
 ---
 
@@ -351,4 +358,4 @@ python src/preprocessing.py
 - [ ] Phase 5 — NCERT ChromaDB knowledge base
 - [ ] Phase 6 — IndicBART Hinglish generator fine-tuning
 - [ ] Phase 7 — GEC engine
-- [ ] Phase 8 — Full pipeline integration + Streamlit UI
+- [ ] Phase 8 — Full pipeline integration + Flutter/FastAPI UI

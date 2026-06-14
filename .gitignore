@@ -22,21 +22,20 @@ data/raw/**/*.PDF
 *.pdf
 
 # Keep processed outputs but not large model files
-*.bin
 *.safetensors
 *.pt
 *.pth
 *.gguf
 *.ckpt
 
-# Model cache
-models/
+# Model cache (external downloaded models, not our trained ones)
 model_cache/
 .cache/
 
 # Vector database (can be regenerated)
 ncert_vectordb/
 chroma_db/
+src/knowledge_base/
 
 # IDE
 .vscode/settings.json
