@@ -1,19 +1,24 @@
 """
-EduHinglish — Unified Preprocessing Pipeline
-=============================================
+EduHinglish — Unified Pipeline (M1 + M2 + M3)
+===============================================
 Authors : Ashvatth & Jatin
 Module  : M1 — Input Processing (complete)
+          M2 — NCERT Retrieval (Phase 5)
+          M3 — Hinglish Generation (Phase 6)
 Purpose : Combine all preprocessing modules into a single pipeline.
           Handles both English and Hinglish input automatically.
           Provides side-by-side comparison for mentor presentation.
+          In "full" mode, runs the complete M1→M2→M3 answer pipeline.
 
 Usage:
-    python pipeline.py                # runs all demos
+    python pipeline.py                # runs all demos (M1 only)
     python pipeline.py --sentence "Your Hinglish sentence here"
     python pipeline.py --demo 1       # run a specific demo (1-4)
+    python pipeline.py --query "Mitochondria ka kaam kya hai?"  # full M1→M2→M3
 """
 
 import json
+import time
 import argparse
 from pathlib import Path
 from datetime import datetime
@@ -25,6 +30,15 @@ sys.path.insert(0, str(Path(__file__).parent))
 from preprocessing  import EnglishPreprocessor
 from script_detector import ScriptDetector, HinglishNormalizer, WordLevelLID
 
+# M2 + M3 imports (loaded lazily — only used when mode="full")
+try:
+    from embedder  import NCERTEmbedder
+    from retriever import NCERTRetriever
+    from generator import HinglishGenerator
+    _M2_M3_AVAILABLE = True
+except ImportError:
+    _M2_M3_AVAILABLE = False
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # UNIFIED PIPELINE
@@ -32,13 +46,21 @@ from script_detector import ScriptDetector, HinglishNormalizer, WordLevelLID
 
 class EduHinglishPipeline:
     """
-    End-to-end preprocessing pipeline for EduHinglish.
+    End-to-end pipeline for EduHinglish.
 
-    Auto-routing:
+    Modes:
+        "preprocess" — M1 only (lightweight, current behavior)
+        "full"       — M1 + M2 + M3 (loads embedder, retriever, generator)
+
+    Auto-routing (M1):
         Input → script detection
             ↓
         ROMAN-only + no Hindi words  →  English pipeline
         Devanagari / Mixed / Hindi words detected  →  Hinglish pipeline
+
+    Full pipeline (M1→M2→M3):
+        Student query → M1 preprocessing → M2 NCERT retrieval →
+        M3 Hinglish generation → answer
 
     English pipeline steps:
         Tokenization → Stop Word Removal → Stemming →
@@ -56,15 +78,43 @@ class EduHinglishPipeline:
         "ek", "yeh", "woh", "bhi", "hi", "toh", "ne", "par", "pe",
     }
 
-    def __init__(self):
-        print("  EduHinglish — Preprocessing Pipeline  v1.0")
+    def __init__(self, mode: str = "preprocess"):
+        """
+        Initialize the pipeline.
 
-        self.en_proc   = EnglishPreprocessor()
-        self.detector  = ScriptDetector()
+        Args:
+            mode: "preprocess" — M1 only (current behavior, lightweight)
+                  "full"       — M1 + M2 + M3 (loads embedder, retriever, generator)
+        """
+        self.mode = mode
+        print(f"  EduHinglish — Pipeline  v2.0  (mode={mode})")
+
+        # ── M1: Preprocessing (always loaded) ─────────────────────────────────
+        self.en_proc    = EnglishPreprocessor()
+        self.detector   = ScriptDetector()
         self.normalizer = HinglishNormalizer()
         self.lid        = WordLevelLID()
 
-        print("\n[OK] All modules loaded. Pipeline ready.")
+        # ── M2 + M3: Retrieval + Generation (only in "full" mode) ─────────────
+        self.embedder  = None
+        self.retriever = None
+        self.generator = None
+
+        if mode == "full":
+            if not _M2_M3_AVAILABLE:
+                print("\n[WARN] M2/M3 modules not available. "
+                      "Install: pip install sentence-transformers chromadb transformers")
+                print("        Falling back to preprocess-only mode.")
+                self.mode = "preprocess"
+            else:
+                project_root = Path(__file__).parent.parent
+                db_path = str(project_root / "src" / "knowledge_base")
+
+                self.embedder  = NCERTEmbedder()
+                self.retriever = NCERTRetriever(db_path=db_path)
+                self.generator = HinglishGenerator()
+
+        print(f"\n[OK] All modules loaded. Pipeline ready (mode={self.mode}).")
 
     # ── Routing ───────────────────────────────────────────────────────────────
 
@@ -249,6 +299,101 @@ class EduHinglishPipeline:
 
         return {"english": en_result, "hinglish": hi_result}
 
+    # ── Full pipeline: M1→M2→M3 ───────────────────────────────────────────────
+
+    def answer_query(self, query: str) -> dict:
+        """
+        Full pipeline: student query → preprocessing → retrieval → generation.
+        Only available in mode="full".
+
+        Steps:
+          1. M1: Run process() to detect language, normalize, extract key terms
+          2. M2: Use retriever.search(query, embedder, top_k=3) to find chunks
+          3. M3: Use generator.generate_answer(query, chunks) to generate answer
+
+        Returns:
+            dict with keys:
+              - "query":          original query
+              - "preprocessing":  M1 output (script detection, LID, normalization)
+              - "retrieval":      list of retrieved chunk summaries
+              - "generation":     generated Hinglish answer
+              - "pipeline_trace": ordered list of step names + timings
+        """
+        if self.mode != "full" or self.generator is None:
+            print("\n[ERROR] answer_query() requires mode='full'.")
+            print("        Initialize with: EduHinglishPipeline(mode='full')")
+            return {"error": "Pipeline not in full mode"}
+
+        from colorama import Fore, Style
+
+        pipeline_trace = []
+        print(f"\n{'='*65}")
+        print(f"  EduHinglish — Full Pipeline (M1→M2→M3)")
+        print(f"{'='*65}")
+        print(f"  Query: \"{query}\"")
+
+        # ── Step 1: M1 — Preprocessing ────────────────────────────────────────
+        print(f"\n  {Fore.CYAN}[STEP 1/3] M1 — Preprocessing{Style.RESET_ALL}")
+        t0 = time.time()
+        m1_result = self.process(query)
+        t1 = time.time()
+        pipeline_trace.append({"step": "M1_preprocessing", "time_sec": round(t1 - t0, 3)})
+
+        # ── Step 2: M2 — NCERT Retrieval ──────────────────────────────────────
+        print(f"\n  {Fore.CYAN}[STEP 2/3] M2 — NCERT Retrieval{Style.RESET_ALL}")
+        t2 = time.time()
+        retrieved_chunks = self.retriever.search(query, self.embedder, top_k=3)
+        t3 = time.time()
+        pipeline_trace.append({"step": "M2_retrieval", "time_sec": round(t3 - t2, 3)})
+
+        # Print retrieval results
+        print(f"\n  Retrieved {len(retrieved_chunks)} chunks:")
+        retrieval_summary = []
+        for i, chunk in enumerate(retrieved_chunks):
+            meta = chunk.get("metadata", {})
+            score = chunk.get("relevance_score", 0.0)
+            text_preview = chunk.get("text", "")[:100] + "..."
+            chapter = meta.get("chapter_title", "Unknown")
+
+            color = Fore.GREEN if score >= 0.5 else Fore.YELLOW if score >= 0.3 else Fore.RED
+            print(f"    [{i+1}] {color}score: {score:.2f}{Style.RESET_ALL} | "
+                  f"{chapter}")
+            print(f"        \"{text_preview}\"")
+
+            retrieval_summary.append({
+                "text_preview": text_preview,
+                "chapter": chapter,
+                "score": score,
+                "chunk_id": chunk.get("chunk_id", ""),
+            })
+
+        # ── Step 3: M3 — Hinglish Generation ──────────────────────────────────
+        print(f"\n  {Fore.CYAN}[STEP 3/3] M3 — Hinglish Generation{Style.RESET_ALL}")
+        t4 = time.time()
+        gen_result = self.generator.generate_answer(query, retrieved_chunks)
+        t5 = time.time()
+        pipeline_trace.append({"step": "M3_generation", "time_sec": round(t5 - t4, 3)})
+
+        total_time = round(t5 - t0, 3)
+        pipeline_trace.append({"step": "total", "time_sec": total_time})
+
+        # ── Print final answer ────────────────────────────────────────────────
+        print(f"\n  {'='*60}")
+        print(f"  {Fore.GREEN}Hinglish Answer:{Style.RESET_ALL}")
+        print(f"  \"{gen_result['hinglish_answer']}\"")
+        print(f"\n  Pipeline timing:")
+        for step in pipeline_trace:
+            print(f"    {step['step']:<22} {step['time_sec']:.3f}s")
+        print(f"  {'='*60}")
+
+        return {
+            "query": query,
+            "preprocessing": m1_result,
+            "retrieval": retrieval_summary,
+            "generation": gen_result,
+            "pipeline_trace": pipeline_trace,
+        }
+
     # ── Save ──────────────────────────────────────────────────────────────────
 
     def save(self, data, output_path: str):
@@ -300,15 +445,32 @@ def run_demo(pipeline: EduHinglishPipeline, demo_id: int) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="EduHinglish Preprocessing Pipeline")
+    parser = argparse.ArgumentParser(description="EduHinglish Pipeline")
     parser.add_argument("--sentence", type=str, default=None,
-                        help="Single sentence to process")
+                        help="Single sentence to process (M1 only)")
     parser.add_argument("--demo", type=int, default=None,
                         choices=[1, 2, 3, 4],
                         help="Run a specific demo (1-4)")
+    parser.add_argument("--query", type=str, default=None,
+                        help="Student query for full M1→M2→M3 pipeline")
     args = parser.parse_args()
 
-    pipeline = EduHinglishPipeline()
+    # ── Full pipeline mode (--query) ──────────────────────────────────────────
+    if args.query:
+        pipeline = EduHinglishPipeline(mode="full")
+        result = pipeline.answer_query(args.query)
+
+        # Save
+        out_path = (
+            Path(__file__).parent.parent
+            / "outputs" / "pipeline_results"
+            / f"query_result_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        )
+        pipeline.save(result, str(out_path))
+        return
+
+    # ── Preprocess-only mode (existing behavior) ──────────────────────────────
+    pipeline = EduHinglishPipeline(mode="preprocess")
     results  = {}
 
     if args.sentence:

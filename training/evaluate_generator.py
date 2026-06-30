@@ -35,6 +35,16 @@ OUTPUT_DIR   = PROJECT_ROOT / "outputs"
 DEFAULT_MODEL = "models/indicbart_v1"
 SEED = 42
 
+# ── Generator import (from src/) ──────────────────────────────────────────────
+import sys
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
+try:
+    from generator import HinglishGenerator
+    _GENERATOR_AVAILABLE = True
+except ImportError:
+    _GENERATOR_AVAILABLE = False
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # Metric helpers
@@ -355,9 +365,10 @@ def run_evaluation(
     Returns:
         dict with all metrics and per-example results.
     """
-    import sys
-    sys.path.insert(0, str(PROJECT_ROOT / "src"))
-    from generator import HinglishGenerator
+    if not _GENERATOR_AVAILABLE:
+        print(f"  {Fore.RED}[ERROR] generator module not available. "
+              f"Install: pip install transformers torch")
+        return {}
 
     print(f"\n  Loading model: {label} ({model_path})")
     generator = HinglishGenerator(
