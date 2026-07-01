@@ -1,0 +1,11 @@
+{
+  "model_name": "ai4bharat/IndicBART",
+  "max_source_length": 256,
+  "max_target_length": 256,
+  "total_pairs": 1999,
+  "type_a_count": 933,
+  "type_b_count": 133,
+  "type_c_count": 933,
+  "train_count": 1599,
+  "dev_count": 400
+}
