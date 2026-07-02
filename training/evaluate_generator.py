@@ -20,8 +20,16 @@ import json
 import re
 import argparse
 import time
+import warnings
 from pathlib import Path
 from collections import Counter, defaultdict
+
+# Suppress transformers deprecation: IndicBART config uses old `use_return_dict`
+warnings.filterwarnings(
+    "ignore",
+    message=".*use_return_dict.*",
+    category=FutureWarning,
+)
 
 from colorama import Fore, Style, init as colorama_init
 
@@ -385,8 +393,12 @@ def run_evaluation(
     start_time = time.time()
 
     for i, entry in enumerate(dev_data):
-        english = entry.get("original_english", "")
-        reference = entry.get("hinglish_roman", "")
+        english = entry.get("original_english") or ""
+        reference = entry.get("hinglish_roman") or ""
+
+        # Skip entries with no usable English text
+        if not english.strip():
+            continue
 
         result = generator.generate(english)
         generated = result["output"]

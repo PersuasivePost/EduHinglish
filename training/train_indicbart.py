@@ -30,9 +30,17 @@ import argparse
 import json
 import sys
 import time
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+# Suppress transformers deprecation: IndicBART config uses old `use_return_dict`
+warnings.filterwarnings(
+    "ignore",
+    message=".*use_return_dict.*",
+    category=FutureWarning,
+)
 
 # Ensure stdout handles UTF-8 on Windows
 if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):

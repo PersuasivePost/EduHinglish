@@ -1,0 +1,386 @@
+(eduhinglish_env) 
+Ashvatth@AshPC MINGW64 ~/OneDrive/Desktop/AshWorks/EduHinglish (phase-6)
+$ python training/evaluate_generator.py
+  ════════════════════════════════════════════════════════════
+  EduHinglish — Phase 6 Generator Evaluation
+  ════════════════════════════════════════════════════════════
+
+  Pre-split dev set not found at: C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\training\data\indicbart_seq2seq_dataset
+  Recreating split from: C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\data\unified_biology_dataset.json
+  [OK] Created dev split: 95 examples (from 950 total, SEED=42)
+
+  Loading model: Fine-tuned IndicBART + LoRA (models/indicbart_v1)
+
+  Loading Hinglish generator: ai4bharat/IndicBART
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  Loading base model + LoRA adapter from C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\models\indicbart_v1
+Loading weights: 100%|█████████████████████████| 267/267 [00:00<00:00, 8349.58it/s]
+  [OK] HinglishGenerator initialized
+       Model:        IndicBART + LoRA
+       Device:       cuda
+       LoRA adapter: loaded
+
+  Generating Hinglish for 95 dev examples...
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+    [25/95] (143.4s, 0.2 examples/sec)
+    [50/95] (283.2s, 0.2 examples/sec)
+    [75/95] (414.2s, 0.2 examples/sec)
+    [95/95] (495.8s, 0.2 examples/sec)
+  [OK] Generation complete: 95 examples in 495.8s
+
+  Computing metrics...
+  ════════════════════════════════════════════════════════════
+  Evaluation Results: Fine-tuned IndicBART + LoRA
+  Model: models/indicbart_v1 | Examples: 95 | Time: 495.8s
+  ════════════════════════════════════════════════════════════
+
+  Metric                              Score
+  ────────────────────────────────────────────────────────────
+  Corpus BLEU                         1.17
+  Mean Sentence BLEU                  2.51
+  ROUGE-1 (F1)                       24.58
+  ROUGE-2 (F1)                        5.47
+  ROUGE-L (F1)                       16.94
+  Reference CMI (avg)                 39.7%
+  Generated CMI (avg)                 38.1%
+  CMI Delta (|ref - gen|)              1.6%
+  Length Ratio (gen/ref)             2.932
+  Avg Reference Words                 18.8
+  Avg Generated Words                 55.1
+
+  ────────────────────────────────────────────────────────────
+  Per-Chapter Breakdown
+  ────────────────────────────────────────────────────────────
+  Chapter                                       N    BLEU    CMI
+  ------------------------------------------ ---- ------- ------
+  Cell: The Building Block of Life             11    0.7  34.4%
+  Chapter Exploration: Entering Exploratio..    8    0.6  39.1%
+  Control and Coordination                      8    1.5  40.2%
+  Heredity                                      3    1.7  36.7%
+  How do Organisms Reproduce?                  11    0.9  38.9%
+  Life Processes                                8    1.0  38.7%
+  Our Environment                              10    0.6  40.6%
+  Patterns in Life: Diversity and Classifi..   14    2.7  37.7%
+  Tissues in Action                            10    1.2  37.6%
+  class9/ch11                                  11    0.8  37.1%
+
+  ────────────────────────────────────────────────────────────
+  Sample Outputs (10 examples)
+  ────────────────────────────────────────────────────────────
+
+  [9_03_075] Chapter: Tissues in Action
+  English:
+    "Sipra Guha Mukherjee and S.C. Maheshwari developed a complete plant through anther culture in a laboratory."
+  Reference Hinglish:
+    "Sipra Guha Mukherjee aur S.C. Maheshwari ne laboratory mein anther culture se ek poora plant develop kiya."
+  Generated Hinglish:
+    "<s>ise ek mein aur aur mukherjee ki s.c. maheshwari developed a complete plant through anther culture in a laboratory. karne ke liye hain mein kya kar..."
+  BLEU: 1.7 | CMI ref: 29.4% | CMI gen: 44.7%
+
+  [9_11_GEC04] Chapter: class9/ch11
+  English:
+    "Meiosis reduces the chromosome number to half so that gametes have 23 chromosomes."
+  Reference Hinglish:
+    "Meiosis chromosome number ko aadha kar deta hai isliye gametes mein 23 chromosomes ka hota hai."
+  Generated Hinglish:
+    "<s> hot chromosome number mein gametes mei aur aur mei hain mei yeh ho gaye gametes. mei koi teh mei kya hai? meiosis mei saath hain gamete mei jaye g..."
+  BLEU: 2.1 | CMI ref: 46.7% | CMI gen: 31.4%
+
+  [10_07_068] Chapter: How do Organisms Reproduce?
+  English:
+    "Sexually transmitted diseases include bacterial infections such as gonorrhoea and syphilis, and viral infections such as warts and HIV-AIDS."
+  Reference Hinglish:
+    "Sexually transmitted diseases mein bacterial infections jaise gonorrhoea aur syphilis, aur viral infections jaise warts aur HIV-AIDS shamil hain."
+  Generated Hinglish:
+    "<s> viral infections such as warts and hiv-aids aur gonorrhoea nahin hota hai jaye hain mein syphilis, jaye bacterial infectionsin warts, hiv kya kart..."
+  BLEU: 2.9 | CMI ref: 36.8% | CMI gen: 32.5%
+
+  [9_03_032] Chapter: Tissues in Action
+  English:
+    "Xylem parenchyma is the only living component of xylem; tracheids, vessels and xylem fibres are dead."
+  Reference Hinglish:
+    "Xylem parenchyma xylem ka ekelauta living component hai; tracheids, vessels aur xylem fibres dead hote hain."
+  Generated Hinglish:
+    "<s> jaylem parenchyma is the only living component of xylem ek ke liye hain hota hai tracheids, vessels and xylm fibres are dead. karte hain mein paan..."
+  BLEU: 4.5 | CMI ref: 31.2% | CMI gen: 34.2%
+
+  [9_01_047] Chapter: Chapter Exploration: Entering Exploration: Entering the World of Secondary
+  English:
+    "It means understanding the denoted with the symbol c, situation first, identifying relevant quantities, and then using since it comes from the Latin m..."
+  Reference Hinglish:
+    "Iska matlab hai pehle situation ko samajhna, relevant quantities identify karna, aur phir mathematical relationships se carefully reason karna."
+  Generated Hinglish:
+    "<s> Us aur aur mein aur mathematical relationships to reason carefully.They means understanding the denoted symbol c, situation first, identifying rel..."
+  BLEU: 0.9 | CMI ref: 31.6% | CMI gen: 31.0%
+
+  [10_07_080] Chapter: How do Organisms Reproduce?
+  English:
+    "Why is vegetative propagation practised for growing some types of plants?"     
+  Reference Hinglish:
+    "Kuch types ke plants ugaane ke liye vegetative propagation kyun practise kiya jaata hai?"
+  Generated Hinglish:
+    "<s> let me vegetative propagation practised for growing some types of plants?ek hain aur vegetation propagate karne ke liye hain hain baat karne ka pl..."
+  BLEU: 1.4 | CMI ref: 28.6% | CMI gen: 33.8%
+
+  [9_02_Q014] Chapter: Cell: The Building Block of Life
+  English:
+    "What is totipotency? Give a real-world example."
+  Reference Hinglish:
+    "Totipotency kya hoti hai? Iska ek real-world example bhi do."
+  Generated Hinglish:
+    "<s> Where is totipotency? give a real-world example.hum mein karti hain aur aur ek example.yeh sir kuch hota hai.hate hain ki baat mein.honti hai.ehhi..."
+  BLEU: 1.9 | CMI ref: 50.0% | CMI gen: 47.4%
+
+  [10_05_068] Chapter: Life Processes
+  English:
+    "Dental caries begin when bacteria acting on sugars produce acids that soften or demineralise the enamel."
+  Reference Hinglish:
+    "Dental caries tab shuru hoti hain jab bacteria sugar par asar karke aise acids banate hain jo enamel ko soft ya demineralise kar dete hain."
+  Generated Hinglish:
+    "<s> jaye hain mein enamel mein aur dental caries mein kya hota hai kiya hai ye soften or demineralise the enamels karne ke liam karte hain kiya karta ..."
+  BLEU: 1.5 | CMI ref: 44.0% | CMI gen: 44.8%
+
+  [9_11_027] Chapter: class9/ch11
+  English:
+    "Cross-pollination happens when pollen is transferred from a flower of one plant to the stigma of a flower of another plant of the same type."
+  Reference Hinglish:
+    "Cross-pollination tab hoti hai jab pollen ek plant ke phool se doosre same type ke plant ke phool ke stigma par jaata hai."
+  Generated Hinglish:
+    "<s> hot-pollination hai aur aur flower mein kya hai yeh hain hota hai ki sati hai, aur tehta hai aa rahe hain hain sakte hain aur hoti hai.eur mein aa..."
+  BLEU: 1.5 | CMI ref: 47.8% | CMI gen: 45.8%
+
+  [10_13_GEC004] Chapter: Our Environment
+  English:
+    "CFCs are released into the atmosphere and cause depletion of the ozone layer." 
+  Reference Hinglish:
+    "CFCs atmosphere mein release hote hain aur ozone layer ko khatam karte hain."  
+  Generated Hinglish:
+    "<s> These cfcs are released into the atmosphere and cause depletion of the ozone layer layer hain.These aur aur mein pyaar ke liye hain hain hota hai...."
+  BLEU: 1.9 | CMI ref: 46.2% | CMI gen: 39.6%
+
+  ────────────────────────────────────────────────────────────
+  Worst 5 Examples (lowest BLEU) — Error Analysis
+  ────────────────────────────────────────────────────────────
+
+  [1] BLEU: 0.6 | ID: 9_02_001 | Chapter: Cell: The Building Block of Life
+  English:   "It is widely accepted amongst the scientific community that life originated in water."
+  Reference: "Scientific community mein yeh widely accept kiya jaata hai ki life ki utpatti paani mein hui thi."
+  Generated: "<s> scientific community that life originated in water.Hindustan ke liye hain aur hota hai.It is widely accepted amongst..."
+
+  [2] BLEU: 0.6 | ID: 9_01_037 | Chapter: Chapter Exploration: Entering Exploration: Entering the World of Secondary
+  English:   "This simplification electric current are represented by symbols like m, v, F, and I allowed him to explain each associat..."
+  Reference: "Is simplification ki wajah se woh explain kar sake ki taaron ka colour unke temperature se gehri tarah kaise connected h..."
+  Generated: "<s> These simplifications are represented by symbols like m, v, f, mein aur kya karte hain.He allowed him to explain eac..."
+
+  [3] BLEU: 0.7 | ID: 10_06_062 | Chapter: Control and Coordination
+  English:   "Our hearts beat without our thinking about it as an involuntary action."
+  Generated: "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte h..."
+
+  [5] BLEU: 0.8 | ID: 10_05_049 | Chapter: Life Processes
+  English:   "Viruses do not show any molecular movement until they infect a cell, which is partly why there is controversy about whet..."
+  Reference: "Viruses kisi cell ko infect karne tak koi molecular movement nahi dikhate, isliye yeh controversy hai ki woh sach mein a..."
+  Generated: "<s> These viruses do not show any molecular movements.They infect a cell cell, which is partly why there is controversy ..."
+
+  [SAVED] Results → C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\outputs\generator_eval_results.json
+  ════════════════════════════════════════════════════════════
+  [OK] Evaluation complete
+  ════════════════════════════════════════════════════════════
+(eduhinglish_env)
+Ashvatth@AshPC MINGW64 ~/OneDrive/Desktop/AshWorks/EduHinglish (phase-6)
+$
+  Generated: "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte h..."
+
+  [5] BLEU: 0.8 | ID: 10_05_049 | Chapter: Life Processes
+  English:   "Viruses do not show any molecular movement until they infect a cell, which is partly why there is controversy about whet..."
+  Reference: "Viruses kisi cell ko infect karne tak koi molecular movement nahi dikhate, isliye yeh controversy hai ki woh sach mein a..."
+  Generated: "<s> These viruses do not show any molecular movements.They infect a cell cell, which is partly why there is controversy ..."
+
+  [SAVED] Results → C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\outputs\generator_eval_results.json
+  ════════════════════════════════════════════════════════════
+  Generated: "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte h..."
+
+  [5] BLEU: 0.8 | ID: 10_05_049 | Chapter: Life Processes
+  English:   "Viruses do not show any molecular movement until they infect a cell, which is partly why there is controversy about whet..."
+  Reference: "Viruses kisi cell ko infect karne tak koi molecular movement nahi dikhate, isliye yeh controversy hai ki woh sach mein a..."
+  Generated: "<s> These viruses do not show any molecular movements.They infect a cell cell, which is partly why there is controversy ..."
+  Generated: "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte h..."
+
+  [5] BLEU: 0.8 | ID: 10_05_049 | Chapter: Life Processes
+  Generated: "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte h..."
+  Generated: "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte h..."
+
+  [5] BLEU: 0.8 | ID: 10_05_049 | Chapter: Life Processes
+  English:   "Viruses do not show any molecular movement until they infect a cell, which is partly why there is controversy about whet..."
+  Reference: "Viruses kisi cell ko infect karne tak koi molecular movement nahi dikhate, isliye yeh controversy hai ki woh sach mein a..."
+  Generated: "<s> These viruses do not show any molecular movements.They infect a cell cell, which is partly why there is controversy ..."
+
+  [SAVED] Results → C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\outputs\generator_eval_results.json
+  ════════════════════════════════════════════════════════════
+  [OK] Evaluation complete
+
+  --
+
+  (eduhinglish_env) 
+Ashvatth@AshPC MINGW64 ~/OneDrive/Desktop/AshWorks/EduHinglish (phase-6)
+$ python src/pipeline.py --query "mitochondria kaa kaam kya hai?"
+  EduHinglish — Pipeline  v2.0  (mode=full)
+[WARN] spaCy model missing. Run: python -m spacy download en_core_web_sm
+[OK] EnglishPreprocessor initialized
+[OK] HinglishNormalizer initialized
+[OK] WordLevelLID initialized
+
+  Loading embedding model: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+  (First run will download ~500MB - subsequent runs use cache)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|█████████████████████████████████████████████████████████████████████████████████████████| 199/199 [00:00<00:00, 3254.33it/s]
+  [OK] NCERTEmbedder initialized
+       Model:     paraphrase-multilingual-MiniLM-L12-v2
+       Dimension: 384
+       Device:    cuda:0
+  [OK] NCERTRetriever initialized (ChromaDB @ C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\src\knowledge_base)
+       Collection:  ncert_biology
+       Documents:   410
+
+  Loading Hinglish generator: ai4bharat/IndicBART
+  Loading base model + LoRA adapter from C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\models\indicbart_v1
+Loading weights: 100%|████████████████████████████████████████████████████████████████████████████████████████| 267/267 [00:00<00:00, 13372.97it/s]
+  [OK] HinglishGenerator initialized
+       Model:        IndicBART + LoRA
+       Device:       cuda
+       LoRA adapter: loaded
+
+[OK] All modules loaded. Pipeline ready (mode=full).
+
+=================================================================
+  EduHinglish — Full Pipeline (M1→M2→M3)
+=================================================================
+  Query: "mitochondria kaa kaam kya hai?"
+
+  [STEP 1/3] M1 — Preprocessing
+SCRIPT DETECTION
+  Input : "mitochondria kaa kaam kya hai?"
+
+  Word                         Script
+  ---------------------------- ------
+  mitochondria                 ROMAN
+  kaa                          ROMAN
+  kaam                         ROMAN
+  kya                          ROMAN
+  hai?                         ROMAN
+
+  Distribution:
+    Roman      :   5 words  (100.0%)
+    Devanagari :   0 words  (0.0%)
+    Mixed      :   0 words  (0.0%)
+
+  → Overall script : ROMAN
+
+[PIPELINE MODE] HINGLISH
+  Input: "mitochondria kaa kaam kya hai?"
+
+--- HINGLISH STEP 1 / 6 : Script Detection ---
+SCRIPT DETECTION
+  Input : "mitochondria kaa kaam kya hai?"
+
+  Word                         Script
+  ---------------------------- ------
+  mitochondria                 ROMAN
+  kaa                          ROMAN
+  kaam                         ROMAN
+  kya                          ROMAN
+  hai?                         ROMAN
+
+  Distribution:
+    Roman      :   5 words  (100.0%)
+    Devanagari :   0 words  (0.0%)
+    Mixed      :   0 words  (0.0%)
+
+  → Overall script : ROMAN
+
+--- HINGLISH STEP 2 / 6 : Normalization ---
+SENTENCE NORMALIZATION (complete)
+  Input: "mitochondria kaa kaam kya hai?"
+SPELLING NORMALIZATION
+  Input: "mitochondria kaa kaam kya hai?"
+  No changes needed
+  Output: "mitochondria kaa kaam kya hai?"
+  Final : "mitochondria kaa kaam kya hai?"
+
+--- HINGLISH STEP 3 / 6 : Language Identification ---
+WORD-LEVEL LANGUAGE IDENTIFICATION (LID)
+  Input: "mitochondria kaa kaam kya hai?"
+
+  Word                         Lang   Icon
+  ---------------------------- -----  ----
+  mitochondria                 EN     🔵
+  kaa                          EN     🔵
+  kaam                         HI     🟠
+  kya                          HI     🟠
+  hai?                         HI     🟠
+
+  Language Distribution:
+    Hindi (HI)  :   3 words
+    English (EN):   2 words
+    Universal   :   0 words
+    Named Entity:   0 words
+    Mixed script:   0 words
+
+  Code-Mixing Index (CMI) : 40.0%
+  Interpretation          : moderate code-mixing (natural Hinglish)
+
+--- HINGLISH STEP 4 / 6 : Tokenization ---
+
+============================================================
+STEP 2 — TOKENIZATION
+============================================================
+  Input: "mitochondria kaa kaam kya hai?"
+
+  Simple split   (  5 tokens): ['mitochondria', 'kaa', 'kaam', 'kya', 'hai?']
+  NLTK tokenize  (  6 tokens): ['mitochondria', 'kaa', 'kaam', 'kya', 'hai', '?']
+
+  → Using NLTK tokens: ['mitochondria', 'kaa', 'kaam', 'kya', 'hai', '?']
+
+--- HINGLISH STEP 5 / 6 : Stop Word Removal (language-aware) ---
+
+  Token                     Lang     Action
+  ------------------------- -------- ------
+  mitochondria              EN       kept
+  kaa                       EN       kept
+  kaam                      HI       kept
+  kya                       HI       kept
+  hai                       HI_STOP  removed
+  ?                         PUNCT    removed
+
+--- HINGLISH STEP 6 / 6 : Stemming & Lemmatization (EN words only) ---
+
+  Token                  Lang    Stem                   Lemma
+  ---------------------- ------- ---------------------- ----------------------
+  mitochondria           EN      mitochondria           mitochondrion          ←
+  kaa                    EN      kaa                    kaa
+  kaam                   HI      kaam                   kaam
+  kya                    HI      kya                    kya
+
+  [STEP 2/3] M2 — NCERT Retrieval
+
+  Retrieved 3 chunks:
+    [1] score: 0.45 | Cell: The Building Block of Life
+        "culture is crucial for studying and Padma Bhushan. how cells work and for the production of biochemi..."
+    [2] score: 0.41 | Cell: The Building Block of Life
+        "y Smooth Endoplasmic Reticulum (SER): It does processing and secretion not have ribosomes on its sur..."
+    [3] score: 0.40 | Cell: The Building Block of Life
+        "Do you know any other cells without nucleus? Prokaryotic cells do not have a well-defined nucleus. T..."
+
+  [STEP 3/3] M3 — Hinglish Generation
+
+  ============================================================
+  Hinglish Answer:
+  "<s>留 topic: cell: the building block of life | context: culture is crucial for studying and padma bhushan. how cells work and for the production of biochemicals, food, medicines, vaccines, and more. the processes of mitosis and meiosis must occur in a pause and ponder proper and controlled manner. what happens if meiotical disorders start dividing by number of chromosomes in body cells. usiosis instead of miosis, what errors in meiology may result in genetic disorders, do you think will happen properly? which may be associated with developmental problems or distinctive physical features. faulty meiitis may also cause early pregnancy loss or reduced fertilitygrade 9 cchhaapptteerr--0022..iinnd aur dete hain nahin ek mei yeh sam karne ke liye hain.. aur aur pehle ek aur ek teh mei hain aur dil hai..aur pyaar ka ek kuchh me"
+
+  Pipeline timing:
+    M1_preprocessing       3.743s
+    M2_retrieval           0.470s
+    M3_generation          6.899s
+    total                  11.118s
+  ============================================================
+
+[SAVED] → C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\outputs\pipeline_results\query_result_20260703_000126.json

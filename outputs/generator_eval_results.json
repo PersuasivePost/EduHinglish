@@ -1,0 +1,1588 @@
+{
+  "finetuned": {
+    "label": "Fine-tuned IndicBART + LoRA",
+    "model_path": "models/indicbart_v1",
+    "use_lora": true,
+    "num_examples": 95,
+    "generation_time_sec": 495.8,
+    "metrics": {
+      "bleu": {
+        "corpus": 1.17,
+        "mean_sentence": 2.51
+      },
+      "rouge": {
+        "rouge1": 24.58,
+        "rouge2": 5.47,
+        "rougeL": 16.94
+      },
+      "cmi": {
+        "reference_mean": 39.7,
+        "generated_mean": 38.1,
+        "cmi_delta": 1.6
+      },
+      "length_ratio": {
+        "ratio": 2.932,
+        "avg_ref_words": 18.8,
+        "avg_gen_words": 55.1
+      }
+    },
+    "chapter_metrics": {
+      "Cell: The Building Block of Life": {
+        "count": 11,
+        "corpus_bleu": 0.7,
+        "mean_cmi": 34.4
+      },
+      "Chapter Exploration: Entering Exploration: Entering the World of Secondary": {
+        "count": 8,
+        "corpus_bleu": 0.58,
+        "mean_cmi": 39.1
+      },
+      "Control and Coordination": {
+        "count": 8,
+        "corpus_bleu": 1.5,
+        "mean_cmi": 40.2
+      },
+      "Heredity": {
+        "count": 3,
+        "corpus_bleu": 1.66,
+        "mean_cmi": 36.7
+      },
+      "How do Organisms Reproduce?": {
+        "count": 11,
+        "corpus_bleu": 0.86,
+        "mean_cmi": 38.9
+      },
+      "Life Processes": {
+        "count": 8,
+        "corpus_bleu": 1.04,
+        "mean_cmi": 38.7
+      },
+      "Our Environment": {
+        "count": 10,
+        "corpus_bleu": 0.62,
+        "mean_cmi": 40.6
+      },
+      "Patterns in Life: Diversity and Classification": {
+        "count": 14,
+        "corpus_bleu": 2.67,
+        "mean_cmi": 37.7
+      },
+      "Tissues in Action": {
+        "count": 10,
+        "corpus_bleu": 1.23,
+        "mean_cmi": 37.6
+      },
+      "class9/ch11": {
+        "count": 11,
+        "corpus_bleu": 0.81,
+        "mean_cmi": 37.1
+      }
+    },
+    "per_example": [
+      {
+        "id": "9_03_075",
+        "english": "Sipra Guha Mukherjee and S.C. Maheshwari developed a complete plant through anther culture in a laboratory.",
+        "reference": "Sipra Guha Mukherjee aur S.C. Maheshwari ne laboratory mein anther culture se ek poora plant develop kiya.",
+        "generated": "<s>ise ek mein aur aur mukherjee ki s.c. maheshwari developed a complete plant through anther culture in a laboratory. karne ke liye hain mein kya karte hain. kare hain hain hota hai. karti hain ek saath hain karte hai.ehti hai.tehti karti hai hain sakta hai yeh hain?</s>",
+        "chapter": "Tissues in Action",
+        "topic": "totipotency",
+        "bleu": 1.67,
+        "rouge": {
+          "rouge1": 31.43,
+          "rouge2": 8.82,
+          "rougeL": 20.0
+        },
+        "ref_cmi": 29.4,
+        "gen_cmi": 44.7
+      },
+      {
+        "id": "10_05_004",
+        "english": "Autotrophs include green plants and some bacteria that use simple food material from inorganic sources.",
+        "reference": "Autotrophs mein green plants aur kuch bacteria aate hain jo inorganic sources se simple food material use karte hain.",
+        "generated": "<s> These autotrophs include green plants and some bacteria that use simple food material from inorganic sources.Hindi khaya ke liye hain mein karta hai.These autotrops mein aur pehle hain hoin hai.Come hain hain.</s>",
+        "chapter": "Life Processes",
+        "topic": "Nutrition - Autotrophic",
+        "bleu": 5.47,
+        "rouge": {
+          "rouge1": 50.0,
+          "rouge2": 14.81,
+          "rougeL": 28.57
+        },
+        "ref_cmi": 42.1,
+        "gen_cmi": 27.3
+      },
+      {
+        "id": "9_12_008",
+        "english": "Nilgiri tahr, Lion-tailed macaque, Nepenthes khasiana and Neelakurinji are endemic species found only in India.",
+        "reference": "Nilgiri tahr, Lion-tailed macaque, Nepenthes khasiana aur Neelakurinji sirf India mein payi jaane waali endemic species hain.",
+        "generated": "<s>ur khasiana, neelakurinji are endemic species found only in india.urilgiri tahr mein aur neelata hai kiya hai.eelaku karne ke liye hain hain hota hai khaiana and neelati hai.ur jahane neela kohte hain kiya karne hain.kohisa hai.yeela kaise hain sakta hai.geek species.in india.yeh saath kehta hoti hai kya hota hain mein.</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Endemic Species",
+        "bleu": 1.67,
+        "rouge": {
+          "rouge1": 23.08,
+          "rouge2": 2.63,
+          "rougeL": 15.38
+        },
+        "ref_cmi": 23.5,
+        "gen_cmi": 36.0
+      },
+      {
+        "id": "10_06_067",
+        "english": "The nervous system gets information from our sense organs and acts through our muscles.",
+        "reference": "Nervous system hamare sense organs se information leta hai aur hamare muscles ke zariye kaam karta hai.",
+        "generated": "<s> Us aur nervous system karne ke liye hain kiya hota hai yeh kya hain. jaise hain tehse hain karte hain hain sakti hai.Our sense organs and acts through our muscles. usurp mein saath hain pata hai.eur cheek karne hain baat karne kiya kiya hai.tya hoti hai yaar karta hai kiya karta hain kaise kartaye.tehtaar kiya.tey yeye haate hain gaye.yehta hai roti hain retiti hai hain hai.kita kartai kartaar kara karta karti hai kar karta hota kiya kya hai bolta hai hai.teye jayega.taar bhi nahin yaane hain hotaye karne kata hai?</s>",
+        "chapter": "Control and Coordination",
+        "topic": "Nervous System",
+        "bleu": 1.19,
+        "rouge": {
+          "rouge1": 16.95,
+          "rouge2": 5.17,
+          "rougeL": 11.86
+        },
+        "ref_cmi": 41.2,
+        "gen_cmi": 45.1
+      },
+      {
+        "id": "10_13_066",
+        "english": "Plastics are acted upon by physical processes like heat and pressure but persist for a long time under normal conditions.",
+        "reference": "Plastics par heat aur pressure jaise physical processes ka asar padta hai lekin normal conditions mein yeh bahut time tak rehte hain.",
+        "generated": "<s> These plastics are acted upon by physical processes like heat and pressure but persist for a long time under normal conditions.These plastics liye hain hain mein aur aur yeh hain karte hain hota hai hain.</s>",
+        "chapter": "Our Environment",
+        "topic": "Biodegradable and Non-biodegradable",
+        "bleu": 3.42,
+        "rouge": {
+          "rouge1": 43.33,
+          "rouge2": 6.9,
+          "rougeL": 26.67
+        },
+        "ref_cmi": 45.5,
+        "gen_cmi": 30.6
+      },
+      {
+        "id": "9_12_027",
+        "english": "In the five kingdom classification, organisms are grouped based on cell type, cell structure, level of organisation and mode of nutrition.",
+        "reference": "Five kingdom classification mein organisms ko cell type, cell structure, level of organisation aur mode of nutrition ke basis par group kiya jaata hai.",
+        "generated": "<s> These kingdom classifications are grouped based on cell type, cell structure, level of organisation and mode of nutrition.Hein mein kya hai tehte hain hain aur aur jotrition hai.eur yeh sakte hai kiya hai karte hata hai.tete hota hai yeah.teh mein.te hatrition ke litrition kaise karte hai?</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Five Kingdom Classification",
+        "bleu": 15.52,
+        "rouge": {
+          "rouge1": 41.56,
+          "rouge2": 21.33,
+          "rougeL": 33.77
+        },
+        "ref_cmi": 25.0,
+        "gen_cmi": 34.0
+      },
+      {
+        "id": "9_12_094",
+        "english": "Binomial nomenclature was introduced by Carolus Linnaeus so that scientists worldwide could use a common naming system.",
+        "reference": "Binomial nomenclature Carolus Linnaeus ne isliye introduce kiya taaki duniyabhar ke scientists ek common naming system use kar sakein.",
+        "generated": "<s> binomial nomenclature was introduced by carolus linnaeus so that scientists worldwide could use a common naming system.Here aur aur mein aur saath system.hon mein kya hota hai hai?ste hain mein sakta hai.hate mein.hum mein karta hai yeh hain.ek nahi nahi hain sir nahi hoti hai.tein usin hai.yeh sakte hai.hein zinda hai.is aur naming kiya hai.ki naming mein hai?</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Binomial Nomenclature",
+        "bleu": 2.0,
+        "rouge": {
+          "rouge1": 24.44,
+          "rouge2": 9.09,
+          "rougeL": 17.78
+        },
+        "ref_cmi": 15.8,
+        "gen_cmi": 37.3
+      },
+      {
+        "id": "9_12_051",
+        "english": "Platyhelminthes or flatworms show bilateral symmetry, which allows better coordination of movement and directional activity.",
+        "reference": "Platyhelminthes yaani flatworms mein bilateral symmetry hoti hai, jisse movement ka better coordination aur directional activity possible hoti hai.",
+        "generated": "<s> Take a look at mein symmetry, which allows better coordination of movement and directional activity.Company mein kaise karte hain hain hota hai yeh jaye hain.</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Invertebrates",
+        "bleu": 3.65,
+        "rouge": {
+          "rouge1": 34.04,
+          "rouge2": 8.89,
+          "rougeL": 29.79
+        },
+        "ref_cmi": 42.1,
+        "gen_cmi": 34.6
+      },
+      {
+        "id": "9_02_Q012",
+        "english": "What is the formula for estimating the size of a cell under a microscope?",
+        "reference": "Microscope ke neeche cell ki size estimate karne ka formula kya hai?",
+        "generated": "<s> use a microscope mein estimating the size of a cell mein kya hai?riti hai?ur is the formula for a cell aur aur mein aur tehte hain?ur yeh sakta hai?tek mein mein. ke liye hain karne ke baat hai?s johte hai?is aur nahin jaye aur kya ho gaye?ur pehte?urge aur dil mein wahin ek aur paise?ur?lie aur rahe hain hai?aur ek ek koi hain cheat mein roti aur diya?ur kiya aur mahte aur hole?uron aur hain..his ek karte ha hain aaye hain ke hain hain!</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Cell Size Estimation",
+        "bleu": 1.4,
+        "rouge": {
+          "rouge1": 14.29,
+          "rouge2": 1.82,
+          "rougeL": 8.93
+        },
+        "ref_cmi": 50.0,
+        "gen_cmi": 43.5
+      },
+      {
+        "id": "9_11_GEC04",
+        "english": "Meiosis reduces the chromosome number to half so that gametes have 23 chromosomes.",
+        "reference": "Meiosis chromosome number ko aadha kar deta hai isliye gametes mein 23 chromosomes ka hota hai.",
+        "generated": "<s> hot chromosome number mein gametes mei aur aur mei hain mei yeh ho gaye gametes. mei koi teh mei kya hai? meiosis mei saath hain gamete mei jaye gamete hain.his mei hoon mein mein.</s>",
+        "chapter": "class9/ch11",
+        "topic": "Meiosis",
+        "bleu": 2.09,
+        "rouge": {
+          "rouge1": 22.64,
+          "rouge2": 3.92,
+          "rougeL": 15.09
+        },
+        "ref_cmi": 46.7,
+        "gen_cmi": 31.4
+      },
+      {
+        "id": "9_11_009",
+        "english": "In layering, a flexible twig is buried under the soil and after roots develop, it is cut from the parent plant to grow independently.",
+        "reference": "Layering mein ek flexible twig ko mitti ke neeche dabaaya jaata hai aur roots develop hone ke baad, use parent plant se kaat diya jaata hai taaki woh alag grow kar sake.",
+        "generated": "<s> If roots develop, it is cut from the parent plant to grow independently.Hindi ke liye hain hain aur aur tehta hai.In layering hota hai ki baat hai.Come aur mein kya karti hai.It is cute kiya hai.They are cutaat mein kiya hain.he aur peek hai.is cute hain ki kiya hua hai.he is cuti hai.geek hain yeh hain hoti hai kiya karne hain?</s>",
+        "chapter": "class9/ch11",
+        "topic": "Vegetative Propagation - Layering",
+        "bleu": 1.52,
+        "rouge": {
+          "rouge1": 21.15,
+          "rouge2": 3.92,
+          "rougeL": 9.62
+        },
+        "ref_cmi": 37.5,
+        "gen_cmi": 33.9
+      },
+      {
+        "id": "9_12_032",
+        "english": "Protists are an important link in aquatic food chains — some produce oxygen while others serve as food for small animals.",
+        "reference": "Protists aquatic food chains mein ek important link hain — kuch oxygen produce karte hain jabki doosre chote animals ke liye food ka kaam karte hain.",
+        "generated": "<s> hot food chains mein aur oxygen ke hain hain protek karte hain ho jaye hain hai hain. johti hai hai serve as food for small animals.hein mein kya hai.eh hain kiya hain sam karta hai hai.tehti hain karta hain? hain, hain tehse hain kaise hain koi hain maine hain... protak mein ek hain bhehta hota hai.hey hain banane hain rehta hai protta hai yeh food.terror mein haat mein jayehta karna hai.hate hain aapki hain wohte haan hain nahi hain gayi hai.kehta.te ha hain ke food mein kara hai haita hai haat hainta hai</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Kingdom Protista",
+        "bleu": 1.98,
+        "rouge": {
+          "rouge1": 18.75,
+          "rouge2": 6.35,
+          "rougeL": 14.06
+        },
+        "ref_cmi": 44.0,
+        "gen_cmi": 46.8
+      },
+      {
+        "id": "9_03_034",
+        "english": "Phloem consists of sieve tubes, companion cells, phloem parenchyma and phloem fibres.",
+        "reference": "Phloem mein sieve tubes, companion cells, phloem parenchyma aur phloem fibres hote hain.",
+        "generated": "<s> hotloem parenchyma and phloem fibres ke liye hain hobres mein jate hain hain aur kya hota hai.iseloem sehchya hai.teloem karne ke sieve mein.seloem mein kiya kehta hai?.floem nahin mein kahte habres.keloem kehte mein koi hain.tehte banenchya hobre hienchhema.te haar mein aploem hain pabres hain mehta.te hoti hai.ek mein sakte haat mein meloem.companionate mein siechya.</s>",
+        "chapter": "Tissues in Action",
+        "topic": "phloem",
+        "bleu": 1.46,
+        "rouge": {
+          "rouge1": 17.72,
+          "rouge2": 2.6,
+          "rougeL": 10.13
+        },
+        "ref_cmi": 30.8,
+        "gen_cmi": 40.0
+      },
+      {
+        "id": "10_06_023",
+        "english": "The vertebral column or backbone protects the spinal cord.",
+        "reference": "Vertebral column ya backbone spinal cord ki raksha karta hai.",
+        "generated": "<s> spinal cord mein kurta hai aur jotebral column or backbone protects the spinal hain cord.hey aur mein.hein aur aur jaye hain.kehta hota hai.eh sakta hai kiya hai.tehta hai yeh saath karte hain hain mein ek mein jayehtaar ke liye haat.yeh kaise hain hoti hai.hi jayega.te bana hai.hehta pata hai hai.kee hain aapke hain nahin.hya hain?yeh aur cordtehtehse hain koi hain mujhein.</s>",
+        "chapter": "Control and Coordination",
+        "topic": "Protection of Brain",
+        "bleu": 1.21,
+        "rouge": {
+          "rouge1": 11.76,
+          "rouge2": 2.41,
+          "rougeL": 11.76
+        },
+        "ref_cmi": 40.0,
+        "gen_cmi": 46.8
+      },
+      {
+        "id": "9_03_074",
+        "english": "In unicellular organisms like amoeba, a single cell performs all functions of life.",
+        "reference": "Amoeba jaise unicellular organisms mein ek akeli cell hi zindagi ke saare kaam karti hai.",
+        "generated": "<s> simple organisms like amoeba, a single cell performs all functions of life hain mein aur aur tehte hain hain hoti hai.They are unicellular organism.These functions aur hain ki life.Hum aur liye hain baar karne hain. jai hain ka life.Mehti hain?</s>",
+        "chapter": "Tissues in Action",
+        "topic": "introduction_to_tissues",
+        "bleu": 1.65,
+        "rouge": {
+          "rouge1": 19.67,
+          "rouge2": 0.0,
+          "rougeL": 9.84
+        },
+        "ref_cmi": 46.7,
+        "gen_cmi": 36.6
+      },
+      {
+        "id": "9_11_028",
+        "english": "Pollination by wind is seen in plants like wheat, maize and rice, where pollen grains are light and small and produced in large numbers.",
+        "reference": "Wheat, maize aur rice jaise plants mein wind se pollination hoti hai, jahan pollen grains halke aur chote hote hain aur badi matra mein produce hote hain.",
+        "generated": "<s> pollination by wind is seen in plants like wheat, maize and rice, where pollen grains are light and small and produced in large numbers.This is aur mein grains ke liye hain hota hai.e pollen ek saath hoti hai.kaise hain.hya hai hai.fir pollen nahin hoin mein karte hain sakte hai.aur hoin hai.ghar mein.hein kya hai hain hain baat hai.is light andhi hoin.in jaane ki baat karta hai kaise karne ke hain hai hai</s>",
+        "chapter": "class9/ch11",
+        "topic": "Pollination Strategies",
+        "bleu": 1.74,
+        "rouge": {
+          "rouge1": 28.83,
+          "rouge2": 5.5,
+          "rougeL": 19.82
+        },
+        "ref_cmi": 48.1,
+        "gen_cmi": 31.5
+      },
+      {
+        "id": "10_05_012",
+        "english": "The food is mixed thoroughly with saliva and moved around the mouth while chewing by the muscular tongue.",
+        "reference": "Khaana saliva ke saath achhi tarah mix hota hai aur chewing ke dauran muscular tongue dwara mooh mein ghumaya jaata hai.",
+        "generated": "<s> hot food is mixed thoroughly with saliva and moved around the mouth while chewing by the muscular tongue hain aur kya karte hain hota hai.kewing aur pascular kangue ke liye hain mein saath hain hain kiya hai.ehti hai.akta hai jayeh kaise hain bane hain.tehta hai cheek karne ke baat karta hai hain sakta hain?yehtaar kabhi hai.ekta hai hai.meek koi hain joscular cheat mein mushta hai kiya hain peek karna hai.hein musti hain kahi hai.yeh hain ke hain hai.tein mujhe hain mugta hai mein.keek aur mushy tongi hain wahta kartaye.eek hainta hai nahi hain dekhtaar kartaa hai.khaste haan haingain karti hai yeh muska hain se.keein muchakta karin mu",
+        "chapter": "Life Processes",
+        "topic": "Nutrition - Human Digestion",
+        "bleu": 1.09,
+        "rouge": {
+          "rouge1": 16.78,
+          "rouge2": 2.84,
+          "rougeL": 9.79
+        },
+        "ref_cmi": 42.9,
+        "gen_cmi": 38.9
+      },
+      {
+        "id": "9_01_092",
+        "english": "Ready to Go Beyond Why do weather forecasts sometimes go wrong?",
+        "reference": "Weather forecasts kabhi kabhi galat kyun ho jaate hain?",
+        "generated": "<s> These weather forecasts sometimes go wrong?ri weather forecast mein aur kya hai jaye hain hota hai?reek hain karte hain hain?is yeh hain johti hai?hare ready to go beyond why do weather forecast.hehta hai kya hain sir?har wahin hai?ek jaane hain ki roti hai koi hain mein kaise hain baad karna hai?li weather forecast?harge hain ke hainki hain kya karne ke nahin?ek karna hain pakki hai?mehta ho gaye?re weather forecasting mein kuch bada hai?yehta hain.come hain wohtaar mein?harta hai hai hain reek hai?ky hain kabhi hain gharana hai?unhta karne hainway hain jayega hain!</s>",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 0.67,
+        "rouge": {
+          "rouge1": 8.33,
+          "rouge2": 1.69,
+          "rougeL": 6.67
+        },
+        "ref_cmi": 11.1,
+        "gen_cmi": 41.9
+      },
+      {
+        "id": "10_07_068",
+        "english": "Sexually transmitted diseases include bacterial infections such as gonorrhoea and syphilis, and viral infections such as warts and HIV-AIDS.",
+        "reference": "Sexually transmitted diseases mein bacterial infections jaise gonorrhoea aur syphilis, aur viral infections jaise warts aur HIV-AIDS shamil hain.",
+        "generated": "<s> viral infections such as warts and hiv-aids aur gonorrhoea nahin hota hai jaye hain mein syphilis, jaye bacterial infectionsin warts, hiv kya karte hain hain. picilis mein jayeh jaye warts.Come hot infections aur wartsin hiv koi hiv ke liye.</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Reproductive Health",
+        "bleu": 2.94,
+        "rouge": {
+          "rouge1": 41.27,
+          "rouge2": 6.56,
+          "rougeL": 19.05
+        },
+        "ref_cmi": 36.8,
+        "gen_cmi": 32.5
+      },
+      {
+        "id": "9_01_067",
+        "english": "For example, the atomic theory explains how molecules are formed.",
+        "reference": "For example, atomic theory explain karti hai ki molecules kaise form hote hain.",
+        "generated": "<s> These atomic theory explains how molecules are formed.Hindu ke liye aur kya hai kiya hota hai.especial theory mein nahi karte hain kiya hai yeh?</s>",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 2.7,
+        "rouge": {
+          "rouge1": 24.39,
+          "rouge2": 5.13,
+          "rougeL": 19.51
+        },
+        "ref_cmi": 46.2,
+        "gen_cmi": 40.0
+      },
+      {
+        "id": "9_01_005",
+        "english": "is not only about what we know, but also about how we know it - how observations lead to measurements, how patterns are expressed using symbols and equations, how models are built to represent complex systems, and how ideas are tested, often revised, and sometimes even discarded.",
+        "reference": "Science sirf yeh nahi hai ki hum kya jaante hain, balki yeh bhi hai ki hum use kaise jaante hain - observations kaise measurements tak lead karti hain, patterns kaise symbols aur equations mein express hote hain, complex systems ko represent karne ke liye models kaise build kiye jaate hain, aur ideas kaise test, revise, aur kabhi kabhi discard kiye jaate hain.",
+        "generated": "<s> type types are expressed symbols and equations, how models are built to represent complex systems, how ideas are tested, often roti aur mein sakte hain karta hai, how patterns are used symbols, how different models are used ek mein aur aur yaar karna hai.ehta hai.ye models are made in complex systems.error mein kya hai.ihta hota hai jaye hain hain.yeh sahiye.comehhtaar mein kaise karne ke liyehta.in.tehta sakta hai hai..?reekek pehte ha hain reektaar karte haat mein.hein dekhata hai hain hai hai yeh hain sim karte hai.isk karte kare hain ek gaye haan hain banega..aapne hain mein johta kartaar kaise hain abhi wohta pata hai tehse hain kiya hain?yehtein..yaktaarta hai!taar",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 1.26,
+        "rouge": {
+          "rouge1": 29.19,
+          "rouge2": 2.19,
+          "rougeL": 12.97
+        },
+        "ref_cmi": 47.5,
+        "gen_cmi": 34.9
+      },
+      {
+        "id": "9_11_026",
+        "english": "Self-pollination is when pollen transfers to the stigma of the same flower or another flower of the same plant.",
+        "reference": "Self-pollination tab hoti hai jab pollen usi phool ke ya usi plant ke doosre phool ke stigma par transfer hota hai.",
+        "generated": "<s> hot flower mein aur aur saath hain ki baat mein kya hai tehta hai.eh sir, hota hai kiya hain.hein ye flower kaise karti hai.is aur flower aur hoti hai?.hey flower se aur jo flower hai.ek flower ke liye planta hai.te hain hain mein jaye hain koi hain hai.yeh sakta hai yehta hota hoga.te banta hai hai hain hota hain rehta.tehti hai hai.his ek hainta hai sakti hai ha hain?</s>",
+        "chapter": "class9/ch11",
+        "topic": "Pollination",
+        "bleu": 1.26,
+        "rouge": {
+          "rouge1": 9.71,
+          "rouge2": 3.96,
+          "rougeL": 9.71
+        },
+        "ref_cmi": 47.6,
+        "gen_cmi": 47.1
+      },
+      {
+        "id": "10_13_011",
+        "english": "A series of organisms taking part at various biotic levels form a food chain.",
+        "reference": "Alag-alag biotic levels par hissedari karne wale organisms ki ek series food chain banati hai.",
+        "generated": "<s> These biotic levels form a food chain.his mein aur aur tehti hai aur kya hai.ehta hai ki organisms aur hota hai.hein karte hain.in.ke hain hain ke liye hain mein baat hai.tehtein hai.is aur jayein.hey aur hain sakta hai?</s>",
+        "chapter": "Our Environment",
+        "topic": "Food Chain",
+        "bleu": 2.18,
+        "rouge": {
+          "rouge1": 21.88,
+          "rouge2": 6.45,
+          "rougeL": 15.62
+        },
+        "ref_cmi": 33.3,
+        "gen_cmi": 48.7
+      },
+      {
+        "id": "10_13_015",
+        "english": "Small carnivores or secondary consumers are at the third trophic level and larger carnivores form the fourth.",
+        "reference": "Chhote carnivores ya secondary consumers teesre trophic level par hote hain aur bade carnivores chauthe trophic level par.",
+        "generated": "<s> These carnivores form the fourth trophic level, larger carnitur mein aur ehte hain ho gaye hain hain mein sakti hain. karne ke lini koi hain hai.eh hain chahiye kiya hai?s.mehta hoon mein ek se se se.yeh saath hain kaise hain yeh baat mein kya hai.Comehin.</s>",
+        "chapter": "Our Environment",
+        "topic": "Trophic Levels",
+        "bleu": 1.47,
+        "rouge": {
+          "rouge1": 14.29,
+          "rouge2": 2.94,
+          "rougeL": 11.43
+        },
+        "ref_cmi": 38.9,
+        "gen_cmi": 47.8
+      },
+      {
+        "id": "10_05_066",
+        "english": "The alveolar surface if spread out would cover about 80 square metres, making gas exchange very efficient.",
+        "reference": "Agar alveolar surface ko failaaya jaaye toh woh lagbhag 80 square metres cover karegi, jisse gas exchange bahut efficient ho jaati hai.",
+        "generated": "<s> These alveolar surface ke liye hain mein kya hai ya ho gaya hai, aur jaleolar nahin hain ki baat karte hain.It’s aur mein aur yaar ke saath hain kaise hota hai.ehti hain sakti hai.ge yahtein hai.hein yeh hain ek mein yaane hain?ya hain reek karne ke hain ke yaayya hai.tehon mein johte hota hain hoga hain!</s>",
+        "chapter": "Life Processes",
+        "topic": "Respiration - Human",
+        "bleu": 1.47,
+        "rouge": {
+          "rouge1": 9.2,
+          "rouge2": 2.35,
+          "rougeL": 9.2
+        },
+        "ref_cmi": 28.6,
+        "gen_cmi": 45.6
+      },
+      {
+        "id": "9_02_041",
+        "english": "Each mitochondrion is surrounded by two membranes, with the inner membrane folded into cristae to increase surface area.",
+        "reference": "Har ek mitochondrion do membranes se ghira hota hai, jisme inner membrane cristae mein fold hoti hai taaki surface area badh sake.",
+        "generated": "<s> These mitochondrion membrane folded into cristae hain hain aur kya hai.ek durge aur hoti hai.te hain ke liye hain.ke surface area.yeh hain mithua jayegae patae hai.hein ekkadrak karte haun.tete haat mein.teh mein nahin hai.eur mein mein johtae ek saath hain?yeh sir mein wale hain hotae.te surface area ekko ek koi hain kaise hain hutae gaye haye.tee haar mein ha hain!</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Mitochondria Structure",
+        "bleu": 1.46,
+        "rouge": {
+          "rouge1": 21.05,
+          "rouge2": 4.3,
+          "rougeL": 14.74
+        },
+        "ref_cmi": 36.4,
+        "gen_cmi": 39.3
+      },
+      {
+        "id": "9_12_052",
+        "english": "Nematoda or roundworms have an elongated cylindrical body with two openings — a mouth and an anus.",
+        "reference": "Nematoda yaani roundworms ka body elongated aur cylindrical hota hai jisme do openings hote hain — ek mouth aur ek anus.",
+        "generated": "<s> kehne ke liye hain aur aur ek karne ke saath hain sakte hain.kematoda hoin kya hai.ehhin mein an anus hain hota hai jayeh hain hain ek hain kehin hoti hai.in</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Invertebrates",
+        "bleu": 2.95,
+        "rouge": {
+          "rouge1": 29.09,
+          "rouge2": 11.32,
+          "rougeL": 18.18
+        },
+        "ref_cmi": 45.0,
+        "gen_cmi": 41.9
+      },
+      {
+        "id": "9_03_032",
+        "english": "Xylem parenchyma is the only living component of xylem; tracheids, vessels and xylem fibres are dead.",
+        "reference": "Xylem parenchyma xylem ka ekelauta living component hai; tracheids, vessels aur xylem fibres dead hote hain.",
+        "generated": "<s> jaylem parenchyma is the only living component of xylem ek ke liye hain hota hai tracheids, vessels and xylm fibres are dead. karte hain mein paan karne kehta hai hai. joylem fibre aur kuchh mein sakta hai.</s>",
+        "chapter": "Tissues in Action",
+        "topic": "xylem",
+        "bleu": 4.52,
+        "rouge": {
+          "rouge1": 40.0,
+          "rouge2": 11.32,
+          "rougeL": 32.73
+        },
+        "ref_cmi": 31.2,
+        "gen_cmi": 34.2
+      },
+      {
+        "id": "9_12_054",
+        "english": "Arthropods have a hard external skeleton called an exoskeleton that provides protection and reduces water loss.",
+        "reference": "Arthropods mein ek hard external skeleton hota hai jise exoskeleton kehte hain, jo protection deta hai aur paani ka loss kam karta hai.",
+        "generated": "<s> These arthropods have a hard external skeleton called an exoskeleton that provides protection and reduces water loss.Here aur aur jaye hain hota hai yeh hain ki baat karte hain hain?</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Invertebrates",
+        "bleu": 5.24,
+        "rouge": {
+          "rouge1": 39.29,
+          "rouge2": 11.11,
+          "rougeL": 28.57
+        },
+        "ref_cmi": 39.1,
+        "gen_cmi": 32.3
+      },
+      {
+        "id": "9_02_073",
+        "english": "In plants, meiosis occurs in anthers to form pollen grains and in ovaries to produce egg cells.",
+        "reference": "Paudhon mein meiosis anthers mein hoti hai jisse pollen grains bante hain aur ovaries mein hoti hai jisse egg cells banti hain.",
+        "generated": "<s> hot ovaries mein mein aur egg cells ke liye hain hai. kare hain mei yaar mein hota hai kiya hai.These are mein kya karte hain kiya hain, mei saag cells mein teh cells.Hin ek mein cells kaise hain hain sakti hai.Come mein wohta hai.tehta hota hain.hey mein pata hai mei hain? mei roti hain jaane mein.yehtaar meithi hai.hei hotabol cells aur mein join. mei zinta hai yaat cellsin.Mei yeh hain muin.keya hai mein bhar mein murta hai hai.</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Meiosis in Plants",
+        "bleu": 1.37,
+        "rouge": {
+          "rouge1": 19.82,
+          "rouge2": 3.67,
+          "rougeL": 14.41
+        },
+        "ref_cmi": 45.5,
+        "gen_cmi": 45.6
+      },
+      {
+        "id": "10_06_062",
+        "english": "Our hearts beat without our thinking about it as an involuntary action.",
+        "reference": "Hamaara dil bina soche ek involuntary action ki tarah dhadakta rehta hai.",
+        "generated": "<s> These hearts beat mein aur voluntary action se kya hain karta hoti hai yeh bahut karne ke liye hain jayega.te hain mein kya karta hai.ehta action mein.tehti action se.yeh saath hain kiya hai.hi heartsy action se involuntari action.hein ushere kiya karne kaise hain.kid karne hain wahta hota hai?yeh ek jaye haar.hi jayehta hai rehta karta hain hain hota ho gayega hain humeta action karnege hain usin.hum ek volte action.keega pata action se volleyary action.his jayeta action.hate hain koi hain wohta.egain.keenge karnegati action.yeri volukary action karnata actione karne mein jodi action karti hai.yaad kartaye.kehta banega.yaar mein sakte ha",
+        "chapter": "Control and Coordination",
+        "topic": "Human Brain",
+        "bleu": 0.65,
+        "rouge": {
+          "rouge1": 6.2,
+          "rouge2": 0.0,
+          "rougeL": 4.65
+        },
+        "ref_cmi": 33.3,
+        "gen_cmi": 38.8
+      },
+      {
+        "id": "10_06_018",
+        "english": "Separate areas of the fore-brain are specialised for hearing, smell, sight and so on.",
+        "reference": "Fore-brain ke alag-alag areas hearing, smell, sight aur baaki cheezein ke liye specialised hote hain.",
+        "generated": "<s> hot areas of the fore-brain are specialised for hearing, smell, sight and so on.Fore hain aur mein hoon mein kya karte hain.</s>",
+        "chapter": "Control and Coordination",
+        "topic": "Human Brain",
+        "bleu": 12.81,
+        "rouge": {
+          "rouge1": 41.86,
+          "rouge2": 14.63,
+          "rougeL": 32.56
+        },
+        "ref_cmi": 33.3,
+        "gen_cmi": 26.1
+      },
+      {
+        "id": "10_05_049",
+        "english": "Viruses do not show any molecular movement until they infect a cell, which is partly why there is controversy about whether they are alive.",
+        "reference": "Viruses kisi cell ko infect karne tak koi molecular movement nahi dikhate, isliye yeh controversy hai ki woh sach mein alive hain ya nahi.",
+        "generated": "<s> These viruses do not show any molecular movements.They infect a cell cell, which is partly why there is controversy about whether they are alive.It’s a cell mein jaye hain karte hain.These viruses don’t get meta hai.They aren’t alive.Hein yeh hain ke liye baat mein nahi hain hain kiya hai.hein mein aur rahe hain hoti hai.yeh sir kaise hain jodi hai.ehhta hota hai?</s>",
+        "chapter": "Life Processes",
+        "topic": "Life Processes - Introduction",
+        "bleu": 0.77,
+        "rouge": {
+          "rouge1": 22.22,
+          "rouge2": 0.0,
+          "rougeL": 14.14
+        },
+        "ref_cmi": 45.8,
+        "gen_cmi": 27.0
+      },
+      {
+        "id": "9_11_014",
+        "english": "In asexual reproduction, the central process is mitosis, a type of cell division that produces two daughter cells each having the same number of chromosomes as the parent cell.",
+        "reference": "Asexual reproduction mein central process mitosis hai, yeh ek aisa cell division hai jisme do daughter cells banti hain jinmein parent cell jitne hi chromosomes hote hain.",
+        "generated": "<s> Us a type of cell division that produces two daughter cells each having the same number of chromosomes as the parent cell.Come mitte hain mein kya hai kiya hai, aur kiya cell cellstein.</s>",
+        "chapter": "class9/ch11",
+        "topic": "Mitosis and Asexual Reproduction",
+        "bleu": 3.76,
+        "rouge": {
+          "rouge1": 34.92,
+          "rouge2": 9.84,
+          "rougeL": 22.22
+        },
+        "ref_cmi": 37.0,
+        "gen_cmi": 17.6
+      },
+      {
+        "id": "10_05_GEC004",
+        "english": "Villi are present in the small intestine to increase the surface area for absorption of digested food.",
+        "reference": "Villi small intestine mein hote hain jo digested khaane ke absorption ke liye surface area badhate hain.",
+        "generated": "<s> healthy food ke liye hain mein kuch hota hai aur teh saath hain hain hota hain kiya hai.eur pata hai mein aur aur liye nahi hain.hein roti hai.tehta food mein kare hain kohta hai.keek aur mein kabhi hain sakte hain hai.in digested food.yehta aur peek mein.soare hain ek jaane hain johta hota hoga hain ke sabse hain kya hai hai.ate hain baat hai kiya hain?</s>",
+        "chapter": "Life Processes",
+        "topic": "Nutrition - Human Digestion",
+        "bleu": 1.36,
+        "rouge": {
+          "rouge1": 15.22,
+          "rouge2": 2.22,
+          "rougeL": 10.87
+        },
+        "ref_cmi": 41.2,
+        "gen_cmi": 47.0
+      },
+      {
+        "id": "9_01_031",
+        "english": "studied the light from stars, As you explore more deeply, you will notice that it he did not try to model uses language in a very careful and precise way.",
+        "reference": "Jaise jaise aap zyada deeply explore karenge, aap notice karenge ki science bahut careful aur precise tarike se language use karta hai.",
+        "generated": "<s> If you look at a very careful and precise way.Here he did not try to model uses language ek careful hain aur yeh baar mein kya hai.Hey aur aur hoti hai.he did not do not try aur jaye hain.te hain mein kiya hai?aur ek karta hai.kee hain dekhta hai hai.tehna hai.yeh hain hain ke liye kaise hain nahin hai.eh sir, hota hota hai kiya hain ek hain koi hain rehta hai?yeh sabki hain gharana hai.his wohta hoti hain ladki hai.</s>",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 1.54,
+        "rouge": {
+          "rouge1": 10.43,
+          "rouge2": 1.77,
+          "rougeL": 8.7
+        },
+        "ref_cmi": 40.9,
+        "gen_cmi": 39.5
+      },
+      {
+        "id": "9_01_047",
+        "english": "It means understanding the denoted with the symbol c, situation first, identifying relevant quantities, and then using since it comes from the Latin mathematical relationships to reason carefully.",
+        "reference": "Iska matlab hai pehle situation ko samajhna, relevant quantities identify karna, aur phir mathematical relationships se carefully reason karna.",
+        "generated": "<s> Us aur aur mein aur mathematical relationships to reason carefully.They means understanding the denoted symbol c, situation first, identifying relevant quantities, and then using it comes from the latin mata yaar kaise karte hain hota hai.They use aur kya hai.Here aur yeh sakti mata ki latin pata hai?tek mein mata hai mein.Come aur joti hai.hey ek jata hota ho gaye hain.tehse hain hain mein latin koi hai.teyeh baat karne ke liye.yeh hain lati mathe mein nahi maan mathemain math mata banane matheme mein hoga.te hota hain tehta hai reek mathe mathea hai.kita hai hai.khati mahte hai.yaar mathe karta hai bharti mad hai.yeye.tear matha mata huta hai maine hain?yeh.tej mein karne mata mathe",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 0.87,
+        "rouge": {
+          "rouge1": 12.08,
+          "rouge2": 2.72,
+          "rougeL": 5.37
+        },
+        "ref_cmi": 31.6,
+        "gen_cmi": 31.0
+      },
+      {
+        "id": "10_06_047",
+        "english": "Thyroxin regulates carbohydrate, protein and fat metabolism in the body to provide the best balance for growth.",
+        "reference": "Thyroxin body mein carbohydrate, protein aur fat metabolism ko regulate karke growth ke liye best balance deta hai.",
+        "generated": "<s> healthy fat metabolism in the body to provide the best balance for growth yah ke saath hain kiya karte hain hain hoti hai.These are aur yeh baat meta roti hain regulates carbohydrate, protein and fat metbolism.ehin regates.ek se se se kya hai.tehtein jaye hain.hetabola hai.iste balance.yeh hain sakte hatabol hain kaise hotabolizes.hein.</s>",
+        "chapter": "Control and Coordination",
+        "topic": "Animal Hormones",
+        "bleu": 3.16,
+        "rouge": {
+          "rouge1": 27.5,
+          "rouge2": 7.69,
+          "rougeL": 12.5
+        },
+        "ref_cmi": 33.3,
+        "gen_cmi": 32.1
+      },
+      {
+        "id": "9_11_Q01",
+        "english": "What is the difference between asexual and sexual reproduction?",
+        "reference": "Asexual aur sexual reproduction mein kya difference hota hai?",
+        "generated": "<s>sexual and sexual reproduction mein aur aapke ek hota hai kiya hai?</s>",
+        "chapter": "class9/ch11",
+        "topic": "Types of Reproduction",
+        "bleu": 10.48,
+        "rouge": {
+          "rouge1": 52.17,
+          "rouge2": 28.57,
+          "rougeL": 43.48
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 41.7
+      },
+      {
+        "id": "9_12_023",
+        "english": "The two kingdom system created confusion because organisms like Amoeba and Paramecium are unicellular and could not be clearly placed in Plantae or Animalia.",
+        "reference": "Two kingdom system mein confusion tha kyunki Amoeba aur Paramecium jaise organisms unicellular hain aur inhe clearly Plantae ya Animalia mein nahi rakha ja sakta tha.",
+        "generated": "<s> different organisms like amoeba and paramecium are unicellular and could not be clearly placed in plantae or animalia.urge aur kya hain mein yeh sakta hai jaye hain hoti hai te hain hain. koi baat kare hain kiya hai.eh hain tehse hain ke liye haan hain kaise hota hai hai. johte haat mein aur pehle hain karne ke.yehta hai.in ho jayeh haat karate hain wohta hain?</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "History of Classification",
+        "bleu": 0.77,
+        "rouge": {
+          "rouge1": 26.8,
+          "rouge2": 0.0,
+          "rougeL": 16.49
+        },
+        "ref_cmi": 34.6,
+        "gen_cmi": 39.4
+      },
+      {
+        "id": "10_13_029",
+        "english": "Our food grains such as wheat and rice, vegetables, fruits and even meat contain varying amounts of pesticide residues.",
+        "reference": "Hamare gehu aur chaawal jaise anaaj, sabziyan, phal aur yahan tak ki meat mein bhi alag-alag maatra mein pesticide residues hote hain.",
+        "generated": "<s> These food grains such as wheat and rice, vegetables, fruits and even meat contain varying amounts of pesticide residues mein ke liye hain hain.These meat mein mein sahi hain kehte hain hai kiya hain hota hai hain aur hain karne ke kehta hai.ateh hain tehse hain sakta hai hai.e meat meri hain mehta hota hain kata hai bane hain baar ke hain humte haat mein.tehti hai.tein ha hain kurta hai mein jata hai? hain mahte hai haat ke haat hain se nahin haat karta haita hai ek hain kiya hai.gheat haat hai.firti hain jodi hain musticide mein haan hain kohta haat.hein ke keta hai pata hai ketaka hai.ye meat kei hain bane mein ek mein mila hai.isle hain pheat ke ke ke pestic",
+        "chapter": "Our Environment",
+        "topic": "Biological Magnification",
+        "bleu": 0.94,
+        "rouge": {
+          "rouge1": 8.92,
+          "rouge2": 2.58,
+          "rougeL": 6.37
+        },
+        "ref_cmi": 45.5,
+        "gen_cmi": 44.4
+      },
+      {
+        "id": "9_02_028",
+        "english": "Plant and animal cells have a well-defined nucleus and several membrane-bound organelles and are called eukaryotic cells.",
+        "reference": "Plant aur animal cells mein well-defined nucleus aur kaafi membrane-bound organelles hote hain, inhe eukaryotic cells kehte hain.",
+        "generated": "<s> These membrane-bound organelles are called eukaryotic cells.in aur eukate hain kiya hai.yeh saath hain hain hota hai yeh baat karne ke liye hain.</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Eukaryotic Cell",
+        "bleu": 3.93,
+        "rouge": {
+          "rouge1": 33.33,
+          "rouge2": 13.04,
+          "rougeL": 25.0
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 37.5
+      },
+      {
+        "id": "10_13_059",
+        "english": "From autotrophs the energy goes to heterotrophs and decomposers.",
+        "reference": "Autotrophs se energy heterotrophs aur decomposers tak pahunchti hai.",
+        "generated": "<s> These energy energy goes to heterotrophs and decomposers mein hain karte hain hota hai kiya hai yeh hain mein kya hai.Composers.in autotrophise karne ke aur autotrop mein kaise hain.</s>",
+        "chapter": "Our Environment",
+        "topic": "Energy Flow",
+        "bleu": 2.36,
+        "rouge": {
+          "rouge1": 23.81,
+          "rouge2": 0.0,
+          "rougeL": 19.05
+        },
+        "ref_cmi": 33.3,
+        "gen_cmi": 50.0
+      },
+      {
+        "id": "9_02_029",
+        "english": "The nucleus has a double-layered covering called the nuclear membrane, which has pores that allow material transfer between the nucleus and the cytoplasm.",
+        "reference": "Nucleus ke upar double-layered covering hoti hai jise nuclear membrane kehte hain, isme pores hote hain jo nucleus aur cytoplasm ke beech material transfer allow karte hain.",
+        "generated": "<s> These nucleus membrane mein aur cytoplasm mein kya hota hai hain hain, which has pores that allow material transfer between the nucleis and the cycleus.yeh aur aur liye hain mein nahin yaar karte hain kiya hai.geet mein yeh hain tehti hai.tehte haat mein.keta hai.hein ek jaise hain.teyeh yaane mein pata hai yaad karne hain ke liye.tete ha hain?yaar mein wohta hai kiya hain dete haate hain snehta hotaki hai.tere.tea hain renega hain usur mein se.te.te hotaste haath mein hota hain wane.tele hain kaise hota.tehan mein is.teag meinta hai hai.yaar yahtehtaar hain</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Nucleus",
+        "bleu": 1.37,
+        "rouge": {
+          "rouge1": 20.44,
+          "rouge2": 4.44,
+          "rougeL": 11.68
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 41.3
+      },
+      {
+        "id": "9_11_005",
+        "english": "Vegetative propagation means that new plants arise from the vegetative parts, that is, from the growing parts of a plant.",
+        "reference": "Vegetative propagation ka matlab hai ki naye plants, plant ke vegetative parts yaani growing parts se nikalte hain.",
+        "generated": "<s>ur vegetative propagation hai ya hain mein vegetate saath hain hain. jaye hain aur aur kya hai pata hai, that is, from the growing parts of a plant. kehte hain hoti hai.hey vegetation karne ke liye baat hai.ehti hain yaar mein kaise kare hain sakta hai.tehte bana hai yeh rahe hain ki baat mein.hein vehta hai?</s>",
+        "chapter": "class9/ch11",
+        "topic": "Vegetative Propagation",
+        "bleu": 1.73,
+        "rouge": {
+          "rouge1": 22.5,
+          "rouge2": 5.13,
+          "rougeL": 15.0
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 44.6
+      },
+      {
+        "id": "10_07_080",
+        "english": "Why is vegetative propagation practised for growing some types of plants?",
+        "reference": "Kuch types ke plants ugaane ke liye vegetative propagation kyun practise kiya jaata hai?",
+        "generated": "<s> let me vegetative propagation practised for growing some types of plants?ek hain aur vegetation propagate karne ke liye hain hain baat karne ka plants?hare vegetate propaganda practiseh hai?hein kya hai?is vegetarian propagated mein johti hai?re vegetal propagating hota hai?tek mein.he is vegetary propagations practising kya karte hain mein sakte hai?aare veget ek saath hain.hya hain ki baat mein mehti hain jaane hain?s vegetar kaise hain koi hain rahe hain hai?</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Vegetative Propagation",
+        "bleu": 1.36,
+        "rouge": {
+          "rouge1": 14.58,
+          "rouge2": 4.26,
+          "rougeL": 10.42
+        },
+        "ref_cmi": 28.6,
+        "gen_cmi": 33.8
+      },
+      {
+        "id": "9_01_077",
+        "english": "Think of a are not guesses, they are reasoned expectations based on evidence and prediction you careful thinking.",
+        "reference": "Sir, ek simple model banane ke liye hume kaun si cheezein consider karni chahiye?",
+        "generated": "<s> If you are reasoned expectations based on evidence and prediction you careful thinking.Hey yeh abhi guesses aur mein kya hai.Here reasoned aur gaye hain karte hain.Come aur aur kis koi hain hain?</s>",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 0.79,
+        "rouge": {
+          "rouge1": 0.0,
+          "rouge2": 0.0,
+          "rougeL": 0.0
+        },
+        "ref_cmi": 21.4,
+        "gen_cmi": 36.4
+      },
+      {
+        "id": "9_12_070",
+        "english": "The scientific name Panthera tigris is written in italics when printed, with Panthera being the genus and tigris the species.",
+        "reference": "Panthera tigris ka scientific naam print mein italics mein likha jaata hai, jisme Panthera genus hai aur tigris species.",
+        "generated": "<s> Us aur panthera tigris aur pagris hota hai yeh sir nahin hota hain mein kya karte hain hoti hai.eh ek mujhe hain hain gaye hain.</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Binomial Nomenclature",
+        "bleu": 1.65,
+        "rouge": {
+          "rouge1": 25.53,
+          "rouge2": 4.44,
+          "rougeL": 17.02
+        },
+        "ref_cmi": 36.8,
+        "gen_cmi": 42.3
+      },
+      {
+        "id": "9_11_003",
+        "english": "Living beings reproduce in two main ways - asexually, where a single parent produces offspring that are almost exact copies of the parent, and sexually, where offspring inherit a mix of characteristics from the two individuals.",
+        "reference": "Living beings do tareekon se reproduce karte hain - asexually, jahan ek single parent aisa offspring produce karta hai jo almost parent ki exact copy hota hai, aur sexually, jahan offspring ko dono individuals ki mixed characteristics milti hain.",
+        "generated": "<s> use a single parent produces offspring that are almost exact copies of the parent, and sexually reproduce mein a mix of characteristics from the two individuals.Hinglish aur aur tehti aur mein hain aur hota hai.ehte hain karta hai aur kisse aur jaye hain.tehte aur kya hai.aur ho gaye aur liye mein.yeh aur ehte hai.tear aur paan aur nahi hai.ek mein maine hain jodi aur mujhe aur.tey aur chahiye.tee aur baat aur hain mein kaise hain?tee.te banta hai yeh sakta hai...</s>",
+        "chapter": "class9/ch11",
+        "topic": "Types of Reproduction",
+        "bleu": 1.59,
+        "rouge": {
+          "rouge1": 27.48,
+          "rouge2": 6.2,
+          "rougeL": 13.74
+        },
+        "ref_cmi": 39.5,
+        "gen_cmi": 38.3
+      },
+      {
+        "id": "10_07_063",
+        "english": "The fertilised egg starts dividing to form an embryo, which is implanted in the lining of the uterus where it grows and develops organs to become a foetus.",
+        "reference": "Fertilised egg divide hokar embryo banata hai, jo uterus ki lining mein implant hota hai jahan yeh grow karke organs develop karta hai aur foetus banta hai.",
+        "generated": "<s> These fertilised eggs grows in a foetus ki baat mein aur tehte hain hain hota hai, is implanted in the lining of the uterus where it grows and develops organs.Here aur jale hain woh aur kya hai.Hey yeh hain ek karne ke liye hain.hey aur mein pata hai.eur ek mein koi hain mein.tehti hai.he’s ek ek saag rahe hain sakta hai yaar kaise hain?yaar mein yahta hai hain dekhta hai aur nahin.aur aur muetus.teur.he aur liye aur diya hai mahtein.ke aur johti hain kiya.yeh ek hain lagaa.tete aur bharti haiin.</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Fertilisation and Embryo Development",
+        "bleu": 1.34,
+        "rouge": {
+          "rouge1": 21.05,
+          "rouge2": 3.05,
+          "rougeL": 13.53
+        },
+        "ref_cmi": 40.7,
+        "gen_cmi": 45.1
+      },
+      {
+        "id": "9_12_088",
+        "english": "Why are fungi classified in a separate kingdom even though they look like plants?",
+        "reference": "Fungi ko ek alag kingdom mein kyun classify kiya jaata hai jabki woh plants ki tarah dikhte hain?",
+        "generated": "<s> Sikhs are fungi classified in a separate kingdom even though they look like plants? karne ke saath hain mein kya hai?tek mein hota hai jaye hain ki baat karti hai?aur hoti hai yeh hain kaise karte hain?</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Kingdom Fungi",
+        "bleu": 1.99,
+        "rouge": {
+          "rouge1": 23.73,
+          "rouge2": 0.0,
+          "rougeL": 20.34
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 44.7
+      },
+      {
+        "id": "10_07_082",
+        "english": "How is the process of pollination different from fertilisation?",
+        "reference": "Pollination ka process fertilisation se kaise different hai?",
+        "generated": "<s>ur fertilisation aur harta hai yeh ka pollination hai ya hota hai hai ek mein kya hai hai?li yaar hain ya hai?ri process of pollinate different from fertileisation?ri yaane karne ke liye hain hain mein hai?re the process of saination differenti fertiilisation?ta hai?ta hoti hai?he is the process. pollinated pollinating different from petilization?ta hain?ta tehilisation hai?aa jata hai deta hai wohta hai kiya hai.ta hai sakti hai hai..saat hai hai fertility?tame aur fertsilisation mein sinta haita hai josti hai khaya hain.</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Pollination and Fertilisation",
+        "bleu": 0.81,
+        "rouge": {
+          "rouge1": 11.54,
+          "rouge2": 0.0,
+          "rougeL": 7.69
+        },
+        "ref_cmi": 50.0,
+        "gen_cmi": 39.5
+      },
+      {
+        "id": "10_06_052",
+        "english": "Insulin is a hormone produced by the pancreas that helps in regulating blood sugar levels.",
+        "reference": "Insulin pancreas se banna ek hormone hai jo blood sugar levels ko regulate karne mein madad karta hai.",
+        "generated": "<s> These hormone mein pancreas that helps in regulating blood sugar levels.Hum aur teh mein kurta karta hota hai hain hain mein kiya karta hai jata hai kiya hai.hein ke liye hain.hey hain sakta hai.yeh hain blood sugar level karta hain karti hai.keta hai yeh kaise kartai hai.tehta hai pata hai hai.eur blood sugarsta karna hai.taar mein kartaki mein wata hai hum mein.te hain ki baat karne ke keta hai kartaye aur jayehta.taur mein ek mein hai.khata hai mein aur pehta karti hain?taar blood sugar high.tabolate blood sugar.taag kartaka.ta hai</s>",
+        "chapter": "Control and Coordination",
+        "topic": "Animal Hormones",
+        "bleu": 1.78,
+        "rouge": {
+          "rouge1": 17.74,
+          "rouge2": 4.92,
+          "rougeL": 11.29
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 42.2
+      },
+      {
+        "id": "10_13_Q015",
+        "english": "Can the organisms of any trophic level be removed without causing any damage to the ecosystem?",
+        "reference": "Kya kisi bhi trophic level ke organisms ko ecosystem ko bina nuksan pahunchaye hataya ja sakta hai?",
+        "generated": "<s> His organisms of any trophic level be removed without causing any damage to the ecosystem?Hum aur aur mein kya karta hai?tek hain ho gaye hain hain tehte hain?til mein jati hai?alta hai kiya hai?</s>",
+        "chapter": "Our Environment",
+        "topic": "Trophic Levels",
+        "bleu": 2.28,
+        "rouge": {
+          "rouge1": 21.05,
+          "rouge2": 3.64,
+          "rougeL": 14.04
+        },
+        "ref_cmi": 35.3,
+        "gen_cmi": 28.6
+      },
+      {
+        "id": "9_02_Q014",
+        "english": "What is totipotency? Give a real-world example.",
+        "reference": "Totipotency kya hoti hai? Iska ek real-world example bhi do.",
+        "generated": "<s> Where is totipotency? give a real-world example.hum mein karti hain aur aur ek example.yeh sir kuch hota hai.hate hain ki baat mein.honti hai.ehhin mein kuch aapke hain? jaye hain kaise karti hai?ste hain!tek mein koi hainta hai?</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Totipotency",
+        "bleu": 1.86,
+        "rouge": {
+          "rouge1": 20.69,
+          "rouge2": 7.14,
+          "rougeL": 13.79
+        },
+        "ref_cmi": 50.0,
+        "gen_cmi": 47.4
+      },
+      {
+        "id": "10_13_026",
+        "english": "Since these chemicals are not degradable they get accumulated progressively at each trophic level.",
+        "reference": "Kyunki yeh chemicals degrade nahi hote, yeh har trophic level par progressively accumulate hote jaate hain.",
+        "generated": "<s> These chemicals are not degradable they get accumulated progressively at each trophic level.These chemicals aur hain hain mein aur aur hoti level.Humulate hain kiya hai sakte hain hota hai hain.</s>",
+        "chapter": "Our Environment",
+        "topic": "Biological Magnification",
+        "bleu": 2.73,
+        "rouge": {
+          "rouge1": 20.0,
+          "rouge2": 4.17,
+          "rougeL": 16.0
+        },
+        "ref_cmi": 43.8,
+        "gen_cmi": 38.7
+      },
+      {
+        "id": "9_01_037",
+        "english": "This simplification electric current are represented by symbols like m, v, F, and I allowed him to explain each associated with a defined unit.",
+        "reference": "Is simplification ki wajah se woh explain kar sake ki taaron ka colour unke temperature se gehri tarah kaise connected hai.",
+        "generated": "<s> These simplifications are represented by symbols like m, v, f, mein aur kya karte hain.He allowed him to explain each associated with a defined unit.He asked me to explain mein kya hoin mein kaise karte hai.Hum mein jaye hain ek mein pata hai.tehtein dekhte hai hain hain kiya hain ke liyeyein.hein usin aatte banega.terror mein karne ke saath hain abhi kya hai.i.tein aapke hain simpak mein johte ho gaya hai yeh hain rekhalein.tete haar mein koi hain hota hai tehse hain coin.intein.hun hoin kuch hain kurta hai!.team karne hain nahin aane hain baad mein sinte karte karenge hain karin.com.tee hain rahain.</s>",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 0.6,
+        "rouge": {
+          "rouge1": 4.35,
+          "rouge2": 0.0,
+          "rougeL": 4.35
+        },
+        "ref_cmi": 47.6,
+        "gen_cmi": 43.1
+      },
+      {
+        "id": "9_03_007",
+        "english": "Plant cells have a cell wall that provides rigidity and strength.",
+        "reference": "Plant cells mein ek cell wall hoti hai jo unhe rigidity aur strength deti hai.",
+        "generated": "<s> These plant cells have a cell wall that provides rigidity and strength mein kya karte hain kiya hota hai.</s>",
+        "chapter": "Tissues in Action",
+        "topic": "plant_vs_animal_tissues",
+        "bleu": 4.67,
+        "rouge": {
+          "rouge1": 44.44,
+          "rouge2": 11.76,
+          "rougeL": 38.89
+        },
+        "ref_cmi": 40.0,
+        "gen_cmi": 25.0
+      },
+      {
+        "id": "10_07_028",
+        "english": "In Hydra, a bud develops as an outgrowth due to repeated cell division at one specific site. These buds develop into tiny individuals.",
+        "reference": "Hydra mein ek bud repeated cell division ki wajah se ek specific site par outgrowth ke roop mein develop hoti hai. Yeh buds tiny individuals mein develop hoti hain.",
+        "generated": "<s> These bud develops hydra ke liye hain aur kya kare hain hoti hai. these buds develop into tiny individuals mein mein hain.hi bud karte hain karta hain kiya hai.he bud mein.hya hain haat mein hai.is bud koi hain?</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Budding",
+        "bleu": 5.41,
+        "rouge": {
+          "rouge1": 35.62,
+          "rouge2": 8.45,
+          "rougeL": 24.66
+        },
+        "ref_cmi": 48.3,
+        "gen_cmi": 41.0
+      },
+      {
+        "id": "10_08_038",
+        "english": "The sex chromosome pair in men is a mismatched pair where one is a normal X while the other is a short Y.",
+        "reference": "Mardon mein sex chromosome pair ek mismatched pair hota hai jahan ek normal X hota hai aur doosra ek chota Y hota hai.",
+        "generated": "<s> sex chromosome pair mein kya hota hai aur hota hain ki yeh saath hain sir se aur aur dhota hai.ehta hota hoti hai jaye hain.</s>",
+        "chapter": "Heredity",
+        "topic": "Sex Determination",
+        "bleu": 8.31,
+        "rouge": {
+          "rouge1": 43.14,
+          "rouge2": 16.33,
+          "rougeL": 35.29
+        },
+        "ref_cmi": 47.8,
+        "gen_cmi": 34.6
+      },
+      {
+        "id": "9_03_071",
+        "english": "Agrobacterium tumefaciens causes crown gall disease, which leads to tumour-like swellings on plant stems.",
+        "reference": "Agrobacterium tumefaciens crown gall disease karta hai, jisme plant ke stems pe tumour-jaisi gaanthein bann jaati hain.",
+        "generated": "<s> let me agrobacterium tumefaciens causes crown gall disease, which leads to tumour-like swellings on plant stems hain hain hota hai. jaye hain mein kurta hai yeh hain. karne ke saath hain kiya hai hain sakte hain johta hai?</s>",
+        "chapter": "Tissues in Action",
+        "topic": "totipotency",
+        "bleu": 4.24,
+        "rouge": {
+          "rouge1": 37.29,
+          "rouge2": 10.53,
+          "rougeL": 27.12
+        },
+        "ref_cmi": 35.3,
+        "gen_cmi": 38.5
+      },
+      {
+        "id": "9_02_011",
+        "english": "The limit of resolution of the human eye is 0.1 mm, meaning two points closer than this appear as a single point.",
+        "reference": "Human eye ki resolution limit 0.1 mm hoti hai, matlab agar do points isse zyada paas hon toh woh ek single point lagte hain.",
+        "generated": "<s> These two points closer than this a single point.The limit of resolution of the human eye is 0.1 mm, meaning two points higher than this appear as a single day.This is one point mein aur aur yeh karne ke liye hain.</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Microscopy",
+        "bleu": 2.72,
+        "rouge": {
+          "rouge1": 30.99,
+          "rouge2": 11.59,
+          "rougeL": 25.35
+        },
+        "ref_cmi": 43.5,
+        "gen_cmi": 12.2
+      },
+      {
+        "id": "10_07_027",
+        "english": "Regeneration is not the same as reproduction, since most organisms would not normally depend on being cut up to reproduce.",
+        "reference": "Regeneration aur reproduction same nahi hai, kyunki zyaadatar organisms normally reproduce karne ke liye kate jaane par depend nahi karte.",
+        "generated": "<s> Therefore regeneration is not the same as reproduce reproduction, but most organisms would not normally depend on being cut up to reprotece.Human mein aur reprotige karne ke reprota hai yeh reprose aur kya reprojun karne ka reprodice.Here reprofice mein reprodise reproducte repromote ho gaye hain.It’s aur dil mein sir reprof repropoce.hein mein jaye reprotek karne se reprosaat mein.hey reproga reprono reprobate karte hain relete reproke.yeh baar ki repro?yeh mein kya hai.he aisa hai.yeah reprogya hai reproka reprogarate repropace.yeye.eh reliprodue.he said mein koi reprotar mein pyaar reprona reprorice.tein mera reproda repron.head kar re",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Regeneration",
+        "bleu": 0.92,
+        "rouge": {
+          "rouge1": 18.75,
+          "rouge2": 1.59,
+          "rougeL": 10.94
+        },
+        "ref_cmi": 35.0,
+        "gen_cmi": 23.7
+      },
+      {
+        "id": "10_05_068",
+        "english": "Dental caries begin when bacteria acting on sugars produce acids that soften or demineralise the enamel.",
+        "reference": "Dental caries tab shuru hoti hain jab bacteria sugar par asar karke aise acids banate hain jo enamel ko soft ya demineralise kar dete hain.",
+        "generated": "<s> jaye hain mein enamel mein aur dental caries mein kya hota hai kiya hai ye soften or demineralise the enamels karne ke liam karte hain kiya karta hai?</s>",
+        "chapter": "Life Processes",
+        "topic": "Nutrition - Human Digestion",
+        "bleu": 1.53,
+        "rouge": {
+          "rouge1": 21.82,
+          "rouge2": 3.77,
+          "rougeL": 14.55
+        },
+        "ref_cmi": 44.0,
+        "gen_cmi": 44.8
+      },
+      {
+        "id": "10_07_085",
+        "english": "Can you give an example showing how variation helps a species survive environmental changes?",
+        "reference": "Kya aap ek example de sakte hain jo dikhaye ki variation kaise species ko environmental changes mein survive karne mein help karta hai?",
+        "generated": "<s> These variation helps a species survive environmental changes?ek karne ke liye aur aur teh mein kaise hain kya kare hain ki baat karti hai?</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Importance of Variation",
+        "bleu": 4.13,
+        "rouge": {
+          "rouge1": 52.0,
+          "rouge2": 4.17,
+          "rougeL": 28.0
+        },
+        "ref_cmi": 47.8,
+        "gen_cmi": 40.0
+      },
+      {
+        "id": "10_13_031",
+        "english": "At the higher levels of the atmosphere, ozone performs an essential function of shielding Earth from UV radiation.",
+        "reference": "Atmosphere ke upar ke hisson mein ozone ek zaroori kaam karta hai, woh dharti ko UV radiation se bachata hai.",
+        "generated": "<s> Us aur uv radiation hain, ozone performs an essential function of shielding earth from ur radiate hotiation nahi hota hai.eur mein aur saath kiya hai.Hum radi ke liye hain.te hain hain sakte hai yeh hain kaise hain mein karne hain ek rahe hain hai.Mehta hai ur muzone mein.</s>",
+        "chapter": "Our Environment",
+        "topic": "Ozone Layer",
+        "bleu": 1.62,
+        "rouge": {
+          "rouge1": 21.62,
+          "rouge2": 2.78,
+          "rougeL": 13.51
+        },
+        "ref_cmi": 40.0,
+        "gen_cmi": 40.8
+      },
+      {
+        "id": "10_08_039",
+        "english": "Human populations show a great deal of variation among different individuals.",
+        "reference": "Human populations mein alag-alag individuals ke beech kaafi variation dekha jaata hai.",
+        "generated": "<s> These peoples show a great deal of variation among different individuals.Hindu mein human populations mein mein variationa hai.ehta hai yeh sakta hai kiya hai.tehta hota hai.taar mein.ta hai kaise karta hai?ta hai hain aur mein hai.tere human population ke liye hain.saheb mein different individuals mein ekta hai mein kuch hai.ata hai.cometa hai humta hai hai.atehtaar hai.hate meinta hai jahane mein karti hai.his ek mein a greate variational variation.taat mein pata hai gayana hai.kata hai dekhta hai baat hai.</s>",
+        "chapter": "Heredity",
+        "topic": "Variation and Inheritance",
+        "bleu": 1.0,
+        "rouge": {
+          "rouge1": 12.96,
+          "rouge2": 3.77,
+          "rougeL": 11.11
+        },
+        "ref_cmi": 33.3,
+        "gen_cmi": 39.2
+      },
+      {
+        "id": "9_11_065",
+        "english": "In-vitro Fertilisation or IVF is a medical technique in which an egg and a sperm are combined outside the female body in a laboratory dish.",
+        "reference": "In-vitro Fertilisation yaani IVF ek medical technique hai jisme egg aur sperm ko female body ke bahar ek laboratory dish mein combine kiya jaata hai.",
+        "generated": "<s> hot ivf mein aur aur egg and a sperm are combined outside the female body in a laboratory dish ke liye hain hoti hai.hein mein kya karte hain hai.eat aur paisa hai.yeh aur yeh sir aur mein kiya hai.iam aur pesti hain.in apne aur zinti aur nahin aapke.euro samaye.eh.eek aur gayi hai.in.ye aur jaate hain hi hi hi.in ek koi ek se aur baat karta hai.</s>",
+        "chapter": "class9/ch11",
+        "topic": "IVF",
+        "bleu": 1.63,
+        "rouge": {
+          "rouge1": 30.48,
+          "rouge2": 3.88,
+          "rougeL": 19.05
+        },
+        "ref_cmi": 44.0,
+        "gen_cmi": 44.8
+      },
+      {
+        "id": "9_12_078",
+        "english": "What is the difference between autotrophic and heterotrophic nutrition?",
+        "reference": "Autotrophic aur heterotrophic nutrition mein kya difference hota hai?",
+        "generated": "<s> jata hai autotrophic nutrition ke liye hatrition mein ek hota hai kiya hai hai?is the difference between autonophic and heterotrophy nutrite?ur aur hye hatriti?ur pehta hai?ur pyaar kaise hain?ur vein kya hai?</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Classification Criteria",
+        "bleu": 2.45,
+        "rouge": {
+          "rouge1": 33.33,
+          "rouge2": 4.35,
+          "rougeL": 20.83
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 30.3
+      },
+      {
+        "id": "10_07_045",
+        "english": "The flower may be unisexual like papaya and watermelon, or bisexual like Hibiscus and mustard.",
+        "reference": "Flower unisexual ho sakta hai jaise papaya aur watermelon, ya bisexual jaise Hibiscus aur mustard.",
+        "generated": "<s> These flower ya hai hain aur hoti hai jaye hain hain hibiscus and banard mein johta hota hai.These flower is bisexual like hibi’cus and mustard kaise kare hain.They are unisexi karte hain woard.Heard papaya ke baat karta hai?</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Sexual Reproduction in Flowering Plants",
+        "bleu": 1.14,
+        "rouge": {
+          "rouge1": 27.12,
+          "rouge2": 0.0,
+          "rougeL": 16.95
+        },
+        "ref_cmi": 40.0,
+        "gen_cmi": 38.5
+      },
+      {
+        "id": "10_05_058",
+        "english": "Herbivores have longer small intestines to digest cellulose, while carnivores have shorter ones because meat is easier to digest.",
+        "reference": "Herbivores ki small intestine lambi hoti hai cellulose digest karne ke liye, jabki carnivores ki chhhoti hoti hai kyunki maas digest karna aasaan hota hai.",
+        "generated": "<s> These carnivores have shorter ones meat mein aur sahi hain ke baat kare hain.Hindi mein pata hai yeh hain hain woh karne ke liye hain ho gayi hain karte hain? meat is easier to digest cellulose mein.</s>",
+        "chapter": "Life Processes",
+        "topic": "Nutrition - Human Digestion",
+        "bleu": 3.62,
+        "rouge": {
+          "rouge1": 21.54,
+          "rouge2": 6.35,
+          "rougeL": 15.38
+        },
+        "ref_cmi": 36.0,
+        "gen_cmi": 39.5
+      },
+      {
+        "id": "9_11_035",
+        "english": "In reptiles, birds and mammals, fertilisation takes place inside the body of the female and is called internal fertilisation.",
+        "reference": "Reptiles, birds aur mammals mein fertilisation female ke body ke andar hoti hai aur ise internal fertilisation kehte hain.",
+        "generated": "<s> These are the female fertilisations mein aur aur bolte hain hain hota hai kiya hai.eh sahi mammals, fertiilisation takes place inside the body of the female and is called internal fertiles.Humari ke liye hain sakti hai.firti hain pehilisation karneilisation hain mein. hijaat mein wohti hai hai.in reptiles meek saath hain.</s>",
+        "chapter": "class9/ch11",
+        "topic": "Fertilisation in Animals",
+        "bleu": 1.66,
+        "rouge": {
+          "rouge1": 29.33,
+          "rouge2": 0.0,
+          "rougeL": 16.0
+        },
+        "ref_cmi": 47.4,
+        "gen_cmi": 31.4
+      },
+      {
+        "id": "9_11_027",
+        "english": "Cross-pollination happens when pollen is transferred from a flower of one plant to the stigma of a flower of another plant of the same type.",
+        "reference": "Cross-pollination tab hoti hai jab pollen ek plant ke phool se doosre same type ke plant ke phool ke stigma par jaata hai.",
+        "generated": "<s> hot-pollination hai aur aur flower mein kya hai yeh hain hota hai ki sati hai, aur tehta hai aa rahe hain hain sakte hain aur hoti hai.eur mein aa flower of another plant of the same type.ek bharti hai jaye hain hai.kee hain kiya hai kiya karta hai hai.tein mein kaise hain.tehti hai hain baat mein koi hain wohta hoti hain dekhota hai.ya hota hain ke liye aur diya hai.inta hai?</s>",
+        "chapter": "class9/ch11",
+        "topic": "Pollination",
+        "bleu": 1.47,
+        "rouge": {
+          "rouge1": 17.14,
+          "rouge2": 3.88,
+          "rougeL": 15.24
+        },
+        "ref_cmi": 47.8,
+        "gen_cmi": 45.8
+      },
+      {
+        "id": "10_08_048",
+        "english": "Traits in one individual may be inherited separately, giving rise to new combinations of traits in offspring.",
+        "reference": "Ek individual mein traits alag-alag inherit ho sakti hain, jisse offspring mein nayi combinations banti hain.",
+        "generated": "<s> Take rise to new combinations of traits in offspring karne ke liye hain hota hai.They are inherited separately, giving rise to aur trait mein kaise karte hain.Hein mein.kame kiya hai.tehte haat mein jayega.hein.tea hai.ehta hai kya hota hoti hai.geek mein nahin hain straits mein banana.teits aur hota hain maine hain?tehtaar mein haan mein hijab mein pata hai?</s>",
+        "chapter": "Heredity",
+        "topic": "Independent Assortment",
+        "bleu": 1.22,
+        "rouge": {
+          "rouge1": 16.28,
+          "rouge2": 0.0,
+          "rougeL": 9.3
+        },
+        "ref_cmi": 37.5,
+        "gen_cmi": 36.2
+      },
+      {
+        "id": "9_03_037",
+        "english": "The dermal tissue system forms the outer covering of the plant, protecting it and reducing water loss.",
+        "reference": "Dermal tissue system plant ki bahari covering banata hai, plant ko protect karta hai aur water loss kam karta hai.",
+        "generated": "<s> These dermal tissue system forms the outer covering of the plant, protecting it and reducing water loss.Here aur aur yeh baat karne ke liye hain mein baat kaise karte hain hota hai.especial water loss se kya hai.Come aur peek mein.hein kiya hai?tek ek sabse hain.ke water loss kaise hain sakti hai.tehti hain hain jayehta hai?</s>",
+        "chapter": "Tissues in Action",
+        "topic": "tissue_systems",
+        "bleu": 1.9,
+        "rouge": {
+          "rouge1": 26.19,
+          "rouge2": 7.32,
+          "rougeL": 23.81
+        },
+        "ref_cmi": 45.0,
+        "gen_cmi": 32.1
+      },
+      {
+        "id": "10_07_035",
+        "english": "The sporangia contain cells, or spores, that can eventually develop into new Rhizopus individuals. The spores are covered by thick walls that protect them.",
+        "reference": "Sporangia mein cells ya spores hote hain jo eventually naye Rhizopus individuals mein develop ho sakte hain. Spores thick walls se covered hote hain jo unhe protect karti hain.",
+        "generated": "<s> These spores are covered by thick walls that protect them.These sporangia contain cells mein ek karte hain mein aur pehta hai kiya hai.i spore usurp mein thin hota hai.eur yeh sakta hai mein banti hai. jai hain hain. mein. karne hain karne ke liyeye hain, mein ho gaye haat mein baat karte hai.hey hain rekhate mein koi hai.yeh hain wohtaar mein karate mein chhizopus.in spares.aur mein paises.keek mein saath mein sakti hain rahe hain? mein bhar mein rotisin spuns.yeye johta karta hain hai.teh mein kurta hai hain pakki hai.is covered mein mujhe mein hahaan hain hogas.hein.chores.te haad mein mera ek hain ke sporet mein",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Spore Formation",
+        "bleu": 1.0,
+        "rouge": {
+          "rouge1": 18.92,
+          "rouge2": 1.37,
+          "rougeL": 12.16
+        },
+        "ref_cmi": 48.3,
+        "gen_cmi": 46.7
+      },
+      {
+        "id": "9_02_001",
+        "english": "It is widely accepted amongst the scientific community that life originated in water.",
+        "reference": "Scientific community mein yeh widely accept kiya jaata hai ki life ki utpatti paani mein hui thi.",
+        "generated": "<s> scientific community that life originated in water.Hindustan ke liye hain aur hota hai.It is widely accepted amongst the scientific community of life originate in water ek mein.hey hain.hum karnata hai kiya hai.ehhti hai.he’s life originates in water kaise karna hai.is aur ek ek karte hain hai.atta hai hai.geek karta hai yeh sakta hai jawati hai ek hain baat hai.ekta hai kya hai?sam karne ke nahin.in water.he aur rahe hain karta hoti hai pata hai kara hai.</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Origin of Life",
+        "bleu": 0.55,
+        "rouge": {
+          "rouge1": 14.68,
+          "rouge2": 1.87,
+          "rougeL": 11.01
+        },
+        "ref_cmi": 35.3,
+        "gen_cmi": 37.7
+      },
+      {
+        "id": "9_03_040",
+        "english": "Epithelial tissue is composed of closely packed cells with very little space between them.",
+        "reference": "Epithelial tissue mein cells bahut closely packed hoti hain, jinke beech bahut kam space hoti hai.",
+        "generated": "<s> These epithelial tissue tissues are composed of closely packed cells with very little space between them.tepithel mein aur yeh hain ho gaye hain.epithelate tissue ke liye haat mein pata hai.te hain hain mein johti hain karne ke saath hain wohta hai kiya hai.yeh kaise hain sakta hai jayehta hoti hai.hey hain dekhta hai hain?</s>",
+        "chapter": "Tissues in Action",
+        "topic": "epithelial_tissue",
+        "bleu": 2.79,
+        "rouge": {
+          "rouge1": 25.97,
+          "rouge2": 8.0,
+          "rougeL": 18.18
+        },
+        "ref_cmi": 43.8,
+        "gen_cmi": 36.4
+      },
+      {
+        "id": "9_02_Q011",
+        "english": "What would happen to a cell if the mitochondria stopped working?",
+        "reference": "Agar cell mein mitochondria kaam karna band kar de toh kya hoga?",
+        "generated": "<s>ur mitochondria stopped working?Hin a cell mein karne ke liye hain kiya hai?is a cellar kaise kare hain?</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Mitochondria",
+        "bleu": 2.95,
+        "rouge": {
+          "rouge1": 17.65,
+          "rouge2": 6.25,
+          "rougeL": 11.76
+        },
+        "ref_cmi": 41.7,
+        "gen_cmi": 22.2
+      },
+      {
+        "id": "10_07_087",
+        "english": "What are the advantages of sexual reproduction over asexual reproduction?",
+        "reference": "Asexual reproduction ke comparison mein sexual reproduction ke kya advantages hain?",
+        "generated": "<s> use sexual reproduction mein aapke ek hota hai jata hai?rita hai ki baat mein. karne ke liye hain mein kaise hain?riti hai?</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Sexual Reproduction",
+        "bleu": 3.31,
+        "rouge": {
+          "rouge1": 27.03,
+          "rouge2": 5.71,
+          "rougeL": 21.62
+        },
+        "ref_cmi": 45.5,
+        "gen_cmi": 47.8
+      },
+      {
+        "id": "10_13_009",
+        "english": "Microorganisms comprising bacteria and fungi break down the dead remains and waste products of organisms.",
+        "reference": "Bacteria aur fungi jaise microorganisms organisms ke dead remains aur waste products ko tod dete hain.",
+        "generated": "<s> These microorganisms are fungi break down the dead remains and waste products of organisms.These hain mein yeh hain hain baat mein kya karte hain.in jaye hain hota hai.eur mein wohta hain kiya hain, waste products.yeh saath hain?</s>",
+        "chapter": "Our Environment",
+        "topic": "Decomposers",
+        "bleu": 2.58,
+        "rouge": {
+          "rouge1": 27.12,
+          "rouge2": 7.02,
+          "rougeL": 20.34
+        },
+        "ref_cmi": 43.8,
+        "gen_cmi": 36.8
+      },
+      {
+        "id": "10_13_GEC004",
+        "english": "CFCs are released into the atmosphere and cause depletion of the ozone layer.",
+        "reference": "CFCs atmosphere mein release hote hain aur ozone layer ko khatam karte hain.",
+        "generated": "<s> These cfcs are released into the atmosphere and cause depletion of the ozone layer layer hain.These aur aur mein pyaar ke liye hain hain hota hai.tehta layer kaise hota hoti hai.ehta hota hain ek hain sakta hai hain kiya karta hoga hota bane hain mein.hein jayehta hai?</s>",
+        "chapter": "Our Environment",
+        "topic": "Ozone Depletion",
+        "bleu": 1.93,
+        "rouge": {
+          "rouge1": 24.24,
+          "rouge2": 3.12,
+          "rougeL": 18.18
+        },
+        "ref_cmi": 46.2,
+        "gen_cmi": 39.6
+      },
+      {
+        "id": "10_06_073",
+        "english": "The thinking tissue in our body consists of dense networks of intricately arranged neurons in the brain.",
+        "reference": "Hamare body mein thinking tissue brain mein bahut ghane aur pechida tarike se arrange neurons ke network se bana hota hai.",
+        "generated": "<s>urons dense networks of intricately arranged neurons mein hain aur aur neuron mein brain brain karne ke liye hain kiya hai.These brain brains are brain brain.euro pata hai.tehte hain neurosta hai hai.i brain brain hain hota hai hain.teha hai.hein mein. brain brain kale hain hi karte hati hai.ekta hai jaurons neural brain.tese hain kya hai kiya hain hai.kita hai mein ushere hain karne hain gayeurta hai?ya hai yeh hain sakta hai yaar hain haat mein yeurons.tea hai.keurons ki brain.heurons karne kata hai karna hai.yaar karne hai.yeur se.tete haare hain tehti hain detete hai.inte haat hain nahi hainga.tey hain mata hai ki hain mujhe hain raha hai tha hain",
+        "chapter": "Control and Coordination",
+        "topic": "Human Brain",
+        "bleu": 0.86,
+        "rouge": {
+          "rouge1": 12.16,
+          "rouge2": 1.37,
+          "rougeL": 6.76
+        },
+        "ref_cmi": 42.9,
+        "gen_cmi": 40.7
+      },
+      {
+        "id": "9_12_090",
+        "english": "What is the difference between prokaryotic and eukaryotic cells? Can you give examples of organisms in each?",
+        "reference": "Prokaryotic aur eukaryotic cells mein kya antar hai? Kya dono ke organisms ke examples de sakte hain?",
+        "generated": "<s> use prokaryotic cells? do you give examples of organisms in each?ek mein aur eukaryotic cell yeh sir?ta hai?ta hain?ta tehte hain karne ke liye hain kiya hota hai.taur mein kya hai?aur hota hoti hai?lie hain hain mein jaye haat mein kaise hain se?taar mein.taar karne hain yaar hainta hai pata hai jayehtaar yaane hain koi hain hai?is you give us aur yaad mein ek yahi?ta hotaar ka organism mein hotabol mein jo?ta baneta hai mein roti hain.tehta hai aur kya kartaar?taare aur aur gaye?ta aur rahe hain!ta karte hai?re you give mein differentiate organism,?tas aur organism tohta?taur tete ha hain kuch?ta kurta hai kya",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Five Kingdom Classification",
+        "bleu": 1.06,
+        "rouge": {
+          "rouge1": 16.9,
+          "rouge2": 4.29,
+          "rougeL": 11.27
+        },
+        "ref_cmi": 47.1,
+        "gen_cmi": 41.0
+      },
+      {
+        "id": "9_01_072",
+        "english": "This is a key feature of that makes it reliable.",
+        "reference": "Yeh science ki ek key feature hai jo use reliable banati hai.",
+        "generated": "<s> Us a key feature of that makes it reliable.hon mein aur aur kya karte hain hota hai yeh aur jaye aur johta hai.</s>",
+        "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
+        "topic": "General",
+        "bleu": 3.52,
+        "rouge": {
+          "rouge1": 31.58,
+          "rouge2": 5.56,
+          "rougeL": 21.05
+        },
+        "ref_cmi": 50.0,
+        "gen_cmi": 45.8
+      },
+      {
+        "id": "10_06_Q006",
+        "english": "What are plant hormones?",
+        "reference": "Plant hormones kya hote hain?",
+        "generated": "<s> hot hormones mein kuch hota hai yeh plant hormone hain karne ke liye hain hain kiya hain?</s>",
+        "chapter": "Control and Coordination",
+        "topic": "Plant Hormones",
+        "bleu": 3.33,
+        "rouge": {
+          "rouge1": 25.0,
+          "rouge2": 0.0,
+          "rougeL": 16.67
+        },
+        "ref_cmi": 40.0,
+        "gen_cmi": 50.0
+      },
+      {
+        "id": "9_12_007",
+        "english": "Species restricted to particular regions of the world and not found naturally anywhere else are called endemic species.",
+        "reference": "Jo species sirf kisi ek particular region mein payi jaati hain aur kahin aur naturally nahi milti, unhe endemic species kehte hain.",
+        "generated": "<s> These species are called endemic species.Come aur aur teh mein aur saath hain hota hai.These species aren’t found naturally anywhere else.Hindi yeh sakte hain.</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Endemic Species",
+        "bleu": 3.45,
+        "rouge": {
+          "rouge1": 34.62,
+          "rouge2": 4.0,
+          "rougeL": 19.23
+        },
+        "ref_cmi": 45.5,
+        "gen_cmi": 32.0
+      },
+      {
+        "id": "9_02_054",
+        "english": "Cell division is the process by which new cells are formed from pre-existing cells.",
+        "reference": "Cell division woh process hai jisme naye cells pehle se existing cells se bante hain.",
+        "generated": "<s> cell division cell cells.in cell division mein cells cell division karne ke liye hain. cell division is the process by which new cells are formed from pre-existing cells, cellsya cells yaar karte cellsta hai.e cells aur de cellstiye cellstein.</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Cell Division",
+        "bleu": 1.88,
+        "rouge": {
+          "rouge1": 27.12,
+          "rouge2": 7.02,
+          "rougeL": 20.34
+        },
+        "ref_cmi": 46.7,
+        "gen_cmi": 12.5
+      },
+      {
+        "id": "10_05_074",
+        "english": "The right ventricle pumps deoxygenated blood to the lungs for oxygenation after receiving it from the right atrium.",
+        "reference": "Right ventricle right atrium se deoxygenated blood lekar use oxygenation ke liye lungs mein pump karta hai.",
+        "generated": "<s> hot ventricle pumps deoxygenated blood to the lungs for oxygate mein aur aur hota hai yeh hain kiya hai tehgenation after receiving it from the right atrium ke liume karte hain.kehta hai.ke cheygenation mein jayega.ke liye ek gaye hain mein hain sakta hai kiya hain hoti hai.yeh saath hain nahin hai.tehtaar mein kya hai.aat mein johti hai?</s>",
+        "chapter": "Life Processes",
+        "topic": "Transportation - Human",
+        "bleu": 2.03,
+        "rouge": {
+          "rouge1": 24.39,
+          "rouge2": 7.5,
+          "rougeL": 17.07
+        },
+        "ref_cmi": 29.4,
+        "gen_cmi": 39.7
+      },
+      {
+        "id": "9_02_GEC004",
+        "english": "Ribosomes are the sites of protein synthesis in the cell.",
+        "reference": "Ribosoms cell mein protein synthasis ki site hote hain.",
+        "generated": "<s> These ribosomes are the sites of protein synthesis in the cell. karta hota hai yeh hain syntesis mein syntasis ke liye hain mein kya karta hai.eur mein.</s>",
+        "chapter": "Cell: The Building Block of Life",
+        "topic": "Ribosomes",
+        "bleu": 1.45,
+        "rouge": {
+          "rouge1": 20.51,
+          "rouge2": 0.0,
+          "rougeL": 15.38
+        },
+        "ref_cmi": 44.4,
+        "gen_cmi": 39.3
+      },
+      {
+        "id": "9_03_035",
+        "english": "Companion cells regulate the loading and unloading of sugars in sieve tubes.",
+        "reference": "Companion cells sieve tubes mein sugars ka loading aur unloading regulate karti hain.",
+        "generated": "<s> keeve tubes mein jaye hain hota hai yeh saath karte hain kiya hain hain. hoteve mein aur pata hai.Companion cells regulate the loading and unloading of sugars in sieve baar kaise hotas.</s>",
+        "chapter": "Tissues in Action",
+        "topic": "phloem",
+        "bleu": 3.51,
+        "rouge": {
+          "rouge1": 45.83,
+          "rouge2": 8.7,
+          "rougeL": 16.67
+        },
+        "ref_cmi": 38.5,
+        "gen_cmi": 39.4
+      },
+      {
+        "id": "9_12_066",
+        "english": "The tiger belongs to Kingdom Animalia, Phylum Chordata, Class Mammalia, Order Carnivora, Family Felidae, Genus Panthera and Species P. tigris.",
+        "reference": "Tiger Kingdom Animalia, Phylum Chordata, Class Mammalia, Order Carnivora, Family Felidae, Genus Panthera aur Species P. tigris se belong karta hai.",
+        "generated": "<s> tigers zhylum aur tehti hai kya hain mein sahi hota hai, class mammalia, order carnivora, family felidae, genus panthera and species p. tigris. jagris karne ke liye hain hain sakte hain koi hain kiya hai. species phehte haat mein.ise pehle hain.in.</s>",
+        "chapter": "Patterns in Life: Diversity and Classification",
+        "topic": "Hierarchical Classification",
+        "bleu": 2.09,
+        "rouge": {
+          "rouge1": 39.39,
+          "rouge2": 28.13,
+          "rougeL": 36.36
+        },
+        "ref_cmi": 19.0,
+        "gen_cmi": 35.7
+      },
+      {
+        "id": "10_07_084",
+        "english": "How does the embryo get nourishment inside the mother's body?",
+        "reference": "Mother ke body ke andar embryo ko nourishment kaise milta hai?",
+        "generated": "<s> gives nourishment inside the mother's body? karne ke baat mein kya hai yeh aur ek jata hai?</s>",
+        "chapter": "How do Organisms Reproduce?",
+        "topic": "Placenta and Embryo Nourishment",
+        "bleu": 3.63,
+        "rouge": {
+          "rouge1": 32.26,
+          "rouge2": 0.0,
+          "rougeL": 25.81
+        },
+        "ref_cmi": 36.4,
+        "gen_cmi": 38.9
+      },
+      {
+        "id": "9_03_022",
+        "english": "Root hairs increase the surface area for absorption of water and minerals from the soil.",
+        "reference": "Root hairs surface area badhate hain jisse mitti se water aur minerals absorb karna aasaan ho jaata hai.",
+        "generated": "<s> hot hairs increase the surface area for absorption of water and minerals from the soil.ek hain mein aur teh mein hain hota hai hai hain. root hairs ke liye hain kiya hai.eur hain hai hai.te hain sakta hai jayega.tehta hai dekhata hai.hey hain kaise hain pehte haar hain karne hain?ti hai.ekta hai kya hain maine hain ha hain join hai.ate hain nahi hain ladki hain ya hai yeh hain, hain koi hainta hai haat mein.he hain hi hain bahaan hain bana hai haita hai pata hai hum mein hai</s>",
+        "chapter": "Tissues in Action",
+        "topic": "epidermis",
+        "bleu": 1.07,
+        "rouge": {
+          "rouge1": 15.25,
+          "rouge2": 3.45,
+          "rougeL": 10.17
+        },
+        "ref_cmi": 22.2,
+        "gen_cmi": 48.9
+      }
+    ]
+  }
+}

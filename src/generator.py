@@ -14,8 +14,16 @@ Usage:
 """
 
 import time
+import warnings
 from pathlib import Path
 from colorama import Fore, Style, init as colorama_init
+
+# Suppress transformers deprecation: IndicBART config uses old `use_return_dict`
+warnings.filterwarnings(
+    "ignore",
+    message=".*use_return_dict.*",
+    category=FutureWarning,
+)
 
 colorama_init(autoreset=True)
 
@@ -152,6 +160,14 @@ class HinglishGenerator:
         """
         import torch
 
+        # Guard: handle None or empty input gracefully
+        if not english_text or not isinstance(english_text, str):
+            return {
+                "input": english_text,
+                "output": "",
+                "generation_config": {},
+            }
+
         # Build input with task prefix
         input_text = prefix + english_text
         inputs = self.tokenizer(
@@ -166,6 +182,9 @@ class HinglishGenerator:
         gen_kwargs = {
             "max_length": max_length,
             "num_beams": num_beams,
+            "no_repeat_ngram_size": 3,
+            "repetition_penalty": 1.3,
+            "early_stopping": True,
         }
 
         if do_sample:
@@ -182,12 +201,12 @@ class HinglishGenerator:
                 **gen_kwargs,
             )
 
-        # Decode
+        # Decode and strip stray special tokens from output
         output_text = self.tokenizer.decode(
             output_ids[0],
             skip_special_tokens=True,
             clean_up_tokenization_spaces=True,
-        )
+        ).strip()
 
         generation_config = {
             "max_length": max_length,
