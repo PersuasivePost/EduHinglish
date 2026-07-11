@@ -133,11 +133,11 @@ class HinglishGenerator:
     def generate(
         self,
         english_text: str,
-        max_length: int = 256,
+        max_length: int = 128,
         num_beams: int = 4,
         temperature: float = 0.7,
         top_p: float = 0.9,
-        do_sample: bool = True,
+        do_sample: bool = False,
         prefix: str = "Translate to Hinglish: ",
     ) -> dict:
         """
@@ -178,12 +178,17 @@ class HinglishGenerator:
             padding=True,
         ).to(self.device)
 
+        # Cap output length relative to input to prevent runaway generation
+        input_len = inputs["input_ids"].shape[-1]
+        effective_max = min(max_length, input_len + 80)
+
         # Build generation kwargs
         gen_kwargs = {
-            "max_length": max_length,
+            "max_new_tokens": effective_max,
             "num_beams": num_beams,
             "no_repeat_ngram_size": 3,
             "repetition_penalty": 1.3,
+            "length_penalty": -1.0,   # negative = penalise long outputs
             "early_stopping": True,
         }
 
@@ -208,6 +213,11 @@ class HinglishGenerator:
             clean_up_tokenization_spaces=True,
         ).strip()
 
+        # Strip stray BOS artifact '<s>' that IndicBART sometimes leaves
+        # even after skip_special_tokens (known tokenizer quirk)
+        if output_text.startswith("<s>"):
+            output_text = output_text[3:].strip()
+
         generation_config = {
             "max_length": max_length,
             "num_beams": num_beams,
@@ -229,7 +239,7 @@ class HinglishGenerator:
         self,
         query: str,
         retrieved_chunks: list[dict],
-        max_length: int = 256,
+        max_length: int = 100,
     ) -> dict:
         """
         Generate a Hinglish answer given a student query and retrieved NCERT chunks.

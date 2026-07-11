@@ -289,36 +289,51 @@ class WordLevelLID:
         trained on LINCE & SAIL 2017 data for production-grade accuracy.
     """
 
-    # ── Hindi words most commonly appearing in Hinglish Roman text ──
     HINDI_WORDS = {
         # Pronouns
         "main","hum","tum","woh","yeh","uska","uski","iska","iski",
         "mera","meri","tera","teri","unka","unki","hamara","tumhara",
+        "jinke","jinki","jinmein","jinka","iski","unhe","inhe","isko",
+        "usko","apna","apni","apne","dono","wahi","yahi","sab","sabhi",
         # Auxiliaries / verbs
         "hai","hain","tha","thi","the","hoga","hogi","hota","hoti","hote",
         "karta","karti","karte","kiya","karo","karna","karke","hona",
         "raha","rahi","rahe","gaya","gayi","aata","aati","jaata","jaati",
         "deta","deti","lete","bana","bante","samjhao","batao","dekho",
         "kehte","kehta","kehti","kaha","dijiye","hokar","jinmein","inmein",
+        # Expanded verb forms (missing from original)
+        "banati","banata","bante","bani","bana","ban","hoke","hota",
+        "hua","hui","hue","hua","ho","kar","kare","karta","karti","karte",
+        "sakte","sakti","sakta","jaate","jaati","jaata","aate","aati",
+        "rehta","rehti","rehte","liye","liya","leti","lete","diye",
+        "paata","paati","paate","milta","milti","milte","rakhte",
+        "samajh","samjhe","paya","paayi","paye","jaaye","jaayein",
+        "karte","karti","karte","bolte","bolta","bolti",
         # Postpositions
         "ka","ki","ke","ko","se","mein","par","tak","pe","ne","me",
+        "wajah","taraf","beech","andar","bahar","upar","neeche",
+        "saath","baad","pehle","bina","jiske","jiska","jiski",
         # Conjunctions
         "aur","ya","lekin","kyunki","isliye","jabki","phir","toh","bhi",
-        "hi","sirf","bas",
+        "hi","sirf","bas","jab","tab","jo","jo","agar","magar","aur",
         # Question words
         "kya","kaise","kyun","kahan","kab","kaun","kitna","kitni","kitne",
         # Adjectives / adverbs
-        "bahut","thoda","zyada","kam","achha","bura","bada","bade","badi",
-        "chhota","naya","nayi","pehle","baad","andar","bahar","upar",
-        "neeche","yahan","wahan","abhi","tab","jab",
+        "bahut","thoda","zyada","zyaadatar","kam","achha","bura","bada",
+        "bade","badi","chhota","naya","nayi","pehle","baad","yahan","wahan",
+        "abhi","tab","jab","alag","sabse","aise","aisi","aisa","waisa",
+        "waisi","jaisi","taza","poora","poori","poore","saara","saari",
+        "saare","baaki","sahi","galat","acha","buri","naya","purana",
+        "bada","chota","lambi","chaudi","gehri","halki","bhari",
         # Negation
-        "nahi","nhi","na","mat",
-        # Numbers (Hindi)
-        "ek","do","teen","chaar","paanch",
-        # Others
-        "sabhi","sab","kuch","koi","wala","wale","wali","jaise","tarah",
-        "matlab","yaani","saath","taraf","beech","kaam","cheez","jagah",
-        "tarika",
+        "nahi","nhi","na","mat","kabhi",
+        # Numbers / quantity (Hindi)
+        "ek","do","teen","chaar","paanch","char","lagbhag","kaafi",
+        # Common nouns used in Hinglish
+        "paani","pani","kaam","cheez","jagah","tarika","wajah","matlab",
+        "yaani","tarah","mahine","saal","din","raat","samay","waqt",
+        "dono","teeno","charon","zinda","maut","dil","baat","sawaal",
+        "jawab","naam","kisi","kuch","jisko","jisko","jisne",
     }
 
     # ── Science/biology English terms — always EN ──────────────

@@ -30,10 +30,11 @@
       "bulaya": "HI",
       "gaya": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_002",
@@ -59,10 +60,11 @@
       "zariye": "HI",
       "grow": "EN"
     },
-    "topic": "General",
+    "topic": "Estimation",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_003",
@@ -82,10 +84,11 @@
       "connect": "EN",
       "kiya": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_004",
@@ -114,10 +117,11 @@
       "ke": "HI",
       "saath": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_005",
@@ -167,10 +171,11 @@
       "kabhi": "HI",
       "discard": "EN"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_006",
@@ -208,10 +213,11 @@
       "karti": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_007",
@@ -243,10 +249,11 @@
       "mein": "HI",
       "rakha": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_008",
@@ -275,10 +282,11 @@
       "dhyan": "HI",
       "dena": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_009",
@@ -306,14 +314,14 @@
       "aur": "HI",
       "apne": "HI",
       "ideas": "EN",
-      "ki": "HI",
       "limits": "EN",
       "jaanna": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_010",
@@ -344,14 +352,14 @@
       "duniya": "HI",
       "ko": "HI",
       "samajhne": "HI",
-      "ki": "HI",
       "koshish": "HI",
       "karna": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_011",
@@ -374,10 +382,11 @@
       "impossible": "EN",
       "hota": "HI"
     },
-    "topic": "General",
+    "topic": "Interdisciplinary Science",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_012",
@@ -396,10 +405,11 @@
       "karta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_013",
@@ -431,10 +441,11 @@
       "important": "EN",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_014",
@@ -466,10 +477,11 @@
       "draw": "EN",
       "jaata": "HI"
     },
-    "topic": "General",
+    "topic": "Interdisciplinary Science",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_015",
@@ -505,10 +517,11 @@
       "ja": "HI",
       "sakta": "HI"
     },
-    "topic": "General",
+    "topic": "Interdisciplinary Science",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_016",
@@ -531,10 +544,11 @@
       "hota": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_017",
@@ -569,10 +583,11 @@
       "sakta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_018",
@@ -611,10 +626,11 @@
       "kiya": "HI",
       "jaata": "HI"
     },
-    "topic": "General",
+    "topic": "Interdisciplinary Science",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_019",
@@ -645,10 +661,11 @@
       "mil": "HI",
       "sakein": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_020",
@@ -666,10 +683,11 @@
       "ka": "HI",
       "sochiye": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_021",
@@ -684,10 +702,11 @@
       "chahte": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_022",
@@ -701,10 +720,11 @@
       "include": "EN",
       "karte": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_023",
@@ -726,10 +746,11 @@
       "cross": "EN",
       "karegi": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_024",
@@ -755,10 +776,11 @@
       "nahi": "HI",
       "dalenge": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_025",
@@ -785,10 +807,11 @@
       "important": "EN",
       "hoga": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_026",
@@ -822,10 +845,11 @@
       "sakta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_027",
@@ -849,10 +873,11 @@
       "karte": "HI",
       "jaate": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_028",
@@ -880,10 +905,11 @@
       "jaate": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_029",
@@ -906,10 +932,11 @@
       "chahte": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_030",
@@ -935,10 +962,11 @@
       "sakta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_031",
@@ -965,10 +993,11 @@
       "karta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_032",
@@ -999,10 +1028,11 @@
       "meanings": "EN",
       "hote": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_033",
@@ -1024,10 +1054,11 @@
       "treat": "EN",
       "kiya": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_034",
@@ -1053,10 +1084,11 @@
       "zaroori": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_035",
@@ -1093,10 +1125,11 @@
       "karta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_036",
@@ -1126,10 +1159,11 @@
       "unit": "EN",
       "hota": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_037",
@@ -1156,10 +1190,11 @@
       "connected": "EN",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_038",
@@ -1178,10 +1213,11 @@
       "connected": "EN",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_039",
@@ -1209,10 +1245,11 @@
       "ja": "HI",
       "sakein": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_040",
@@ -1233,10 +1270,11 @@
       "hurdle": "EN",
       "nahi": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_041",
@@ -1261,10 +1299,11 @@
       "help": "EN",
       "karti": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_042",
@@ -1292,10 +1331,11 @@
       "related": "EN",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_043",
@@ -1316,10 +1356,11 @@
       "describe": "EN",
       "karna": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_044",
@@ -1346,10 +1387,11 @@
       "kahan": "HI",
       "hoga": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_045",
@@ -1379,10 +1421,11 @@
       "jaati": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_046",
@@ -1406,10 +1449,11 @@
       "memorise": "EN",
       "karo": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_047",
@@ -1435,10 +1479,11 @@
       "carefully": "EN",
       "reason": "EN"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_048",
@@ -1465,10 +1510,11 @@
       "jaata": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_049",
@@ -1486,10 +1532,11 @@
       "ek": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_050",
@@ -1519,10 +1566,11 @@
       "guides": "EN",
       "lagenge": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_051",
@@ -1538,10 +1586,11 @@
       "guides": "EN",
       "banenge": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_052",
@@ -1565,10 +1614,11 @@
       "ho": "HI",
       "gaya": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_053",
@@ -1603,10 +1653,11 @@
       "density": "EN",
       "use": "EN"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_054",
@@ -1639,10 +1690,11 @@
       "nahi": "HI",
       "hui": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_055",
@@ -1657,10 +1709,11 @@
       "hote": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_056",
@@ -1683,10 +1736,11 @@
       "sakta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_057",
@@ -1702,10 +1756,11 @@
       "jaata": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_058",
@@ -1733,10 +1788,11 @@
       "matra": "HI",
       "ho": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_059",
@@ -1757,10 +1813,11 @@
       "confusion": "EN",
       "hogi": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_060",
@@ -1784,10 +1841,11 @@
       "hoti": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_061",
@@ -1814,10 +1872,11 @@
       "ensure": "EN",
       "karte": "HI"
     },
-    "topic": "General",
+    "topic": "Measurement and Units",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_062",
@@ -1853,10 +1912,11 @@
       "kar": "HI",
       "sakte": "HI"
     },
-    "topic": "General",
+    "topic": "Estimation",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_063",
@@ -1884,10 +1944,11 @@
       "meanings": "EN",
       "hote": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_064",
@@ -1919,10 +1980,11 @@
       "express": "EN",
       "hota": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_065",
@@ -1950,10 +2012,11 @@
       "lagta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_066",
@@ -1987,10 +2050,11 @@
       "based": "EN",
       "hoti": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_067",
@@ -2011,10 +2075,11 @@
       "hote": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_068",
@@ -2035,10 +2100,11 @@
       "help": "EN",
       "karte": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_069",
@@ -2059,10 +2125,11 @@
       "hota": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_070",
@@ -2093,10 +2160,11 @@
       "explanation": "EN",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_071",
@@ -2123,10 +2191,11 @@
       "available": "EN",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_072",
@@ -2145,10 +2214,11 @@
       "reliable": "EN",
       "banati": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_073",
@@ -2169,10 +2239,11 @@
       "ability": "EN",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_074",
@@ -2212,10 +2283,11 @@
       "sakein": "HI",
       "nahi": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_075",
@@ -2240,7 +2312,6 @@
       "jayegi": "HI",
       "chemical": "EN",
       "reactions": "EN",
-      "ki": "HI",
       "knowledge": "EN",
       "se": "HI",
       "estimate": "EN",
@@ -2261,10 +2332,11 @@
       "changes": "EN",
       "aayenge": "HI"
     },
-    "topic": "General",
+    "topic": "Interdisciplinary Science",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
-    "code_mixing_type": "intra-sentential"
+    "class": "general",
+    "code_mixing_type": "intra-sentential",
+    "is_student_query": false
   },
   {
     "id": "9_01_076",
@@ -2284,9 +2356,9 @@
       "kaise": "HI",
       "samjhein": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2311,9 +2383,9 @@
       "karni": "HI",
       "chahiye": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2340,9 +2412,9 @@
       "badhta": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2368,9 +2440,9 @@
       "re-examine": "EN",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2397,9 +2469,9 @@
       "drive": "EN",
       "karta": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2419,9 +2491,9 @@
       "example": "EN",
       "dijiye": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2448,9 +2520,9 @@
       "kaise": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2478,9 +2550,9 @@
       "ban": "HI",
       "sake": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2501,9 +2573,9 @@
       "hoti": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2523,9 +2595,9 @@
       "nahi": "HI",
       "hote": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2552,9 +2624,9 @@
       "sakti": "HI",
       "hai": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2577,9 +2649,9 @@
       "kya": "HI",
       "role": "EN"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2603,9 +2675,9 @@
       "zyada": "HI",
       "thi": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2631,9 +2703,9 @@
       "kaam": "HI",
       "aata": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2658,9 +2730,9 @@
       "hua": "HI",
       "tha": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_student_query": true,
     "intent": "explain_concept"
@@ -2690,9 +2762,9 @@
       "aage": "HI",
       "jaate": "HI"
     },
-    "topic": "General",
+    "topic": "Laws Theories Predictions",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_gec_sample": true,
     "hinglish_with_error": "Aise questions measurable data aur past patterns ke baare mein poochti hain, jo sirf guesswork se kahin aage jaate hain.",
@@ -2701,7 +2773,8 @@
       "correct_word": "poochte",
       "error_type": "gender agreement",
       "explanation": "'questions' is treated as masculine plural in Hinglish — verb should be 'poochte' not feminine 'poochti'"
-    }
+    },
+    "is_student_query": false
   },
   {
     "id": "9_01_092",
@@ -2717,9 +2790,9 @@
       "jaate": "HI",
       "hain": "HI"
     },
-    "topic": "General",
+    "topic": "Science in Daily Life",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_gec_sample": true,
     "hinglish_with_error": "Weather forecasts kabhi kabhi galat kyun ho jaati hain?",
@@ -2728,7 +2801,8 @@
       "correct_word": "jaate",
       "error_type": "gender agreement",
       "explanation": "'forecasts' is treated as masculine plural in Hinglish — verb should be 'jaate' not feminine 'jaati'"
-    }
+    },
+    "is_student_query": false
   },
   {
     "id": "9_01_093",
@@ -2751,9 +2825,9 @@
       "aur": "HI",
       "wind": "EN"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_gec_sample": true,
     "hinglish_with_error": "Weather bahut saare changing factors pe depend karti hai, jaise temperature, pressure, humidity, aur wind.",
@@ -2762,7 +2836,8 @@
       "correct_word": "karta",
       "error_type": "gender agreement",
       "explanation": "'weather' is treated as masculine in Hinglish — verb should be 'karta' not feminine 'karti'"
-    }
+    },
+    "is_student_query": false
   },
   {
     "id": "9_01_094",
@@ -2794,9 +2869,9 @@
       "result": "EN",
       "de": "HI"
     },
-    "topic": "General",
+    "topic": "Science in Daily Life",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_gec_sample": true,
     "hinglish_with_error": "Weather forecasts measurements aur models use karta hain, lekin conditions mein bahut chhoti differences samay ke saath badh sakti hain aur kuch bilkul alag result de sakti hain.",
@@ -2805,7 +2880,8 @@
       "correct_word": "karte",
       "error_type": "subject-verb agreement",
       "explanation": "'forecasts' is plural — verb should be 'karte' (plural) not 'karta' (singular)"
-    }
+    },
+    "is_student_query": false
   },
   {
     "id": "9_01_095",
@@ -2834,9 +2910,9 @@
       "ho": "HI",
       "jaate": "HI"
     },
-    "topic": "General",
+    "topic": "Scientific Models",
     "chapter": "Chapter Exploration: Entering Exploration: Entering the World of Secondary",
-    "class": "9",
+    "class": "general",
     "code_mixing_type": "intra-sentential",
     "is_gec_sample": true,
     "hinglish_with_error": "Isliye forecasts aamtaur par kuch ghanton ya kuch dinon ke liye reliable hota hain, lekin future mein jaane par kam certain ho jaate hain.",
@@ -2845,6 +2921,7 @@
       "correct_word": "hote",
       "error_type": "subject-verb agreement",
       "explanation": "'forecasts' is plural — verb should be 'hote' (plural) not 'hota' (singular)"
-    }
+    },
+    "is_student_query": false
   }
 ]
