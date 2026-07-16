@@ -1,7 +1,7 @@
 # Phase 4 — MuRIL Fine-tuning for LID + Intent
 
 > **Phase:** 4 of 8 | **Status:** Ready to start
-> **Input:** `data/unified_biology_dataset.json` (950 entries, 10 chapters)
+> **Input:** `data/unified_biology_dataset_v2.json` (950 entries, 10 chapters)
 > **Output:** Two fine-tuned MuRIL models — LID (token classification) + Intent (sequence classification)
 > **Runs on:** Google Colab T4 (free tier) — will NOT run on CPU/Mac
 > **Prerequisite:** Phase 3 complete (spaCy models trained as baseline)
@@ -14,8 +14,8 @@ Two transformer models fine-tuned on your Hinglish dataset using Google's MuRIL:
 
 | Model | Task | Architecture | Input | Output |
 | --- | --- | --- | --- | --- |
-| `muril_lid_v1` | Word-level Language ID | MuRIL + LoRA token classifier | Hinglish sentence | HI/EN/NE/UNIV per subword token |
-| `muril_intent_v1` | Student Query Intent | MuRIL + LoRA sequence classifier | Student query text | explain_concept/compare/definition/etc. |
+| `muril_lid_v2` | Word-level Language ID | MuRIL + LoRA token classifier | Hinglish sentence | HI/EN/NE/UNIV per subword token |
+| `muril_intent_v2` | Student Query Intent | MuRIL + LoRA sequence classifier | Student query text | explain_concept/compare/definition/etc. |
 
 ### Why MuRIL?
 
@@ -44,7 +44,7 @@ for production-grade LID and Intent classification.
 PROJECT STATE (what already exists)
 ═══════════════════════════════════════════════════════
 
-Unified dataset: data/unified_biology_dataset.json
+Unified dataset: data/unified_biology_dataset_v2.json
   - 950 entries across 10 chapters (Class 9 & 10 Science)
   - Each entry has: id, original_english, hinglish_roman,
     word_level_labels (dict: word → HI/EN/NE/UNIV/MIX),
@@ -97,14 +97,14 @@ training/
     └── 02_train_muril_intent.ipynb ← TASK 5b
 
 models/
-├── muril_lid_v1/                ← saved after training
-└── muril_intent_v1/             ← saved after training
+├── muril_lid_v2/                ← saved after training
+└── muril_intent_v2/             ← saved after training
 
 ═══════════════════════════════════════════════════════
 TASK 1 — training/prepare_hf_data.py
 ═══════════════════════════════════════════════════════
 
-This script converts data/unified_biology_dataset.json into
+This script converts data/unified_biology_dataset_v2.json into
 HuggingFace Dataset format for both LID and Intent tasks.
 
 ── 1a. Token Classification data (for MuRIL LID) ──
@@ -125,7 +125,7 @@ For each entry in the dataset:
   - Split 80/20 train/dev (same random seed=42 as Phase 3)
 
 Output format: HuggingFace DatasetDict saved to disk
-  training/data/muril_lid_dataset/
+  training/data/muril_lid_dataset_v2/
     ├── train/
     └── dev/
 
@@ -148,7 +148,7 @@ For each:
   - Split 80/20 train/dev
 
 Output format: HuggingFace DatasetDict
-  training/data/muril_intent_dataset/
+  training/data/muril_intent_dataset_v2/
     ├── train/
     └── dev/
 
@@ -174,7 +174,7 @@ Each example has:
   python training/prepare_hf_data.py
   python training/prepare_hf_data.py --task lid
   python training/prepare_hf_data.py --task intent
-  python training/prepare_hf_data.py --dataset data/unified_biology_dataset.json
+  python training/prepare_hf_data.py --dataset data/unified_biology_dataset_v2.json
 
 ═══════════════════════════════════════════════════════
 TASK 2 — training/train_muril_lid.py
@@ -239,11 +239,11 @@ Fine-tune MuRIL for token-level Language ID using LoRA (PEFT).
 
 ── Training flow ──
 
-  1. Load HuggingFace dataset from training/data/muril_lid_dataset/
+  1. Load HuggingFace dataset from training/data/muril_lid_dataset_v2/
   2. Load MuRIL model + LoRA adapter
   3. Create Trainer with compute_metrics
   4. Train (should take ~15-20 min on T4)
-  5. Save best model to models/muril_lid_v1/
+  5. Save best model to models/muril_lid_v2/
      - Save the PEFT adapter: model.save_pretrained()
      - Save the tokenizer: tokenizer.save_pretrained()
      - Also save merged model (adapter merged into base) for
@@ -259,7 +259,7 @@ Fine-tune MuRIL for token-level Language ID using LoRA (PEFT).
   Improvement:       +1.1pp
   Trainable params:  2.1M / 236M (0.9%)
   Training time:     18 min on T4
-  Saved to:          models/muril_lid_v1/
+  Saved to:          models/muril_lid_v2/
   ══════════════════════════════════════
 
   Per-label F1:
@@ -333,7 +333,7 @@ Fine-tune MuRIL for sequence-level Intent Classification.
 ── Training flow ──
 
   Same as LID but for sequence classification.
-  Save to models/muril_intent_v1/
+  Save to models/muril_intent_v2/
 
 ── Output at end ──
 
@@ -343,7 +343,7 @@ Fine-tune MuRIL for sequence-level Intent Classification.
   Best dev F1 (macro): 82.5%
   Phase 3 baseline:    70.0% (spaCy BOW)
   Improvement:         +12.5pp
-  Saved to:            models/muril_intent_v1/
+  Saved to:            models/muril_intent_v2/
   ══════════════════════════════════════
 
   Confusion matrix:
@@ -385,7 +385,7 @@ Intent test cases:
   EduHinglish — Phase 4 MuRIL Model Evaluation
   ══════════════════════════════════════════════════════
 
-  ── MuRIL LID (models/muril_lid_v1/) ──
+  ── MuRIL LID (models/muril_lid_v2/) ──
   Input: "Mitochondria ko cell ka powerhouse kehte hain."
     Mitochondria → EN  ✓
     ko           → HI  ✓
@@ -403,7 +403,7 @@ Intent test cases:
   EN F1      |     97.4%       |     99.0%
   NE F1      |     76.7%       |     91.7%
 
-  ── MuRIL Intent (models/muril_intent_v1/) ──
+  ── MuRIL Intent (models/muril_intent_v2/) ──
   Input: "Mitochondria aur chloroplast mein kya fark hai?"
     Predicted: compare_concepts (conf: 0.94)  ✓
 
@@ -448,7 +448,7 @@ Cell 1: Setup
 Cell 2: Mount Drive + Upload dataset
   from google.colab import drive
   drive.mount('/content/drive')
-  # Option A: Upload unified_biology_dataset.json manually
+  # Option A: Upload unified_biology_dataset_v2.json manually
   # Option B: Clone repo from GitHub
   #   !git clone https://github.com/<your-repo>/EduHinglish.git
 
@@ -465,8 +465,8 @@ Cell 6: Evaluate
   (Print accuracy, per-label F1)
 
 Cell 7: Save model to Drive
-  model.save_pretrained("/content/drive/MyDrive/EduHinglish/models/muril_lid_v1")
-  tokenizer.save_pretrained("/content/drive/MyDrive/EduHinglish/models/muril_lid_v1")
+  model.save_pretrained("/content/drive/MyDrive/EduHinglish/models/muril_lid_v2")
+  tokenizer.save_pretrained("/content/drive/MyDrive/EduHinglish/models/muril_lid_v2")
 
 Cell 8: Test on example sentences
   (Run the test cases from evaluate_muril.py)
@@ -493,8 +493,8 @@ Commit message examples:
   feat(jatin): evaluate_muril.py with spaCy comparison
   feat(jatin): colab notebook 01 - MuRIL LID training
   feat(jatin): colab notebook 02 - MuRIL intent training
-  model(jatin): muril_lid_v1 trained 99.2% dev accuracy
-  model(jatin): muril_intent_v1 trained 82.5% dev F1
+  model(jatin): muril_lid_v2 trained 99.2% dev accuracy
+  model(jatin): muril_intent_v2 trained 82.5% dev F1
 
 After all models trained, open PR → develop.
 
@@ -512,7 +512,7 @@ Step 7:  Create 01_train_muril_lid.ipynb (self-contained)
 Step 8:  Create 02_train_muril_intent.ipynb (self-contained)
 Step 9:  Upload dataset to Colab, run notebook 01 — verify LID model
 Step 10: Run notebook 02 — verify intent model
-Step 11: Download trained models to models/muril_lid_v1/ and models/muril_intent_v1/
+Step 11: Download trained models to models/muril_lid_v2/ and models/muril_intent_v2/
 Step 12: Run evaluate_muril.py locally — verify comparison with Phase 3
 Step 13: Final commit + push + PR → develop
 
@@ -565,9 +565,9 @@ Use LoRA — same or better accuracy for your dataset size, much faster.
 ### Model saving strategy
 
 Save THREE versions of each model:
-1. **LoRA adapter only** (~8MB) — `models/muril_lid_v1/adapter/`
-2. **Merged model** (~900MB) — `models/muril_lid_v1/merged/`
-3. **Tokenizer** — `models/muril_lid_v1/tokenizer/`
+1. **LoRA adapter only** (~8MB) — `models/muril_lid_v2/adapter/`
+2. **Merged model** (~900MB) — `models/muril_lid_v2/merged/`
+3. **Tokenizer** — `models/muril_lid_v2/tokenizer/`
 
 The adapter is tiny (for git), the merged model is for inference.
 Add `models/muril_*/merged/` to `.gitignore` (too large for git).

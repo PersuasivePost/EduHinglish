@@ -1,5 +1,5 @@
 """
-Merge all data sources into unified_science_dataset_v2.json and data/unified_biology_dataset.json:
+Merge all data sources into unified_science_dataset_v2.json and data/unified_biology_dataset_v2.json:
   - data/processed/class9_ch02/dataset.json
   - data/processed/class9_ch03/dataset.json
   - data/processed/class9_ch11/dataset.json
@@ -51,7 +51,6 @@ def main():
 
     # Save to the targets
     targets = [
-        "data/unified_biology_dataset.json",
         "data/unified_biology_dataset_v2.json",
         "data/unified_science_dataset_v2.json"
     ]

@@ -1,7 +1,7 @@
 # ✅ PHASE 1 & 2 — COMPLETE
 
 > **Status:** Done — both phases delivered and merged to `develop`.
-> **Unified dataset:** `data/unified_biology_dataset.json` — 950 entries, 10 chapters.
+> **Unified dataset:** `data/unified_biology_dataset_v2.json` — 950 entries, 10 chapters.
 > **Next phase:** See `phase-3-prompts.md`
 
 ---
@@ -651,11 +651,11 @@ Logic:
      ├─────────────────────────────────────────────────────┤
      │ TOTAL                            │ 575     │        │
      └─────────────────────────────────────────────────────┘
-  6. Save to data/unified_biology_dataset.json
+  6. Save to data/unified_biology_dataset_v2.json
 
 CLI:
   python scripts/unified_dataset_builder.py
-  python scripts/unified_dataset_builder.py --output data/unified_biology_dataset.json
+  python scripts/unified_dataset_builder.py --output data/unified_biology_dataset_v2.json
 
 ═══════════════════════════════════════════════════════
 TASK 4 — Dataset Content: Ch5 Expansion (dataset_v2.json)

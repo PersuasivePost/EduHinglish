@@ -1,7 +1,7 @@
 # Phase 3 — spaCy Model Training
 
 > **Phase:** 3 of 8 | **Status:** Ready to start
-> **Input:** `data/unified_biology_dataset.json` (950 entries, 10 chapters)
+> **Input:** `data/unified_biology_dataset_v2.json` (950 entries, 10 chapters)
 > **Output:** Three trained spaCy models in `models/` — LID, NER, Intent
 > **Runs on:** CPU (Mac/local) or Colab T4
 
@@ -13,9 +13,9 @@ Three spaCy models trained entirely on your own dataset — no external APIs:
 
 | Model | Task | Architecture | Input | Output |
 | --- | --- | --- | --- | --- |
-| `lid_v1` | Word-level Language ID | tok2vec + token classifier | Hinglish sentence | HI/EN/NE/UNIV per token |
-| `ner_v1` | Science Named Entity Recognition | spaCy ner | Hinglish sentence | ORGANELLE/PROCESS/SCIENTIST/INSTRUMENT/CONCEPT |
-| `intent_v1` | Student Query Intent | spaCy textcat | Student query text | explain_concept/compare/definition/etc. |
+| `lid_v2` | Word-level Language ID | tok2vec + token classifier | Hinglish sentence | HI/EN/NE/UNIV per token |
+| `ner_v2` | Science Named Entity Recognition | spaCy ner | Hinglish sentence | ORGANELLE/PROCESS/SCIENTIST/INSTRUMENT/CONCEPT |
+| `intent_v2` | Student Query Intent | spaCy textcat | Student query text | explain_concept/compare/definition/etc. |
 
 ---
 
@@ -35,7 +35,7 @@ training three spaCy NLP models on my labeled dataset.
 PROJECT STATE (what already exists)
 ═══════════════════════════════════════════════════════
 
-Unified dataset: data/unified_biology_dataset.json
+Unified dataset: data/unified_biology_dataset_v2.json
   - 950 entries across 10 chapters (Class 9 & 10 Science)
   - Each entry has: id, original_english, hinglish_roman,
     word_level_labels (dict: word → HI/EN/NE/UNIV/MIX),
@@ -76,15 +76,15 @@ training/
     └── intent_config.cfg
 
 models/
-├── lid_v1/                  ← saved after train_lid.py
-├── ner_v1/                  ← saved after train_ner.py
-└── intent_v1/               ← saved after train_intent.py
+├── lid_v2/                  ← saved after train_lid.py
+├── ner_v2/                  ← saved after train_ner.py
+└── intent_v2/               ← saved after train_intent.py
 
 ═══════════════════════════════════════════════════════
 TASK 1 — training/prepare_spacy_data.py
 ═══════════════════════════════════════════════════════
 
-This script converts data/unified_biology_dataset.json into
+This script converts data/unified_biology_dataset_v2.json into
 .spacy binary files that spaCy's training pipeline consumes.
 
 It must produce THREE separate training splits:
@@ -99,8 +99,8 @@ For each entry in the dataset:
   - Add to train/dev split (80/20)
 
 Output:
-  training/data/lid_train.spacy
-  training/data/lid_dev.spacy
+  training/data/lid_train_v2.spacy
+  training/data/lid_dev_v2.spacy
 
 ── 1b. NER data (for science NER model) ──
 
@@ -124,8 +124,8 @@ category. For each match create a spaCy Doc with .ents set.
 Skip entries where no entity is found (don't create empty NER docs).
 
 Output:
-  training/data/ner_train.spacy
-  training/data/ner_dev.spacy
+  training/data/ner_train_v2.spacy
+  training/data/ner_dev_v2.spacy
 
 Print counts at end:
   NER spans by label:
@@ -146,8 +146,8 @@ If fewer than 60 student query entries exist, print a warning
 but still proceed with what's available.
 
 Output:
-  training/data/intent_train.spacy
-  training/data/intent_dev.spacy
+  training/data/intent_train_v2.spacy
+  training/data/intent_dev_v2.spacy
 
 Print counts:
   Intent distribution:
@@ -161,7 +161,7 @@ Print counts:
 ── CLI ──
 
 python training/prepare_spacy_data.py
-python training/prepare_spacy_data.py --dataset data/unified_biology_dataset.json
+python training/prepare_spacy_data.py --dataset data/unified_biology_dataset_v2.json
 python training/prepare_spacy_data.py --task lid     # only prepare LID data
 python training/prepare_spacy_data.py --task ner
 python training/prepare_spacy_data.py --task intent
@@ -189,7 +189,7 @@ Use spaCy's native config format (cfg files with [training],
 ── train_lid.py ──
 
 Script that:
-1. Loads training/data/lid_train.spacy and lid_dev.spacy
+1. Loads training/data/lid_train_v2.spacy and lid_dev_v2.spacy
 2. Creates a fresh spaCy pipeline with tok2vec + tagger
 3. Trains for up to 30 epochs with early stopping 
    (patience=5, stop if dev accuracy doesn't improve)
@@ -197,12 +197,12 @@ Script that:
    Epoch 1/30 | Loss: 2.43 | Dev Acc: 67.2% | Best: 67.2% ✓
    Epoch 2/30 | Loss: 1.87 | Dev Acc: 72.1% | Best: 72.1% ✓
    ...
-5. Saves best model to models/lid_v1/
+5. Saves best model to models/lid_v2/
 6. At end prints:
    ══════════════════════════════════
    LID Model Training Complete
    Best dev accuracy: 84.3%
-   Saved to: models/lid_v1/
+   Saved to: models/lid_v2/
    Baseline (rule-based): ~75%
    Improvement: +9.3pp
    ══════════════════════════════════
@@ -238,7 +238,7 @@ Config for:
 Same structure as train_lid.py but:
   - Trains ner component
   - Dev metric: F1 (not accuracy, standard for NER)
-  - Saves to models/ner_v1/
+  - Saves to models/ner_v2/
   - Per-label F1 at end:
     Entity       | P     | R     | F1
     ORGANELLE    | 88.4% | 86.2% | 87.3%
@@ -275,7 +275,7 @@ Same structure as train_lid.py but:
     WARNING: Only 64 intent entries found.
     Training with BOW architecture (recommended for <200 examples).
     Consider adding more student queries to improve accuracy.
-  - Saves to models/intent_v1/
+  - Saves to models/intent_v2/
   - At end prints confusion matrix (text-based):
     Predicted →  explain  compare  example  formula  definition
     explain  [   29        1        1        0         0      ]
@@ -319,7 +319,7 @@ Output format:
 EduHinglish — Phase 3 Model Evaluation
 ══════════════════════════════════════════════════════
 
-── LID Model (models/lid_v1/) ──
+── LID Model (models/lid_v2/) ──
 Input: "Mitochondria ko cell ka powerhouse kehte hain."
   Mitochondria → EN  ✓
   ko           → HI  ✓
@@ -329,12 +329,12 @@ Input: "Mitochondria ko cell ka powerhouse kehte hain."
   kehte        → HI  ✓
   hain         → HI  ✓
 
-── NER Model (models/ner_v1/) ──
+── NER Model (models/ner_v2/) ──
 Input: "Mendel ne pea plants par experiments kiye the."
   [Mendel] SCIENTIST
   [pea plants] CONCEPT
 
-── Intent Model (models/intent_v1/) ──
+── Intent Model (models/intent_v2/) ──
 Input: "Mitochondria aur chloroplast mein kya fark hai?"
   Predicted: compare_concepts (conf: 0.87)  ✓
 
@@ -355,9 +355,9 @@ Commit message examples:
   feat(jatin): ner_config.cfg + train_ner.py science entities
   feat(jatin): intent_config.cfg + train_intent.py BOW classifier
   feat(jatin): evaluate_models.py unified eval script
-  model(jatin): lid_v1 trained 84.3% dev accuracy
-  model(jatin): ner_v1 trained science NER F1 83.4%
-  model(jatin): intent_v1 trained 78.2% intent accuracy
+  model(jatin): lid_v2 trained 84.3% dev accuracy
+  model(jatin): ner_v2 trained science NER F1 83.4%
+  model(jatin): intent_v2 trained 78.2% intent accuracy
 
 After all models trained, open PR → develop.
 
@@ -369,11 +369,11 @@ Step 1: Create training/ and models/ folder structure
 Step 2: Write training/prepare_spacy_data.py (all three tasks)
 Step 3: Run prepare_spacy_data.py — verify .spacy files created
 Step 4: Write lid_config.cfg + train_lid.py
-Step 5: Run train_lid.py — verify models/lid_v1/ saved
+Step 5: Run train_lid.py — verify models/lid_v2/ saved
 Step 6: Write ner_config.cfg + train_ner.py
-Step 7: Run train_ner.py — verify models/ner_v1/ saved
+Step 7: Run train_ner.py — verify models/ner_v2/ saved
 Step 8: Write intent_config.cfg + train_intent.py
-Step 9: Run train_intent.py — verify models/intent_v1/ saved
+Step 9: Run train_intent.py — verify models/intent_v2/ saved
 Step 10: Write evaluate_models.py
 Step 11: Run evaluate_models.py — verify all three models work
 Step 12: Final commit + push + PR → develop
@@ -407,8 +407,8 @@ not the deprecated `nlp.begin_training()` / `nlp.update()` v2 API.
 
 ### Integration plan (Phase 8)
 After Phase 3, these models slot in as:
-- `src/script_detector.py` → replace `WordLevelLID` with `lid_v1`
-- `src/pipeline.py` → add NER + intent detection steps using `ner_v1` / `intent_v1`
+- `src/script_detector.py` → replace `WordLevelLID` with `lid_v2`
+- `src/pipeline.py` → add NER + intent detection steps using `ner_v2` / `intent_v2`
 
 ---
 

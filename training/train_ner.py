@@ -30,9 +30,9 @@ from spacy.util import compounding, minibatch
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-TRAIN_DATA = Path("training/data/ner_train.spacy")
-DEV_DATA   = Path("training/data/ner_dev.spacy")
-OUTPUT_DIR = Path("models/ner_v1")
+TRAIN_DATA = Path("training/data/ner_train_v2.spacy")
+DEV_DATA   = Path("training/data/ner_dev_v2.spacy")
+OUTPUT_DIR = Path("models/ner_v2")
 
 NER_LABELS = ["SCIENTIST", "ORGANELLE", "PROCESS", "CONCEPT", "INSTRUMENT"]
 SEED = 42

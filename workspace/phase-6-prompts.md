@@ -31,7 +31,7 @@ Convert our unified dataset into (source, target) pairs for IndicBART seq2seq fi
 - Target (model should learn to generate): Hinglish Roman explanation (the hinglish_roman field)
 
 EXISTING CONTEXT YOU MUST FOLLOW:
-- Dataset: data/unified_biology_dataset.json — 950 entries across 10 NCERT chapters
+- Dataset: data/unified_biology_dataset_v2.json — 950 entries across 10 NCERT chapters
 - Each entry has this schema:
   {
     "id": "10_06_001",
@@ -51,7 +51,7 @@ EXISTING CONTEXT YOU MUST FOLLOW:
 
 WHAT THIS SCRIPT MUST DO:
 
-1. Load data/unified_biology_dataset.json
+1. Load data/unified_biology_dataset_v2.json
 
 2. Filter entries: keep only entries where BOTH original_english AND hinglish_roman are non-empty strings with at least 5 words each.
 
@@ -222,7 +222,7 @@ EXISTING CONTEXT:
   training/prepare_seq2seq_data.py (Prompt 1)
   training/train_indicbart.py (Prompt 2)
 - Model: ai4bharat/IndicBART, fine-tuned with LoRA/PEFT
-- Dataset: data/unified_biology_dataset.json (950 entries)
+- Dataset: data/unified_biology_dataset_v2.json (950 entries)
 
 NOTEBOOK CELLS (in order):
 
@@ -245,11 +245,11 @@ Cell 4 — Clone repo or upload data:
   # Option A: Clone from GitHub
   !git clone https://github.com/PersuasivePost/EduHinglish.git
   %cd EduHinglish
-  # Option B: Upload unified_biology_dataset.json manually
+  # Option B: Upload unified_biology_dataset_v2.json manually
 
 Cell 5 — Verify dataset:
   import json
-  with open("data/unified_biology_dataset.json") as f:
+  with open("data/unified_biology_dataset_v2.json") as f:
       data = json.load(f)
   print(f"Dataset: {len(data)} entries")
   print(f"Sample: {data[0]['original_english'][:80]}...")
@@ -429,7 +429,7 @@ and human-readable sample outputs. This lets us compare:
 EXISTING CONTEXT:
 - training/evaluate_models.py already exists (for spaCy models) — follow its style
 - training/evaluate_muril.py already exists (for MuRIL) — follow its style
-- Dataset: data/unified_biology_dataset.json
+- Dataset: data/unified_biology_dataset_v2.json
 - Generator: src/generator.py (Prompt 4)
 - The project uses colorama for terminal output
 

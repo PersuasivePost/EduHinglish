@@ -68,15 +68,15 @@ Chapter metadata mapping (folder → chapter info):
   class10_ch08 → Class 10, "Heredity"
   class10_ch13 → Class 10, "Our Environment"
 
-Unified dataset: data/unified_biology_dataset.json (950 entries)
+Unified dataset: data/unified_biology_dataset_v2.json (950 entries)
 
 Existing modules:
   src/pipeline.py          — M1 preprocessing pipeline
   src/script_detector.py   — ScriptDetector, HinglishNormalizer, WordLevelLID
   src/preprocessing.py     — EnglishPreprocessor
-  models/lid_v1/           — spaCy LID model
-  models/ner_v1/           — spaCy NER model
-  models/intent_v1/        — spaCy intent model
+  models/lid_v2/           — spaCy LID model
+  models/ner_v2/           — spaCy NER model
+  models/intent_v2/        — spaCy intent model
 
 requirements.txt currently has (relevant):
   pdfplumber, spacy, nltk, pandas, numpy, transformers, datasets,

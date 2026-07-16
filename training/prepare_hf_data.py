@@ -3,7 +3,7 @@ EduHinglish — Phase 4, Task 1: Prepare HuggingFace Data
 =========================================================
 Authors : Ashvatth & Jatin
 Module  : Phase 4 — MuRIL Fine-tuning (Data Preparation)
-Purpose : Convert data/unified_biology_dataset.json into HuggingFace
+Purpose : Convert data/unified_biology_dataset_v2.json into HuggingFace
           Dataset format for MuRIL fine-tuning on two tasks:
 
   1. Token Classification (LID) — word-level language identification
@@ -63,9 +63,9 @@ except ImportError:
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_DATASET   = Path("data/unified_biology_dataset.json")
-LID_OUTPUT_DIR    = Path("training/data/muril_lid_dataset")
-INTENT_OUTPUT_DIR = Path("training/data/muril_intent_dataset")
+DEFAULT_DATASET   = Path("data/unified_biology_dataset_v2.json")
+LID_OUTPUT_DIR    = Path("training/data/muril_lid_dataset_v2")
+INTENT_OUTPUT_DIR = Path("training/data/muril_intent_dataset_v2")
 
 MODEL_NAME = "google/muril-base-cased"
 MAX_LENGTH = 128

@@ -13,7 +13,7 @@ graph TD
     B -->|chapter_dataset_builder.py| C[Guided Annotation CLI]
     C -->|augment_dataset.py| D[Augmented Hinglish Sentences]
     D -->|validate_dataset.py| E[Validated JSON Chapter Datasets]
-    E -->|merge_dataset.py| F[data/unified_biology_dataset.json]
+    E -->|merge_dataset.py| F[data/unified_biology_dataset_v2.json]
 ```
 
 * **Input:** Raw NCERT PDF textbooks (`data/biology/`).
@@ -23,7 +23,7 @@ graph TD
   3. Sentences are augmented using synonym replacement, connector swapping, and structural variants to expand size.
   4. Validation checks formatting, ID uniqueness, and computes Code-Mixing Index (CMI) metrics.
   5. Merging combines individual chapters, cleans null entries, reorders IDs sequentially, and outputs the unified corpus.
-* **Desired Output:** A cleaned, validated, unified dataset of 1,700 high-quality entries across 10 sections saved to `data/unified_biology_dataset.json`.
+* **Desired Output:** A cleaned, validated, unified dataset of 1,700 high-quality entries across 10 sections saved to `data/unified_biology_dataset_v2.json`.
 
 ### 2. Execution Commands
 
@@ -76,17 +76,17 @@ pytest tests/test_script_detector.py
 ### 1. Architectural Flow
 ```mermaid
 graph TD
-    A[data/unified_biology_dataset.json] -->|prepare_spacy_data.py| B[.spacy Train/Val Splits]
+    A[data/unified_biology_dataset_v2.json] -->|prepare_spacy_data.py| B[.spacy Train/Val Splits]
     B -->|train_lid.py / train_ner.py / train_intent.py| C[spaCy baseline models]
     C -->|evaluate_models.py| D[F1-Score / Accuracy Metrics]
 ```
 
-* **Input:** `data/unified_biology_dataset.json` (1,700 entries).
+* **Input:** `data/unified_biology_dataset_v2.json` (1,700 entries).
 * **Processing:**
   1. The JSON dataset is converted into spaCy's native binary `.spacy` format.
   2. Tokens and labels are split into training (80%) and validation (20%) datasets.
   3. Three independent lightweight baseline models are trained on CPU: Language Identification (LID), Named Entity Recognition (NER), and intent classification.
-* **Desired Output:** Trained baseline models saved in `models/` (`lid_v1/`, `ner_v1/`, `intent_v1/`) achieving 80%+ baseline classification accuracy.
+* **Desired Output:** Trained baseline models saved in `models/` (`lid_v2/`, `ner_v2/`, `intent_v2/`) achieving 80%+ baseline classification accuracy.
 
 ### 2. Execution Commands
 
@@ -120,7 +120,7 @@ python training/test_models_quick.py --model all --text "Sir, chloroplast ka fun
 ```bash
 python -c "
 import spacy
-nlp = spacy.load('models/lid_v1')
+nlp = spacy.load('models/lid_v2')
 doc = nlp('Nucleus cell ka control centre hai')
 for tok in doc:
     print(f'{tok.text:15} → {tok.tag_}')
@@ -134,12 +134,12 @@ for tok in doc:
 ### 1. Architectural Flow
 ```mermaid
 graph TD
-    A[data/unified_biology_dataset.json] -->|prepare_hf_data.py| B[Hugging Face DatasetDict]
+    A[data/unified_biology_dataset_v2.json] -->|prepare_hf_data.py| B[Hugging Face DatasetDict]
     B -->|train_muril_lid.py / train_muril_intent.py| C[Fine-tuned MuRIL + LoRA Weights]
     C -->|evaluate_muril.py| D[Transfomer vs. Baseline evaluation]
 ```
 
-* **Input:** `data/unified_biology_dataset.json` (1,700 entries).
+* **Input:** `data/unified_biology_dataset_v2.json` (1,700 entries).
 * **Processing:**
   1. Dataset is converted into Hugging Face `DatasetDict` format.
   2. Fine-tuning uses Google's `google/muril-base-cased` pre-trained on Indian languages.
@@ -220,7 +220,7 @@ pytest tests/test_retriever.py
 ### 1. Architectural Flow
 ```mermaid
 graph TD
-    A[data/unified_biology_dataset.json] -->|prepare_seq2seq_data.py| B[Hugging Face seq2seq dataset splits]
+    A[data/unified_biology_dataset_v2.json] -->|prepare_seq2seq_data.py| B[Hugging Face seq2seq dataset splits]
     B -->|train_indicbart.py| C[Fine-tuned IndicBART model]
     D[Student Question] -->|pipeline.py| E[M1 Preprocessing]
     E -->|M2 Retriever| F[ChromaDB Context Chunks]
@@ -267,3 +267,50 @@ python src/generator.py
 python src/pipeline.py --query "Mitochondria ka cell mein kya function hota hai?"
 ```
 * **What it does:** Passes query through preprocessor (M1), retrieves NCERT paragraphs (M2), and generates the final grounded Hinglish answer (M3).
+
+---
+
+## Complete Update Pipeline: What to run when you modify the dataset
+
+If you make modifications to the raw dataset files or the annotations, you must run the following sequence of commands to ensure all processed data splits, baseline models, transformers, and generators are fully updated. 
+
+### 1. Recompile the Unified Dataset
+Run this to merge your updated chapter datasets into the final `data/unified_biology_dataset_v2.json`:
+```bash
+python scripts/merge_dataset.py
+```
+
+### 2. Re-prepare All Training Data Splits
+Generate the updated training and validation splits for all downstream models:
+```bash
+python training/prepare_spacy_data.py
+python training/prepare_hf_data.py
+python training/prepare_seq2seq_data.py
+```
+
+### 3. Re-train Phase 3 Baselines (spaCy)
+Train the lightweight CPU models on the new data splits:
+```bash
+python training/train_lid.py
+python training/train_ner.py
+python training/train_intent.py
+```
+
+### 4. Re-train Phase 4 Transformers (MuRIL)
+Fine-tune the MuRIL transformers using the updated Hugging Face datasets:
+```bash
+python training/train_muril_lid.py
+python training/train_muril_intent.py
+```
+
+### 5. Re-train Phase 6 Generator (IndicBART)
+Fine-tune the sequence-to-sequence model on the updated seq2seq splits:
+```bash
+python training/train_indicbart.py
+```
+
+### 6. Rebuild Vector Database (Optional)
+If your dataset changes involved adding or modifying the raw NCERT text corpus, you must also rebuild the ChromaDB knowledge base:
+```bash
+python scripts/build_knowledge_base.py --force
+```

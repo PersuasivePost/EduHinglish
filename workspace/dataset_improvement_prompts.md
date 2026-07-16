@@ -711,7 +711,7 @@ python scripts/patch_general1.py
 ```python
 """
 Merge all data sources into unified_science_dataset_v2.json:
-  - data/unified_biology_dataset.json        (existing class 9/10 Biology entries)
+  - data/unified_biology_dataset_v2.json        (existing class 9/10 Biology entries)
   - data/processed/general1/dataset.json     (patched general section — 95 entries)
   - data/chapter_additions/*.json            (new entries for all chapters)
 """
@@ -722,7 +722,7 @@ from collections import Counter
 ROOT = Path(__file__).parent.parent
 
 # ── 1. Load existing Biology dataset (class 9/10) ──────────────────────────
-with open(ROOT / "data/unified_biology_dataset.json") as f:
+with open(ROOT / "data/unified_biology_dataset_v2.json") as f:
     existing = json.load(f)
 
 existing = [d for d in existing

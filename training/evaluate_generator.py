@@ -37,7 +37,7 @@ colorama_init(autoreset=True)
 
 # ── Project paths ─────────────────────────────────────────────────────────────
 PROJECT_ROOT = Path(__file__).parent.parent
-DATASET_PATH = PROJECT_ROOT / "data" / "unified_biology_dataset.json"
+DATASET_PATH = PROJECT_ROOT / "data" / "unified_biology_dataset_v2.json"
 SEQ2SEQ_DIR  = PROJECT_ROOT / "training" / "data" / "indicbart_seq2seq_dataset"
 OUTPUT_DIR   = PROJECT_ROOT / "outputs"
 DEFAULT_MODEL = "models/indicbart_v1"

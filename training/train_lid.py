@@ -29,9 +29,9 @@ from spacy.util import compounding, minibatch
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-TRAIN_DATA = Path("training/data/lid_train.spacy")
-DEV_DATA   = Path("training/data/lid_dev.spacy")
-OUTPUT_DIR = Path("models/lid_v1")
+TRAIN_DATA = Path("training/data/lid_train_v2.spacy")
+DEV_DATA   = Path("training/data/lid_dev_v2.spacy")
+OUTPUT_DIR = Path("models/lid_v2")
 
 LID_LABELS = ["HI", "EN", "NE", "UNIV", "MIX"]
 SEED = 42

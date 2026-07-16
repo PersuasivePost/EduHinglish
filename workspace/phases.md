@@ -78,7 +78,7 @@ wrong ones → saves to JSON
 
 This is the fastest path to 550–750 labeled sentences (11 chapters × 50–75) without any LLM API.
 
-**Unified dataset:** `data/unified_biology_dataset.json` — all chapters merged with metadata.
+**Unified dataset:** `data/unified_biology_dataset_v2.json` — all chapters merged with metadata.
 
 ---
 
@@ -119,9 +119,9 @@ training/
 ├── train_intent.py
 └── evaluate_models.py         ← accuracy, F1, confusion matrix
 models/
-├── lid_v1/                    ← saved spaCy pipeline
-├── ner_v1/
-└── intent_v1/
+├── lid_v2/                    ← saved spaCy pipeline
+├── ner_v2/
+└── intent_v2/
 ```
 
 **Integration:** Replace `WordLevelLID` class in `script_detector.py` with spaCy model call. Add intent detection to `pipeline.py`.
@@ -142,7 +142,7 @@ models/
 - Token classification head on top of `google/muril-base-cased`
 - LoRA fine-tuning (PEFT) — reduces trainable params from 236M to ~2M
 - Batch size 16, ~5 epochs, ~20 min on T4
-- Save to `models/muril_lid_v1/`
+- Save to `models/muril_lid_v2/`
 
 **Files to build:**
 ```

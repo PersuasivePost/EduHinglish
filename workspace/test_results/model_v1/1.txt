@@ -6,7 +6,7 @@ $ python training/evaluate_generator.py
   ════════════════════════════════════════════════════════════
 
   Pre-split dev set not found at: C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\training\data\indicbart_seq2seq_dataset
-  Recreating split from: C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\data\unified_biology_dataset.json
+  Recreating split from: C:\Users\Ashvatth\OneDrive\Desktop\AshWorks\EduHinglish\data\unified_biology_dataset_v2.json
   [OK] Created dev split: 95 examples (from 950 total, SEED=42)
 
   Loading model: Fine-tuned IndicBART + LoRA (models/indicbart_v1)

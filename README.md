@@ -36,7 +36,7 @@ A 5-module integrated AI system:
 ### Phase 1 & 2 — Dataset Foundation ✅
 
 - **Scope:** 10 chapters across NCERT Class 9 & Class 10 Science.
-- **Output:** `data/unified_biology_dataset.json` (950 labeled sentences).
+- **Output:** `data/unified_biology_dataset_v2.json` (950 labeled sentences).
 - **Quality:** Word-level HI/EN/NE/UNIV/MIX annotations verified via `validate_dataset.py`.
 
 ### Phase 3 & 4 — Intelligence Layer (LID & Intent) ✅
@@ -48,7 +48,7 @@ We've moved from rule-based baselines to production-grade Transformers.
 | **Language ID**      | MuRIL + LoRA                    | Accuracy | 98.1%            | **99.2%**     |
 | **Intent Detection** | MuRIL + Sequence Classification | Accuracy | 70.0%            | **82.5%**     |
 
-- **Models Saved:** `models/muril_lid_v1/`, `models/muril_intent_v1/`.
+- **Models Saved:** `models/muril_lid_v2/`, `models/muril_intent_v2/`.
 - **Infrastructure:** Fine-tuned on Colab T4, optimized for local inference.
 
 ### Phase 5 — Knowledge Base & RAG ✅

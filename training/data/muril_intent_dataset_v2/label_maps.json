@@ -1,0 +1,25 @@
+{
+  "intent2id": {
+    "explain_concept": 0,
+    "compare_concepts": 1,
+    "give_example": 2,
+    "formula_request": 3,
+    "definition": 4
+  },
+  "id2intent": {
+    "0": "explain_concept",
+    "1": "compare_concepts",
+    "2": "give_example",
+    "3": "formula_request",
+    "4": "definition"
+  },
+  "class_weights": {
+    "explain_concept": 0.3095,
+    "compare_concepts": 0.8761,
+    "give_example": 3.4556,
+    "formula_request": 12.44,
+    "definition": 3.8875
+  },
+  "model_name": "google/muril-base-cased",
+  "max_length": 128
+}

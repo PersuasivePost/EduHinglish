@@ -3,7 +3,7 @@ EduHinglish — Phase 6, Prompt 1: Prepare Seq2Seq Data
 =======================================================
 Author  : Ashvatth
 Module  : Phase 6 — IndicBART Hinglish Generator Fine-tuning (Data Preparation)
-Purpose : Convert data/unified_biology_dataset.json into (source, target) pairs
+Purpose : Convert data/unified_biology_dataset_v2.json into (source, target) pairs
           for IndicBART seq2seq fine-tuning (English → Hinglish).
 
 Three pair types are built:
@@ -69,7 +69,7 @@ except ImportError:
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_DATASET = Path("data/unified_biology_dataset.json")
+DEFAULT_DATASET = Path("data/unified_biology_dataset_v2.json")
 OUTPUT_DIR      = Path("training/data/indicbart_seq2seq_dataset")
 
 MODEL_NAME         = "ai4bharat/IndicBART"
