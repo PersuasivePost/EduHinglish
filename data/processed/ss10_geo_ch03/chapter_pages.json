@@ -1,0 +1,53 @@
+{
+  "chapter": 3,
+  "title": "Water Resources",
+  "subject": "Geography",
+  "chapter_id": "ch03",
+  "total_pages": 11,
+  "pages": [
+    {
+      "page": 1,
+      "chars": 1378
+    },
+    {
+      "page": 2,
+      "chars": 1491
+    },
+    {
+      "page": 3,
+      "chars": 4333
+    },
+    {
+      "page": 4,
+      "chars": 3100
+    },
+    {
+      "page": 5,
+      "chars": 3479
+    },
+    {
+      "page": 6,
+      "chars": 95
+    },
+    {
+      "page": 7,
+      "chars": 1729
+    },
+    {
+      "page": 8,
+      "chars": 1558
+    },
+    {
+      "page": 9,
+      "chars": 2432
+    },
+    {
+      "page": 10,
+      "chars": 1155
+    },
+    {
+      "page": 11,
+      "chars": 1947
+    }
+  ]
+}

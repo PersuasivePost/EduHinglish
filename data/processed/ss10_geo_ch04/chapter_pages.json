@@ -1,0 +1,57 @@
+{
+  "chapter": 4,
+  "title": "Agriculture",
+  "subject": "Geography",
+  "chapter_id": "ch04",
+  "total_pages": 12,
+  "pages": [
+    {
+      "page": 1,
+      "chars": 2543
+    },
+    {
+      "page": 2,
+      "chars": 2721
+    },
+    {
+      "page": 3,
+      "chars": 2849
+    },
+    {
+      "page": 4,
+      "chars": 58
+    },
+    {
+      "page": 5,
+      "chars": 2313
+    },
+    {
+      "page": 6,
+      "chars": 59
+    },
+    {
+      "page": 7,
+      "chars": 3026
+    },
+    {
+      "page": 8,
+      "chars": 2140
+    },
+    {
+      "page": 9,
+      "chars": 3952
+    },
+    {
+      "page": 10,
+      "chars": 2271
+    },
+    {
+      "page": 11,
+      "chars": 1220
+    },
+    {
+      "page": 12,
+      "chars": 845
+    }
+  ]
+}

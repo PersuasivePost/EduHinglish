@@ -1,0 +1,73 @@
+{
+  "chapter": 1,
+  "title": "Development",
+  "subject": "Economics",
+  "chapter_id": "ch01",
+  "total_pages": 16,
+  "pages": [
+    {
+      "page": 1,
+      "chars": 2810
+    },
+    {
+      "page": 2,
+      "chars": 1250
+    },
+    {
+      "page": 3,
+      "chars": 1876
+    },
+    {
+      "page": 4,
+      "chars": 1833
+    },
+    {
+      "page": 5,
+      "chars": 2814
+    },
+    {
+      "page": 6,
+      "chars": 1380
+    },
+    {
+      "page": 7,
+      "chars": 3960
+    },
+    {
+      "page": 8,
+      "chars": 2549
+    },
+    {
+      "page": 9,
+      "chars": 2561
+    },
+    {
+      "page": 10,
+      "chars": 2973
+    },
+    {
+      "page": 11,
+      "chars": 2381
+    },
+    {
+      "page": 12,
+      "chars": 2954
+    },
+    {
+      "page": 13,
+      "chars": 2402
+    },
+    {
+      "page": 14,
+      "chars": 2393
+    },
+    {
+      "page": 15,
+      "chars": 2215
+    },
+    {
+      "page": 16,
+      "chars": 1441
+    }
+  ]
+}
