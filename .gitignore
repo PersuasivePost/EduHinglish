@@ -74,3 +74,6 @@ outputs/pipeline_results/*.json
 !data/processed/.gitkeep
 !data/hinglish/.gitkeep
 !outputs/pipeline_results/.gitkeep
+
+data/ncert_kaggle
+
