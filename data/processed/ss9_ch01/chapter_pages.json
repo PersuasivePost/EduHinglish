@@ -1,0 +1,57 @@
+{
+  "chapter": 1,
+  "title": "Understanding Social Science",
+  "subject": "general",
+  "chapter_id": "intro",
+  "total_pages": 12,
+  "pages": [
+    {
+      "page": 1,
+      "chars": 1933
+    },
+    {
+      "page": 2,
+      "chars": 1742
+    },
+    {
+      "page": 3,
+      "chars": 2822
+    },
+    {
+      "page": 4,
+      "chars": 2306
+    },
+    {
+      "page": 5,
+      "chars": 1757
+    },
+    {
+      "page": 6,
+      "chars": 3005
+    },
+    {
+      "page": 7,
+      "chars": 440
+    },
+    {
+      "page": 8,
+      "chars": 1105
+    },
+    {
+      "page": 9,
+      "chars": 2685
+    },
+    {
+      "page": 10,
+      "chars": 2476
+    },
+    {
+      "page": 11,
+      "chars": 2619
+    },
+    {
+      "page": 12,
+      "chars": 2606
+    }
+  ]
+}

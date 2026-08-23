@@ -20,6 +20,9 @@ __pycache__/
 data/raw/**/*.pdf
 data/raw/**/*.PDF
 *.pdf
+*.xlsx
+data/raw/**/*.xlsx
+Social Science class 9/
 
 # Keep processed outputs but not large model files
 *.safetensors
