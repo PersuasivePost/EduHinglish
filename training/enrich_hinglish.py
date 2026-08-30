@@ -30,11 +30,17 @@ except ImportError:
     print("        pip install google-generativeai")
     sys.exit(1)
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).parent.parent / ".env")
+except ImportError:
+    pass
+
 # Config
 PROJECT_ROOT = Path(__file__).parent.parent
-CONCURRENCY  = 8
-SAVE_EVERY   = 100
-MODEL_NAME   = "gemini-2.0-flash"
+CONCURRENCY  = 2
+SAVE_EVERY   = 20
+MODEL_NAME   = "gemini-3.6-flash"
 
 SYSTEM_PROMPT = """You are an expert at writing natural Hinglish — a mix of Hindi (Roman script) and English,
 as spoken by Indian school students (Class 6-12).
@@ -61,15 +67,21 @@ English answer: {a_en}
 Output only the Hinglish answer."""
 
 
-def init_client():
+def init_client(model_name: str = MODEL_NAME):
     api_key = os.environ.get("GEMINI_API_KEY", "")
     if not api_key:
-        print("[ERROR] GEMINI_API_KEY environment variable not set.")
-        print("        export GEMINI_API_KEY='your-key-here'")
+        print("[ERROR] GEMINI_API_KEY is not set.")
+        print("        Option 1: set it in your terminal:")
+        print("            PowerShell: $env:GEMINI_API_KEY='your-key-here'")
+        print("            CMD: set GEMINI_API_KEY=your-key-here")
+        print("            Bash: export GEMINI_API_KEY='your-key-here'")
+        print("        Option 2: create a .env file in the project root:")
+        print("            GEMINI_API_KEY=your-key-here")
+        print("        Option 3: VS Code launch.json env section: {\"env\": {\"GEMINI_API_KEY\": \"your-key-here\"}}")
         sys.exit(1)
     genai.configure(api_key=api_key)
     return genai.GenerativeModel(
-        model_name=MODEL_NAME,
+        model_name=model_name,
         system_instruction=SYSTEM_PROMPT,
     )
 
@@ -80,7 +92,7 @@ async def generate(model, prompt: str, retries: int = 3) -> str:
             response = await asyncio.to_thread(
                 model.generate_content,
                 prompt,
-                generation_config={"temperature": 0.3, "max_output_tokens": 512},
+                generation_config={"temperature": 0.3, "max_output_tokens": 2048},
             )
             return response.text.strip()
         except Exception as e:
@@ -107,17 +119,17 @@ async def enrich_entry(sem, model, entry: dict) -> dict:
         )
         a_hi = await generate(
             model,
-            A_PROMPT.format(a_en=entry["answer_english"][:1200]),
+            A_PROMPT.format(a_en=entry["answer_english"][:3000]),
         )
         entry["question_hinglish"] = q_hi
         entry["answer_hinglish"]   = a_hi
         return entry
 
 
-async def run(input_path: Path, concurrency: int, save_every: int):
-    model = init_client()
+async def run(input_path: Path, concurrency: int, save_every: int, model_name: str = MODEL_NAME, limit: int = None):
+    model = init_client(model_name=model_name)
     print(f"\n[EduHinglish Enrichment] -> {input_path.name}")
-    print(f"  Model      : {MODEL_NAME}")
+    print(f"  Model      : {model_name}")
     print(f"  Concurrency: {concurrency}")
     print(f"  Checkpoint : every {save_every} entries\n")
 
@@ -130,7 +142,12 @@ async def run(input_path: Path, concurrency: int, save_every: int):
     ]
     print(f"  Total entries : {total}")
     print(f"  Already filled: {total - len(pending_idx)}")
-    print(f"  To process    : {len(pending_idx)}\n")
+    
+    if limit and limit > 0:
+        pending_idx = pending_idx[:limit]
+        print(f"  To process    : {len(pending_idx)} (limited to {limit})\n")
+    else:
+        print(f"  To process    : {len(pending_idx)}\n")
 
     if not pending_idx:
         print("All entries already enriched. Nothing to do.")
@@ -168,8 +185,10 @@ async def run(input_path: Path, concurrency: int, save_every: int):
 def main():
     parser = argparse.ArgumentParser(description="EduHinglish - Gemini Hinglish Enrichment")
     parser.add_argument("--input", required=True, help="Path to dataset JSON (e.g. data/ss9.json)")
-    parser.add_argument("--concurrency", type=int, default=CONCURRENCY)
-    parser.add_argument("--save-every",  type=int, default=SAVE_EVERY)
+    parser.add_argument("--model", type=str, default=MODEL_NAME, help=f"Gemini model name (default: {MODEL_NAME})")
+    parser.add_argument("--concurrency", type=int, default=CONCURRENCY, help=f"Concurrency limit (default: {CONCURRENCY})")
+    parser.add_argument("--save-every",  type=int, default=SAVE_EVERY, help=f"Save checkpoint every N entries (default: {SAVE_EVERY})")
+    parser.add_argument("--limit", type=int, default=None, help="Limit number of entries to process (useful for testing)")
     args   = parser.parse_args()
     inpath = PROJECT_ROOT / args.input
 
@@ -177,7 +196,7 @@ def main():
         print(f"[ERROR] File not found: {inpath}")
         sys.exit(1)
 
-    asyncio.run(run(inpath, args.concurrency, args.save_every))
+    asyncio.run(run(inpath, args.concurrency, args.save_every, args.model, args.limit))
 
 
 if __name__ == "__main__":
