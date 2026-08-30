@@ -150,6 +150,11 @@ class NCERTPDFExtractor:
         )
         print("  [OK] Removed headers and running titles")
 
+        # 1.5 — QR codes and Sidebar artifacts
+        text = re.sub(r'\b\d{4}CH\d{2}\b', '', text, flags=re.I)
+        text = re.sub(r'(?i)\b(Think It Over)\b', '', text)
+        print("  [OK] Removed QR codes and Sidebar artifacts")
+
         # 2 — Standalone page numbers
         text = re.sub(r'^\s*\d{1,3}\s*$', '', text, flags=re.MULTILINE)
         print("  [OK] Removed page numbers")

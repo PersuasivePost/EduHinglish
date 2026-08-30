@@ -1,4 +1,5 @@
-Cell: The Building Block of Life It is widely accepted amongst the scientific community that life originated in water. Some researchers believe that life may have originated in small water pools with changing environmental Think It Over conditions rather than in the oceans. Hot springs are examples of such environments. In India, the hot springs of Puga Valley in y Where does a cell Ladakh maintain very high temperatures (nearly at the boiling come from? point of water) even in a cold climate. These environmental y How have conditions seem to be similar to those on the early Earth, about technological 3.5 billion years ago. The organisms living in these hot springs interventions are mostly heat-loving bacteria called thermophiles, which are facilitated the unicellular.
+Cell: The Building Block of Life It is widely accepted amongst the scientific community that life originated in water. Some researchers believe that life may have originated in small water pools with changing environmental
+ conditions rather than in the oceans. Hot springs are examples of such environments. In India, the hot springs of Puga Valley in y Where does a cell Ladakh maintain very high temperatures (nearly at the boiling come from? point of water) even in a cold climate. These environmental y How have conditions seem to be similar to those on the early Earth, about technological 3.5 billion years ago. The organisms living in these hot springs interventions are mostly heat-loving bacteria called thermophiles, which are facilitated the unicellular.
 creation of new knowledge in Scientists from the Birbal Sahni Institute of Palaeos, understanding the Lucknow, studied these hot springs and found that calcium carbonate world beyond the formed rapidly around them. These deposits may have protected naked eye? early organic molecules from harmful radiation and extreme y How is the cell conditions, and they may have also helped in the formation of the structural and first protective membrane - the barrier that defines a cell.
 functional unit of All living organisms are made up of cells. The cell represents the life?
 basic level at which life exists. Some organisms, such as bacteria or y How does a cell yeast consist of only one cell (unicellular), while others like plants, multiply?
@@ -148,13 +149,13 @@ nucleus). In prokaryotic cells, most cellular activities take place directly in 
 3. Cytoplasm under a light microscope.
 Well-defined nucleus (genetic
 4. Viruses are material enclosed by a membrane)
-composed of Primitive nucleus (nucleoid) (genetic some genetic
+composed of Primitive nucleus or nucleoid (genetic some genetic
 5.
 material without membrane around it) material with a protein coat.
 6. Membrane-bound organelles Viroids lack protein coat around its Comparison between prokaryotic and eukaryotic cells genetic material, while prions Characteristics Prokaryotic cell Eukaryotic cell are misfolded proteins which Primitive nucleus Present Absent lack genetic material.
 Diameter of a typical cell 1 to 10 µm 10 to 100 µm Can be unicellular Number of cells in an organism Usually unicellular or multicellular Membrane-bound organelles Absent Present Membrane-bound nucleus Absent Present Which of the cells given in fall under the categories of prokayotic and eukaryotic cells?
 Ready to Go Beyond In eukaryotic cells, a network of fine fibres forms the cytoskeleton, which provides structural support, maintains cell shape, and enables cell movement and internal transport. It is visible only under an electron microscope as a separate entity. The cytoplasm may also store starch (in plant cells), or crystals of calcium oxalate or silica (in some plant cells). These are known as cell inclusions.
-CChhaapptteerr--0022..iinndddd 1155 0044--0044--22002266 1155::0044::3333
+CChhaapptteerr--0022..iinndddd 1155 2288--0044--22002266 1144::3377::5544
 
 2.3.1 Why do eukaryotic cells need these organelles?
 Eukaryotic cells carry out various life processes in different cell organelles independently at the same time.

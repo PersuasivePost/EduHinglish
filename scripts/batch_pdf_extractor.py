@@ -70,35 +70,35 @@ CHAPTER_MAP = {
         "title"      : "Exploration: Entering the World of Secondary Science",
         "class"      : "9",
         "chapter_num": "01",
-        "pdf_names"  : ["ix_chap1_science.pdf"],
+        "pdf_names"  : ["ix_chap1_science.pdf", "class9_ch01.pdf"],
     },
 
     "class9_ch02": {
         "title"      : "Cell: The Building Block of Life (Fundamental Unit)",
         "class"      : "9",
         "chapter_num": "02",
-        "pdf_names"  : ["ix_chap2_science.pdf"],
+        "pdf_names"  : ["ix_chap2_science.pdf", "class9_ch02.pdf"],
     },
 
     "class9_ch03": {
         "title"      : "Tissues in Action",
         "class"      : "9",
         "chapter_num": "03",
-        "pdf_names"  : ["ix_chap3_science.pdf"],
+        "pdf_names"  : ["ix_chap3_science.pdf", "class9_ch03.pdf"],
     },
 
     "class9_ch11": {
         "title"      : "Reproduction: How Life Continues",
         "class"      : "9",
         "chapter_num": "11",
-        "pdf_names"  : ["ix_chap11_science.pdf"],
+        "pdf_names"  : ["ix_chap11_science.pdf", "class9_ch11.pdf"],
     },
 
     "class9_ch12": {
         "title"      : "Patterns in Life: Diversity and Classification",
         "class"      : "9",
         "chapter_num": "12",
-        "pdf_names"  : ["ix_chap12_science.pdf"],
+        "pdf_names"  : ["ix_chap12_science.pdf", "class9_ch12.pdf"],
     },
 
     # ── Class 10 Biology ─────────────────────────────────────────────────────
@@ -107,35 +107,35 @@ CHAPTER_MAP = {
         "title"      : "Life Processes",
         "class"      : "10",
         "chapter_num": "05",
-        "pdf_names"  : ["x_chap5_science.pdf"],
+        "pdf_names"  : ["x_chap5_science.pdf", "class10_ch05.pdf"],
     },
 
     "class10_ch06": {
         "title"      : "Control and Coordination",
         "class"      : "10",
         "chapter_num": "06",
-        "pdf_names"  : ["x_chap6_science.pdf"],
+        "pdf_names"  : ["x_chap6_science.pdf", "class10_ch06.pdf"],
     },
 
     "class10_ch07": {
         "title"      : "How do Organisms Reproduce?",
         "class"      : "10",
         "chapter_num": "07",
-        "pdf_names"  : ["x_chap7_science.pdf"],
+        "pdf_names"  : ["x_chap7_science.pdf", "class10_ch07.pdf"],
     },
 
     "class10_ch08": {
         "title"      : "Heredity",
         "class"      : "10",
         "chapter_num": "08",
-        "pdf_names"  : ["x_chap8_science.pdf"],
+        "pdf_names"  : ["x_chap8_science.pdf", "class10_ch08.pdf"],
     },
 
     "class10_ch13": {
         "title"      : "Our Environment",
         "class"      : "10",
         "chapter_num": "13",
-        "pdf_names"  : ["x_chap13_science.pdf"],
+        "pdf_names"  : ["x_chap13_science.pdf", "class10_ch13.pdf"],
     },
 }
 

@@ -422,7 +422,7 @@ Well-defined nucleus (genetic
 4. Viruses are
 material enclosed by a membrane)
 composed of
-Primitive nucleus (nucleoid) (genetic some genetic
+Primitive nucleus or nucleoid (genetic some genetic
 5.
 material without membrane around it) material with
 a protein coat.
@@ -454,7 +454,7 @@ and internal transport. It is visible only under an electron microscope as
 a separate entity. The cytoplasm may also store starch (in plant cells), or
 crystals of calcium oxalate or silica (in some plant cells). These are known
 as cell inclusions.
-CChhaapptteerr--0022..iinndddd 1155 0044--0044--22002266 1155::0044::3333
+CChhaapptteerr--0022..iinndddd 1155 2288--0044--22002266 1144::3377::5544
 
 2.3.1 Why do eukaryotic cells need these organelles?
 Eukaryotic cells carry out various life processes in different cell organelles

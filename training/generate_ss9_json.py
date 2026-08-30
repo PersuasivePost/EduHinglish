@@ -1,3 +1,4 @@
+
 """
 generate_ss9_json.py  —  Generates data/ss9.json from SS9 cleaned chapter texts.
 Run: python training/generate_ss9_json.py
@@ -232,7 +233,7 @@ def gen_questions(passage, chapter, subject):
     nps = noun_phrases(passage)
     sents = split_sentences(passage)
     first_sent = sents[0] if sents else passage.split('.')[0]
-    fs = first_sent if len(first_sent) < 100 else ' '.join(first_sent.split()[:15]) + '...'
+    fs = first_sent
 
     has_defn    = bool(re.search(r'\b(?:is defined as|refers to|is a |are a |means|can be described as)\b', passage, re.I))
     has_cause   = bool(re.search(r'\b(?:because|due to|causes?|led to|results? in|reason for)\b', passage, re.I))
