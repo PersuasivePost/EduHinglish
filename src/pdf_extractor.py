@@ -15,6 +15,7 @@ import re
 import json
 import os
 import argparse
+import itertools
 from pathlib import Path
 
 
@@ -141,6 +142,23 @@ class NCERTPDFExtractor:
         print("CLEANING EXTRACTED TEXT")
         print(f"{'='*60}")
         original_len = len(text)
+
+        # 0 - Fix PDF extraction character duplication bugs (e.g., DDDDDOOOOO -> DO)
+        def replacer(match):
+            word = match.group(0)
+            groups = [''.join(g) for k, g in itertools.groupby(word)]
+            lengths = [len(g) for g in groups]
+            if not lengths: return word
+            if all(l >= 4 for l in lengths) or (len(lengths) > 1 and all(l >= 3 for l in lengths)):
+                return ''.join(g[0] for g in groups)
+            if len(lengths) == 1 and lengths[0] >= 4:
+                if groups[0][0].isalpha() or not groups[0][0].isalnum():
+                    return groups[0][0]
+            return word
+
+        words = text.split()
+        text = " ".join([re.sub(r'\S+', replacer, w) for w in words])
+        print("  [OK] Collapsed duplicated character artefacts")
 
         # 1 — Headers / running titles
         text = re.sub(

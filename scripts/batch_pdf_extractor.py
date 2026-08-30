@@ -66,13 +66,6 @@ CHAPTER_MAP = {
 
     # ── Class 9 Biology ──────────────────────────────────────────────────────
 
-    "class9_ch01": {
-        "title"      : "Exploration: Entering the World of Secondary Science",
-        "class"      : "9",
-        "chapter_num": "01",
-        "pdf_names"  : ["ix_chap1_science.pdf", "class9_ch01.pdf"],
-    },
-
     "class9_ch02": {
         "title"      : "Cell: The Building Block of Life (Fundamental Unit)",
         "class"      : "9",

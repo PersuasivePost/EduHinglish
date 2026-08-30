@@ -35,14 +35,14 @@ def split_sentences(text):
     out = []
     for p in parts:
         p = p.replace('<DOT>', '.').strip()
-        if len(p) > 30:
+        if len(p) > 3:
             out.append(p.rstrip('.') + '.')
     return out
 
 # ── Build passages from a text using sliding sentence windows ─────────────────
 SKIP_LINE = re.compile(
-    r'^(\d+\.\s|Big Questions?|The\s*$|CChhaapptteerr|iinndddd|LET\'S|BEYOND|'
-    r'UNDERSTANDING|India and Beyond|https?://|courtesy|wikimedia)', re.I
+    r'^(\d+\.\s|Big Questions?|The\s*$|CChhaapptteerr|iinndddd|LET\'S|BEYOND\s*$|'
+    r'UNDERSTANDING\s*$|India and Beyond|https?://|courtesy|wikimedia)', re.I
 )
 ARTIFACT = re.compile(r'(.)\1{3,}')
 
@@ -51,10 +51,8 @@ def build_passages(raw_text, window=5, step=3, min_len=120):
     for line in raw_text.splitlines():
         line = line.strip()
         if not line: continue
-        if ARTIFACT.search(line): continue
         if SKIP_LINE.match(line): continue
         if re.match(r'^\d+$', line): continue          # bare page numbers
-        if len(line.split()) < 4: continue             # too short
         lines.append(line)
 
     blob = ' '.join(lines)
@@ -210,7 +208,12 @@ def make_entry(idx, info, intent, q_en, q_hi, passage, topic):
         "question_hinglish": q_hi,  # Will be blank, ready for enrich_hinglish.py
         "answer_english":   passage,
         "answer_hinglish":  "",
-        "ncert_context":    passage
+        "ncert_context":    passage,
+        "messages": [
+            {"role": "system", "content": passage},
+            {"role": "user", "content": q_en},
+            {"role": "assistant", "content": passage}
+        ]
     }
 
 def process(folder, info):
