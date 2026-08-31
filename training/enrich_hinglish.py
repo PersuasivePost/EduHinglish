@@ -1,13 +1,7 @@
 """
 EduHinglish — Hinglish Enrichment via Gemini or Ollama
 =======================================================
-EduHinglish — Hinglish Enrichment via Gemini or Ollama
-=======================================================
 Fills `question_hinglish` and `answer_hinglish` for entries where they are blank.
-
-Backends:
-  - gemini : Google Gemini API (free tier: 15 RPM — will bottleneck on large datasets)
-  - ollama : Local Ollama server on your own GPU/CPU — no rate limit
 
 Backends:
   - gemini : Google Gemini API (free tier: 15 RPM — will bottleneck on large datasets)
@@ -17,15 +11,9 @@ Features:
   - Async + concurrent requests (configurable CONCURRENCY)
   - Checkpointing: saves every SAVE_EVERY entries — resume-safe
   - Exponential backoff on rate limits (429) for Gemini / connection errors for Ollama
-  - Exponential backoff on rate limits (429) for Gemini / connection errors for Ollama
   - Works with ss9.json, ss10.json, bio9.json, or any dataset in the same format
 
 Usage:
-    # Gemini (needs GEMINI_API_KEY in .env)
-    python training/enrich_hinglish.py --input data/ss9.json --backend gemini
-
-    # Ollama (needs `ollama serve` running + model pulled: `ollama pull qwen3.5:4b`)
-    python training/enrich_hinglish.py --input data/ss9.json --backend ollama --ollama-model qwen3.5:4b
     # Gemini (needs GEMINI_API_KEY in .env)
     python training/enrich_hinglish.py --input data/ss9.json --backend gemini
 
@@ -43,9 +31,7 @@ from pathlib import Path
 
 try:
     import requests
-    import requests
 except ImportError:
-    requests = None
     requests = None
 
 try:
@@ -55,12 +41,6 @@ except ImportError:
     pass
 
 # Config
-PROJECT_ROOT  = Path(__file__).parent.parent
-CONCURRENCY   = 2
-SAVE_EVERY    = 20
-GEMINI_MODEL  = "gemini-3.6-flash"
-OLLAMA_MODEL  = "qwen3.5:4b"
-OLLAMA_HOST   = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 PROJECT_ROOT  = Path(__file__).parent.parent
 CONCURRENCY   = 2
 SAVE_EVERY    = 20
@@ -105,18 +85,6 @@ def init_gemini_client(model_name: str):
         print("        pip install google-generativeai")
         sys.exit(1)
 
-# ---------------------------------------------------------------------------
-# Gemini backend
-# ---------------------------------------------------------------------------
-
-def init_gemini_client(model_name: str):
-    try:
-        import google.generativeai as genai
-    except ImportError:
-        print("[ERROR] google-generativeai not installed. Run:")
-        print("        pip install google-generativeai")
-        sys.exit(1)
-
     api_key = os.environ.get("GEMINI_API_KEY", "")
     if not api_key:
         print("[ERROR] GEMINI_API_KEY is not set.")
@@ -128,10 +96,8 @@ def init_gemini_client(model_name: str):
         sys.exit(1)
     genai.configure(api_key=api_key)
     return genai.GenerativeModel(model_name=model_name, system_instruction=SYSTEM_PROMPT)
-    return genai.GenerativeModel(model_name=model_name, system_instruction=SYSTEM_PROMPT)
 
 
-async def gemini_generate(model, prompt: str, retries: int = 3) -> str:
 async def gemini_generate(model, prompt: str, retries: int = 3) -> str:
     for attempt in range(retries):
         try:
@@ -178,7 +144,7 @@ def check_ollama_ready(host: str, model_name: str):
         sys.exit(1)
 
 
-def _ollama_generate_sync(host: str, model_name: str, prompt: str) -> str:
+def _ollama_generate_sync(host: str, model_name: str, prompt: str, timeout: int) -> str:
     resp = requests.post(
         f"{host}/api/chat",
         json={
@@ -196,16 +162,16 @@ def _ollama_generate_sync(host: str, model_name: str, prompt: str) -> str:
             "stream": False,
             "options": {"temperature": 0.3, "num_predict": 2048, "num_ctx": 4096},
         },
-        timeout=180,
+        timeout=timeout,
     )
     resp.raise_for_status()
     return resp.json().get("message", {}).get("content", "").strip()
 
 
-async def ollama_generate(host: str, model_name: str, prompt: str, retries: int = 3) -> str:
+async def ollama_generate(host: str, model_name: str, prompt: str, timeout: int, retries: int = 2) -> str:
     for attempt in range(retries):
         try:
-            return await asyncio.to_thread(_ollama_generate_sync, host, model_name, prompt)
+            return await asyncio.to_thread(_ollama_generate_sync, host, model_name, prompt, timeout)
         except Exception as e:
             print(f"  [ollama error] {e} — retrying...")
             await asyncio.sleep(2 * (attempt + 1))
@@ -215,6 +181,17 @@ async def ollama_generate(host: str, model_name: str, prompt: str, retries: int 
 # ---------------------------------------------------------------------------
 # Shared enrichment logic
 # ---------------------------------------------------------------------------
+
+def build_messages_hinglish(entry: dict) -> list:
+    """Chat-format mirror of `messages`, with user/assistant content in Hinglish.
+    System/context stays in English — it's the grounding passage, not something
+    that needs to be produced in Hinglish."""
+    return [
+        {"role": "system", "content": entry.get("ncert_context", "")},
+        {"role": "user", "content": entry.get("question_hinglish", "")},
+        {"role": "assistant", "content": entry.get("answer_hinglish", "")},
+    ]
+
 
 async def enrich_entry(sem, ctx: dict, entry: dict) -> dict:
     async with sem:
@@ -226,29 +203,21 @@ async def enrich_entry(sem, ctx: dict, entry: dict) -> dict:
         a_prompt = A_PROMPT.format(a_en=entry["answer_english"][:3000])
 
         if ctx["backend"] == "ollama":
-            q_hi = await ollama_generate(ctx["host"], ctx["model_name"], q_prompt)
-            a_hi = await ollama_generate(ctx["host"], ctx["model_name"], a_prompt)
+            q_hi = await ollama_generate(ctx["host"], ctx["model_name"], q_prompt, ctx["timeout"])
+            a_hi = await ollama_generate(ctx["host"], ctx["model_name"], a_prompt, ctx["timeout"])
         else:
             q_hi = await gemini_generate(ctx["model"], q_prompt)
             a_hi = await gemini_generate(ctx["model"], a_prompt)
 
         entry["question_hinglish"] = q_hi
         entry["answer_hinglish"] = a_hi
+        entry["messages_hinglish"] = build_messages_hinglish(entry)
         return entry
 
 
 async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
-              model_name: str, host: str, limit: int = None):
-    ctx = {"backend": backend, "model_name": model_name, "host": host, "model": None}
-
-    if backend == "ollama":
-        check_ollama_ready(host, model_name)
-    else:
-        ctx["model"] = init_gemini_client(model_name)
-
-async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
-              model_name: str, host: str, limit: int = None):
-    ctx = {"backend": backend, "model_name": model_name, "host": host, "model": None}
+              model_name: str, host: str, ollama_timeout: int, limit: int = None):
+    ctx = {"backend": backend, "model_name": model_name, "host": host, "model": None, "timeout": ollama_timeout}
 
     if backend == "ollama":
         check_ollama_ready(host, model_name)
@@ -257,14 +226,23 @@ async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
 
     print(f"\n[EduHinglish Enrichment] -> {input_path.name}")
     print(f"  Backend    : {backend}")
-    print(f"  Backend    : {backend}")
     print(f"  Model      : {model_name}")
     print(f"  Concurrency: {concurrency}")
     print(f"  Checkpoint : every {save_every} entries\n")
 
     data = json.loads(input_path.read_text(encoding="utf-8"))
-    data = json.loads(input_path.read_text(encoding="utf-8"))
     total = len(data)
+
+    # Backfill messages_hinglish for entries enriched before this field existed —
+    # no API calls needed, we already have the Hinglish text.
+    backfilled = 0
+    for e in data:
+        if e.get("question_hinglish") and e.get("answer_hinglish") and not e.get("messages_hinglish"):
+            e["messages_hinglish"] = build_messages_hinglish(e)
+            backfilled += 1
+    if backfilled:
+        print(f"  Backfilled messages_hinglish for {backfilled} already-enriched entries (no API calls)")
+        input_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
     pending_idx = [
         i for i, e in enumerate(data)
@@ -272,7 +250,6 @@ async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
     ]
     print(f"  Total entries : {total}")
     print(f"  Already filled: {total - len(pending_idx)}")
-
 
     if limit and limit > 0:
         pending_idx = pending_idx[:limit]
@@ -286,8 +263,6 @@ async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
 
     sem = asyncio.Semaphore(concurrency)
     done = 0
-    sem = asyncio.Semaphore(concurrency)
-    done = 0
     t_start = time.time()
 
     for batch_start in range(0, len(pending_idx), save_every):
@@ -298,14 +273,10 @@ async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
         for i, enriched in zip(batch, results):
             data[i] = enriched
             done += 1
-            done += 1
 
-        input_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
         input_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
         elapsed = time.time() - t_start
-        rate = done / elapsed if elapsed > 0 else 0
-        remain = (len(pending_idx) - done) / rate if rate > 0 else 0
         rate = done / elapsed if elapsed > 0 else 0
         remain = (len(pending_idx) - done) / rate if rate > 0 else 0
         print(
@@ -319,26 +290,14 @@ async def run(input_path: Path, backend: str, concurrency: int, save_every: int,
 
 def main():
     parser = argparse.ArgumentParser(description="EduHinglish - Hinglish Enrichment (Gemini or Ollama)")
-    parser = argparse.ArgumentParser(description="EduHinglish - Hinglish Enrichment (Gemini or Ollama)")
     parser.add_argument("--input", required=True, help="Path to dataset JSON (e.g. data/ss9.json)")
     parser.add_argument("--backend", choices=["gemini", "ollama"], default="gemini",
                          help="Which backend to use (default: gemini)")
     parser.add_argument("--model", type=str, default=None,
                          help=f"Model name. Defaults: gemini -> {GEMINI_MODEL}, ollama -> {OLLAMA_MODEL}")
     parser.add_argument("--ollama-host", type=str, default=OLLAMA_HOST, help="Ollama server URL")
-    parser.add_argument("--concurrency", type=int, default=None,
-                         help="Concurrency limit (default: 2 for gemini, 1 for ollama — a single local GPU "
-                              "doesn't benefit from parallel requests)")
-    parser.add_argument("--save-every", type=int, default=SAVE_EVERY,
-                         help=f"Save checkpoint every N entries (default: {SAVE_EVERY})")
-    parser.add_argument("--limit", type=int, default=None,
-                         help="Limit number of entries to process (useful for testing)")
-    args = parser.parse_args()
-    parser.add_argument("--backend", choices=["gemini", "ollama"], default="gemini",
-                         help="Which backend to use (default: gemini)")
-    parser.add_argument("--model", type=str, default=None,
-                         help=f"Model name. Defaults: gemini -> {GEMINI_MODEL}, ollama -> {OLLAMA_MODEL}")
-    parser.add_argument("--ollama-host", type=str, default=OLLAMA_HOST, help="Ollama server URL")
+    parser.add_argument("--ollama-timeout", type=int, default=300,
+                         help="Seconds to wait for a single Ollama response before retrying (default: 300)")
     parser.add_argument("--concurrency", type=int, default=None,
                          help="Concurrency limit (default: 2 for gemini, 1 for ollama — a single local GPU "
                               "doesn't benefit from parallel requests)")
@@ -356,11 +315,8 @@ def main():
     model_name = args.model or (OLLAMA_MODEL if args.backend == "ollama" else GEMINI_MODEL)
     concurrency = args.concurrency if args.concurrency is not None else (1 if args.backend == "ollama" else CONCURRENCY)
 
-    asyncio.run(run(inpath, args.backend, concurrency, args.save_every, model_name, args.ollama_host, args.limit))
-    model_name = args.model or (OLLAMA_MODEL if args.backend == "ollama" else GEMINI_MODEL)
-    concurrency = args.concurrency if args.concurrency is not None else (1 if args.backend == "ollama" else CONCURRENCY)
-
-    asyncio.run(run(inpath, args.backend, concurrency, args.save_every, model_name, args.ollama_host, args.limit))
+    asyncio.run(run(inpath, args.backend, concurrency, args.save_every, model_name, args.ollama_host,
+                    args.ollama_timeout, args.limit))
 
 
 if __name__ == "__main__":
