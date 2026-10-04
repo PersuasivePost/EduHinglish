@@ -14,9 +14,9 @@ import spacy
 
 PROJECT_ROOT = Path(__file__).parent.parent
 
-LID_MODEL = PROJECT_ROOT / "models" / "lid_v1"
-NER_MODEL = PROJECT_ROOT / "models" / "ner_v1"
-INTENT_MODEL = PROJECT_ROOT / "models" / "intent_v1"
+LID_MODEL = PROJECT_ROOT / "models" / "lid_v2"
+NER_MODEL = PROJECT_ROOT / "models" / "ner_v2"
+INTENT_MODEL = PROJECT_ROOT / "models" / "intent_v2"
 
 LID_TESTS = [
     "Mitochondria ko cell ka powerhouse kehte hain.",
@@ -38,7 +38,7 @@ def _thick():
 
 
 def eval_lid(nlp: spacy.Language) -> None:
-    print("\n── LID Model (models/lid_v1/) ──")
+    print("\n── LID Model (models/lid_v2/) ──")
     for sent in LID_TESTS:
         print(f"Input: \"{sent}\"")
         doc = nlp(sent)
@@ -51,7 +51,7 @@ def eval_lid(nlp: spacy.Language) -> None:
 
 
 def eval_ner(nlp: spacy.Language) -> None:
-    print("\n── NER Model (models/ner_v1/) ──")
+    print("\n── NER Model (models/ner_v2/) ──")
     for sent in LID_TESTS:
         print(f"Input: \"{sent}\"")
         doc = nlp(sent)
@@ -64,7 +64,7 @@ def eval_ner(nlp: spacy.Language) -> None:
 
 
 def eval_intent(nlp: spacy.Language) -> None:
-    print("\n── Intent Model (models/intent_v1/) ──")
+    print("\n── Intent Model (models/intent_v2/) ──")
     for sent, expected in INTENT_TESTS:
         doc = nlp(sent)
         pred, score = max(doc.cats.items(), key=lambda x: x[1])

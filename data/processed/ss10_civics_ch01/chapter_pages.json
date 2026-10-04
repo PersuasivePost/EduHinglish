@@ -1,0 +1,57 @@
+{
+  "chapter": 1,
+  "title": "Power-sharing",
+  "subject": "Civics",
+  "chapter_id": "ch01",
+  "total_pages": 12,
+  "pages": [
+    {
+      "page": 1,
+      "chars": 816
+    },
+    {
+      "page": 2,
+      "chars": 2383
+    },
+    {
+      "page": 3,
+      "chars": 2394
+    },
+    {
+      "page": 4,
+      "chars": 2642
+    },
+    {
+      "page": 5,
+      "chars": 2038
+    },
+    {
+      "page": 6,
+      "chars": 2617
+    },
+    {
+      "page": 7,
+      "chars": 2754
+    },
+    {
+      "page": 8,
+      "chars": 2719
+    },
+    {
+      "page": 9,
+      "chars": 2734
+    },
+    {
+      "page": 10,
+      "chars": 2204
+    },
+    {
+      "page": 11,
+      "chars": 2119
+    },
+    {
+      "page": 12,
+      "chars": 977
+    }
+  ]
+}

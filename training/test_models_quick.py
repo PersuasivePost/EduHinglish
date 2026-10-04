@@ -20,9 +20,9 @@ import spacy
 PROJECT_ROOT = Path(__file__).parent.parent
 
 MODELS = {
-    "lid": PROJECT_ROOT / "models" / "lid_v1",
-    "ner": PROJECT_ROOT / "models" / "ner_v1",
-    "intent": PROJECT_ROOT / "models" / "intent_v1",
+    "lid": PROJECT_ROOT / "models" / "lid_v2",
+    "ner": PROJECT_ROOT / "models" / "ner_v2",
+    "intent": PROJECT_ROOT / "models" / "intent_v2",
 }
 
 

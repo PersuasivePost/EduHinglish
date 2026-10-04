@@ -10,8 +10,8 @@ except ImportError:
     TRANSFORMERS_AVAILABLE = False
 
 PROJECT_ROOT = Path(__file__).parent.parent
-LID_MODEL_DIR = PROJECT_ROOT / "models" / "muril_lid_v1"
-INTENT_MODEL_DIR = PROJECT_ROOT / "models" / "muril_intent_v1"
+LID_MODEL_DIR = PROJECT_ROOT / "models" / "muril_lid_v2"
+INTENT_MODEL_DIR = PROJECT_ROOT / "models" / "muril_intent_v2"
 
 LID_TESTS = [
     "Mitochondria ko cell ka powerhouse kehte hain.",
@@ -64,7 +64,7 @@ def predict_lid(text: str, model, tokenizer) -> list[tuple[str, str]]:
     return result
 
 def eval_lid(model, tokenizer):
-    print("  ── MuRIL LID (models/muril_lid_v1/) ──")
+    print("  ── MuRIL LID (models/muril_lid_v2/) ──")
     
     # Ground truth for visual checkmarks
     gt_first = {
@@ -112,7 +112,7 @@ def eval_lid(model, tokenizer):
     print()
 
 def eval_intent(model, tokenizer):
-    print("  ── MuRIL Intent (models/muril_intent_v1/) ──")
+    print("  ── MuRIL Intent (models/muril_intent_v2/) ──")
     for idx, (sent, expected) in enumerate(INTENT_TESTS):
         print(f'  Input: "{sent}"')
         if model is not None and tokenizer is not None:

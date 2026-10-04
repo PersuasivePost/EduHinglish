@@ -30,9 +30,9 @@ from spacy.util import compounding, minibatch
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-TRAIN_DATA = Path("training/data/intent_train.spacy")
-DEV_DATA   = Path("training/data/intent_dev.spacy")
-OUTPUT_DIR = Path("models/intent_v1")
+TRAIN_DATA = Path("training/data/intent_train_v2.spacy")
+DEV_DATA   = Path("training/data/intent_dev_v2.spacy")
+OUTPUT_DIR = Path("models/intent_v2")
 
 INTENT_LABELS = [
     "explain_concept",
