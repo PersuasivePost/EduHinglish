@@ -7,7 +7,7 @@ Purpose : Two modes
              (reads from data/processed/<folder>/dataset.json,
               uses annotation_helper logic, saves back)
           2. --merge  : merge all chapter datasets into
-             data/unified_biology_dataset.json
+             data/unified_biology_dataset_v2.json
 
 Usage
 -----
@@ -73,7 +73,7 @@ CHAPTER_MAP: dict[str, tuple[str, str, str]] = {
 
 # Root paths (relative to project root)
 PROCESSED_DIR = Path("data/processed")
-UNIFIED_PATH  = Path("data/unified_biology_dataset.json")
+UNIFIED_PATH  = Path("data/unified_biology_dataset_v2.json")
 
 TARGET_PER_CHAPTER = 50   # default target
 
@@ -253,7 +253,7 @@ def run_chapter(chapter_code: str, target: int = TARGET_PER_CHAPTER) -> None:
 def build_unified() -> None:
     """
     Merge all chapter datasets from data/processed/ into
-    data/unified_biology_dataset.json with a metadata header.
+    data/unified_biology_dataset_v2.json with a metadata header.
     """
     from collections import Counter
 

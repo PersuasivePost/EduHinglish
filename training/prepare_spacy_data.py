@@ -1,7 +1,7 @@
 """
 EduHinglish — Phase 3, Task 1: Prepare spaCy Training Data
 ============================================================
-Converts data/unified_biology_dataset.json into .spacy binary
+Converts data/unified_biology_dataset_v2.json into .spacy binary
 files for three training tasks:
 
   1. LID  — token-level language identification (HI/EN/NE/UNIV/MIX)
@@ -34,7 +34,7 @@ from spacy.vocab import Vocab
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_DATASET = Path("data/unified_biology_dataset.json")
+DEFAULT_DATASET = Path("data/unified_biology_dataset_v2.json")
 OUTPUT_DIR      = Path("training/data")
 
 LID_LABELS = ["HI", "EN", "NE", "UNIV", "MIX"]
@@ -234,12 +234,12 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
     train_db = DocBin(attrs=["TAG"], store_user_data=False)
     for d in train_docs:
         train_db.add(d)
-    train_db.to_disk(OUTPUT_DIR / "lid_train.spacy")
+    train_db.to_disk(OUTPUT_DIR / "lid_train_v2.spacy")
 
     dev_db = DocBin(attrs=["TAG"], store_user_data=False)
     for d in dev_docs:
         dev_db.add(d)
-    dev_db.to_disk(OUTPUT_DIR / "lid_dev.spacy")
+    dev_db.to_disk(OUTPUT_DIR / "lid_dev_v2.spacy")
 
     # Stats
     total_tokens = sum(label_counter.values())
@@ -255,8 +255,8 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
         pct = cnt * 100 // max(total_tokens, 1)
         print(f"    {lbl:6s} {cnt:6d} ({pct:3d}%)")
     print()
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_train.spacy'}")
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_dev.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_train_v2.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_dev_v2.spacy'}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -356,12 +356,12 @@ def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
     train_db = DocBin(store_user_data=False)
     for d in train_docs:
         train_db.add(d)
-    train_db.to_disk(OUTPUT_DIR / "ner_train.spacy")
+    train_db.to_disk(OUTPUT_DIR / "ner_train_v2.spacy")
 
     dev_db = DocBin(store_user_data=False)
     for d in dev_docs:
         dev_db.add(d)
-    dev_db.to_disk(OUTPUT_DIR / "ner_dev.spacy")
+    dev_db.to_disk(OUTPUT_DIR / "ner_dev_v2.spacy")
 
     # Stats
     total_spans = sum(span_counter.values())
@@ -376,8 +376,8 @@ def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
         cnt = span_counter[cat]
         print(f"    {cat:14s}: {cnt}")
     print()
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_train.spacy'}")
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_dev.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_train_v2.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_dev_v2.spacy'}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -430,12 +430,12 @@ def prepare_intent(dataset: list[dict], nlp: spacy.Language) -> None:
     train_db = DocBin(store_user_data=True)  # store cats via user_data
     for d in train_docs:
         train_db.add(d)
-    train_db.to_disk(OUTPUT_DIR / "intent_train.spacy")
+    train_db.to_disk(OUTPUT_DIR / "intent_train_v2.spacy")
 
     dev_db = DocBin(store_user_data=True)
     for d in dev_docs:
         dev_db.add(d)
-    dev_db.to_disk(OUTPUT_DIR / "intent_dev.spacy")
+    dev_db.to_disk(OUTPUT_DIR / "intent_dev_v2.spacy")
 
     # Stats
     print(f"\n  Total intent entries: {len(docs)}")
@@ -447,8 +447,8 @@ def prepare_intent(dataset: list[dict], nlp: spacy.Language) -> None:
         cnt = intent_counter[lbl]
         print(f"    {lbl:20s}: {cnt}")
     print()
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_train.spacy'}")
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_dev.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_train_v2.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_dev_v2.spacy'}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -84,8 +84,8 @@ if _missing:
 # CONSTANTS
 # -------------------------------------------------------------------------
 
-DATASET_DIR = Path("training/data/muril_intent_dataset")
-OUTPUT_DIR  = Path("models/muril_intent_v1")
+DATASET_DIR = Path("training/data/muril_intent_dataset_v2")
+OUTPUT_DIR  = Path("models/muril_intent_v2")
 MODEL_NAME  = "google/muril-base-cased"
 SEED        = 42
 

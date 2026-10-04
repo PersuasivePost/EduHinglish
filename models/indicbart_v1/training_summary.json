@@ -1,0 +1,17 @@
+{
+  "model_name": "ai4bharat/IndicBART",
+  "epochs": 5,
+  "final_train_loss": 8.238,
+  "final_eval_loss": 3.5758,
+  "total_training_time": "1.6 min",
+  "training_time_seconds": 94.8,
+  "trainable_params": 1179648,
+  "total_params": 245196800,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "batch_size": 8,
+  "learning_rate": 0.0003,
+  "best_checkpoint_path": "/content/drive/MyDrive/EduHinglish/indicbart_v1/checkpoint-200",
+  "device": "cuda",
+  "fp16": true
+}
