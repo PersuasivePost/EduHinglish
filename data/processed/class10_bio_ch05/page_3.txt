@@ -1,0 +1,11 @@
+6CO2 + 12H2O --(Chlorophyll, Sunlight)--> C6H12O6 (Glucose) + 6O2 + 6H2O
+
+Let us now see what actually happens during the process of photosynthesis. The following events occur during this process – (i) Absorption of light energy by chlorophyll. (ii) Conversion of light energy to chemical energy and splitting of water molecules into hydrogen and oxygen. (iii) Reduction of carbon dioxide to carbohydrates. These steps need not take place one after the other immediately. For example, desert plants take up carbon dioxide at night and prepare an intermediate which is acted upon by the energy absorbed by the chlorophyll during the day.
+
+Let us see how each of the components of the above reaction are necessary for photosynthesis. If you carefully observe a cross-section of a leaf under the microscope (shown in Fig. 5.1), you will notice that some cells contain green dots. These green dots are cell organelles called chloroplasts which contain chlorophyll. Let us do an activity which demonstrates that chlorophyll is essential for photosynthesis.
+
+## Activity 5.1
+
+Take a potted plant with variegated leaves – for example, money plant or crotons. Keep the plant in a dark room for three days so that all the starch gets used up. Now keep the plant in sunlight for about six hours. Pluck a leaf from the plant. Mark the green areas in it and trace them on a sheet of paper. Dip the leaf in boiling water for a few minutes. After this, immerse it in a beaker containing alcohol. Carefully place the above beaker in a water-bath and heat till the alcohol begins to boil. What happens to the colour of the leaf? What is the colour of the solution? Now dip the leaf in a dilute solution of iodine for a few minutes. Take out the leaf and rinse off the iodine solution. Observe the colour of the leaf and compare this with the tracing of the leaf done in the beginning (Fig. 5.2). What can you conclude about the presence of starch in various areas of the leaf?
+
+[Box] Figure 5.1 Cross-section of a leaf: midrib, lamina or leaf blade, vein, vascular bundle (phloem, xylem), waxy cuticle, upper epidermis, chloroplast, air spaces, guard cell, lower epidermis. Figure 5.2 Variegated leaf (a) before and (b) after starch test.
