@@ -176,7 +176,7 @@ python training/evaluate_muril.py
 graph TD
     A[Cleaned NCERT Text] -->|chunker.py| B[Paragraph Chunks with Metadata]
     B -->|embedder.py| C[Dense Vector Embeddings]
-    C -->|build_knowledge_base.py| D[ChromaDB ncert_biology Collection]
+    C -->|build_knowledge_base.py| D[ChromaDB ncert_textbooks Collection]
     E[Student Hinglish Query] -->|retriever.py| F[Top-k matching NCERT paragraphs]
 ```
 

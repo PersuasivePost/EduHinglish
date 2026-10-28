@@ -6,15 +6,13 @@ Module  : Phase 4 -- MuRIL Fine-tuning (Intent Classification)
 Purpose : Fine-tune google/muril-base-cased with LoRA (PEFT) for
           sequence-level student query intent classification.
 
-Intents: explain_concept (0), compare_concepts (1), give_example (2),
-         formula_request (3), definition (4)
+Intents: INTENT_LABELS in training/label_config.py (QA dataset taxonomy)
 
 Architecture:
   MuRIL-base (frozen) -> LoRA adapters (rank=8, alpha=16)
-      -> [CLS] pooling -> Classification head (768 -> 5 intents)
+      -> [CLS] pooling -> Classification head (768 -> len(INTENT_LABELS))
 
-NOTE: Only 120 labeled queries. Uses class-weighted loss to handle
-the skewed distribution (53 explain vs 5 formula).
+Uses class-weighted loss to handle the skewed intent distribution.
 
 Designed to run on Google Colab T4 (16GB VRAM).
 Can run on CPU (dataset is small, ~10 min on CPU).
@@ -22,7 +20,7 @@ Can run on CPU (dataset is small, ~10 min on CPU).
 Usage:
   python training/train_muril_intent.py
   python training/train_muril_intent.py --epochs 30 --lr 1e-4
-  python training/train_muril_intent.py --output models/muril_intent_v2/
+  python training/train_muril_intent.py --output models/muril_intent_v3/
 """
 
 from __future__ import annotations
@@ -33,6 +31,8 @@ import shutil
 import sys
 import time
 from pathlib import Path
+
+from label_config import INTENT_LABELS
 
 # Ensure stdout handles UTF-8 on Windows
 if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
@@ -84,18 +84,12 @@ if _missing:
 # CONSTANTS
 # -------------------------------------------------------------------------
 
-DATASET_DIR = Path("training/data/muril_intent_dataset_v2")
-OUTPUT_DIR  = Path("models/muril_intent_v2")
+DATASET_DIR = Path("training/data/muril_intent_dataset_v3")
+OUTPUT_DIR  = Path("models/muril_intent_v3")
 MODEL_NAME  = "google/muril-base-cased"
 SEED        = 42
 
-INTENT2ID = {
-    "explain_concept":  0,
-    "compare_concepts": 1,
-    "give_example":     2,
-    "formula_request":  3,
-    "definition":       4,
-}
+INTENT2ID = {lbl: i for i, lbl in enumerate(INTENT_LABELS)}
 ID2INTENT   = {v: k for k, v in INTENT2ID.items()}
 NUM_INTENTS = len(INTENT2ID)
 INTENT_NAMES = list(INTENT2ID.keys())
@@ -124,7 +118,7 @@ def check_gpu():
         return "cuda"
     else:
         print("  [WARNING] No GPU detected.")
-        print("  Intent dataset is small (120 examples) -- CPU is usable (~10 min).")
+        print("  Training on CPU will be slow (~5k queries); prefer a GPU.")
         print("  For faster training, use the Colab notebook:")
         print("    training/colab_notebooks/02_train_muril_intent.ipynb")
         print()
@@ -166,7 +160,7 @@ class WeightedTrainer(Trainer):
     """
     Trainer subclass that uses class-weighted CrossEntropyLoss
     to handle the imbalanced intent distribution.
-    (53 explain_concept vs 5 formula_request)
+    (e.g. ~1,500 explain_concept vs 5 assertion_reason)
     """
 
     def __init__(self, class_weights=None, **kwargs):

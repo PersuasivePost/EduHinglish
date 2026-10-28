@@ -117,6 +117,9 @@ def main():
         ("mitochondria function", ["powerhouse", "mitochondria", "atp"]),
         ("photosynthesis chloroplast", ["photosynthesis", "chloroplast", "sunlight"]),
         ("cell division mitosis meiosis", ["mitosis", "meiosis", "division"]),
+        ("Harappan civilisation cities", ["harappa", "harappan", "sindhu"]),
+        ("elections and voting in democracy", ["election", "vote", "voting"]),
+        ("demand supply and market price", ["demand", "supply", "price"]),
     ]
 
     all_passed = True

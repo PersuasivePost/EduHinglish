@@ -18,7 +18,7 @@ Can run on CPU but will be very slow (~2 hours).
 Usage:
   python training/train_muril_lid.py
   python training/train_muril_lid.py --epochs 15 --lr 3e-4
-  python training/train_muril_lid.py --output models/muril_lid_v2/
+  python training/train_muril_lid.py --output models/muril_lid_v3/
 """
 
 from __future__ import annotations
@@ -29,6 +29,8 @@ import shutil
 import sys
 import time
 from pathlib import Path
+
+from label_config import LID_LABELS
 
 # Ensure stdout handles UTF-8 on Windows
 if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
@@ -79,12 +81,12 @@ if _missing:
 # CONSTANTS
 # -------------------------------------------------------------------------
 
-DATASET_DIR = Path("training/data/muril_lid_dataset_v2")
-OUTPUT_DIR  = Path("models/muril_lid_v2")
+DATASET_DIR = Path("training/data/muril_lid_dataset_v3")
+OUTPUT_DIR  = Path("models/muril_lid_v3")
 MODEL_NAME  = "google/muril-base-cased"
 SEED        = 42
 
-LABEL2ID = {"HI": 0, "EN": 1, "NE": 2, "UNIV": 3, "MIX": 4}
+LABEL2ID = {lbl: i for i, lbl in enumerate(LID_LABELS)}
 ID2LABEL = {v: k for k, v in LABEL2ID.items()}
 NUM_LABELS = len(LABEL2ID)
 

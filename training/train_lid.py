@@ -8,7 +8,7 @@ Labels: HI, EN, NE, UNIV, MIX
 
 Usage:
   python training/train_lid.py
-  python training/train_lid.py --epochs 50 --output models/lid_v2/
+  python training/train_lid.py --epochs 50 --output models/lid_v3/
 """
 
 from __future__ import annotations
@@ -25,15 +25,16 @@ from spacy.tokens import DocBin
 from spacy.training import Example
 from spacy.util import compounding, minibatch
 
+from label_config import LID_LABELS
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-TRAIN_DATA = Path("training/data/lid_train_v2.spacy")
-DEV_DATA   = Path("training/data/lid_dev_v2.spacy")
-OUTPUT_DIR = Path("models/lid_v2")
+TRAIN_DATA = Path("training/data/lid_train_v3.spacy")
+DEV_DATA   = Path("training/data/lid_dev_v3.spacy")
+OUTPUT_DIR = Path("models/lid_v3")
 
-LID_LABELS = ["HI", "EN", "NE", "UNIV", "MIX"]
 SEED = 42
 
 # ─────────────────────────────────────────────────────────────────────────────

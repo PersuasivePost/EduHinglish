@@ -4,11 +4,11 @@ EduHinglish — Phase 3, Task 3: Train NER (Science Entity) Model
 Trains a spaCy tok2vec + ner pipeline for science named-entity
 recognition on Hinglish text.
 
-Labels: SCIENTIST, ORGANELLE, PROCESS, CONCEPT, INSTRUMENT
+Labels: NER_LABELS in training/label_config.py
 
 Usage:
   python training/train_ner.py
-  python training/train_ner.py --epochs 60 --output models/ner_v2/
+  python training/train_ner.py --epochs 60 --output models/ner_v3/
 """
 
 from __future__ import annotations
@@ -26,15 +26,16 @@ from spacy.tokens import DocBin
 from spacy.training import Example
 from spacy.util import compounding, minibatch
 
+from label_config import NER_LABELS
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-TRAIN_DATA = Path("training/data/ner_train_v2.spacy")
-DEV_DATA   = Path("training/data/ner_dev_v2.spacy")
-OUTPUT_DIR = Path("models/ner_v2")
+TRAIN_DATA = Path("training/data/ner_train_v3.spacy")
+DEV_DATA   = Path("training/data/ner_dev_v3.spacy")
+OUTPUT_DIR = Path("models/ner_v3")
 
-NER_LABELS = ["SCIENTIST", "ORGANELLE", "PROCESS", "CONCEPT", "INSTRUMENT"]
 SEED = 42
 
 # ─────────────────────────────────────────────────────────────────────────────

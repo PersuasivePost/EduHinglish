@@ -48,7 +48,10 @@ class NCERTEmbedder:
 
         self.model_name = model_name
         self.model = SentenceTransformer(model_name)
-        self.dimension = self.model.get_embedding_dimension()
+        # get_embedding_dimension() is the newer name; older releases only have
+        # get_sentence_embedding_dimension()
+        get_dim = getattr(self.model, "get_embedding_dimension", None) or self.model.get_sentence_embedding_dimension
+        self.dimension = get_dim()
         self.device = str(self.model.device)
 
         print(f"  {Fore.GREEN}[OK] NCERTEmbedder initialized")

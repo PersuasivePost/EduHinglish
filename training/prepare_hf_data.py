@@ -3,7 +3,7 @@ EduHinglish — Phase 4, Task 1: Prepare HuggingFace Data
 =========================================================
 Authors : Ashvatth & Jatin
 Module  : Phase 4 — MuRIL Fine-tuning (Data Preparation)
-Purpose : Convert data/unified_biology_dataset_v2.json into HuggingFace
+Purpose : Convert data/unified_dataset_v3.json into HuggingFace
           Dataset format for MuRIL fine-tuning on two tasks:
 
   1. Token Classification (LID) — word-level language identification
@@ -29,6 +29,7 @@ import io
 import json
 import os
 import random
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -43,6 +44,8 @@ if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
 # ─────────────────────────────────────────────────────────────────────────────
 # DEPENDENCY CHECK
 # ─────────────────────────────────────────────────────────────────────────────
+
+from label_config import INTENT_LABELS as _INTENT_LABELS, LID_LABELS as _LID_LABELS
 
 try:
     from transformers import AutoTokenizer
@@ -63,27 +66,21 @@ except ImportError:
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_DATASET   = Path("data/unified_biology_dataset_v2.json")
-LID_OUTPUT_DIR    = Path("training/data/muril_lid_dataset_v2")
-INTENT_OUTPUT_DIR = Path("training/data/muril_intent_dataset_v2")
+DEFAULT_DATASET   = Path("data/unified_dataset_v3.json")
+LID_OUTPUT_DIR    = Path("training/data/muril_lid_dataset_v3")
+INTENT_OUTPUT_DIR = Path("training/data/muril_intent_dataset_v3")
 
 MODEL_NAME = "google/muril-base-cased"
 MAX_LENGTH = 128
 SEED       = 42
 
 # ── LID label mappings ───────────────────────────────────────────────────────
-LID_LABEL2ID = {"HI": 0, "EN": 1, "NE": 2, "UNIV": 3, "MIX": 4}
+LID_LABEL2ID = {lbl: i for i, lbl in enumerate(_LID_LABELS)}
 LID_ID2LABEL = {v: k for k, v in LID_LABEL2ID.items()}
 LID_LABELS   = list(LID_LABEL2ID.keys())
 
 # ── Intent label mappings ────────────────────────────────────────────────────
-INTENT_LABEL2ID = {
-    "explain_concept":  0,
-    "compare_concepts": 1,
-    "give_example":     2,
-    "formula_request":  3,
-    "definition":       4,
-}
+INTENT_LABEL2ID = {lbl: i for i, lbl in enumerate(_INTENT_LABELS)}
 INTENT_ID2LABEL = {v: k for k, v in INTENT_LABEL2ID.items()}
 INTENT_LABELS   = list(INTENT_LABEL2ID.keys())
 
@@ -193,7 +190,8 @@ def prepare_lid(dataset: list[dict], tokenizer) -> None:
     Convert word_level_labels into MuRIL-aligned token classification data.
 
     Strategy:
-      1. Split hinglish_roman by whitespace → original words
+      1. Split hinglish_roman into words + punctuation (same regex as
+         inference in evaluate_muril.py / the Colab notebooks)
       2. Look up each word's LID label from word_level_labels
       3. Tokenize with is_split_into_words=True (WordPiece on each word)
       4. Align labels using word_ids():
@@ -209,6 +207,7 @@ def prepare_lid(dataset: list[dict], tokenizer) -> None:
     _thick()
 
     all_examples: list[dict] = []
+    silver_examples: list[dict] = []
     skipped      = 0
     total_subwords = 0
     label_counter: Counter = Counter()
@@ -220,8 +219,8 @@ def prepare_lid(dataset: list[dict], tokenizer) -> None:
             skipped += 1
             continue
 
-        # Step 1: Split into words
-        words = hinglish.split()
+        # Step 1: Split into words (punctuation as separate tokens)
+        words = re.findall(r"\w+|[^\w\s]", hinglish)
 
         # Step 2: Look up label for each word
         word_labels: list[str] = []
@@ -261,15 +260,21 @@ def prepare_lid(dataset: list[dict], tokenizer) -> None:
 
         total_subwords += len(tokenized["input_ids"])
 
-        all_examples.append({
+        example = {
             "input_ids":      tokenized["input_ids"],
             "attention_mask": tokenized["attention_mask"],
             "labels":         aligned_labels,
             "word_ids":       [w if w is not None else -1 for w in word_ids],
-        })
+        }
+        # Silver (auto-tagged) examples go to train only so dev stays gold
+        if entry.get("lid_label_source") == "silver":
+            silver_examples.append(example)
+        else:
+            all_examples.append(example)
 
     # ── Split ────────────────────────────────────────────────────────────────
     train_examples, dev_examples = split_train_dev(all_examples)
+    train_examples += silver_examples
 
     # ── Save as HuggingFace DatasetDict ──────────────────────────────────────
     def _to_dataset(examples: list[dict]) -> Dataset:
@@ -301,10 +306,11 @@ def prepare_lid(dataset: list[dict], tokenizer) -> None:
 
     # ── Print stats ──────────────────────────────────────────────────────────
     total_labels = sum(label_counter.values())
-    avg_subwords = total_subwords / len(all_examples) if all_examples else 0
+    n_examples   = len(all_examples) + len(silver_examples)
+    avg_subwords = total_subwords / n_examples if n_examples else 0
 
     print(f"\n  MuRIL LID Dataset:")
-    print(f"    Total examples : {len(all_examples)}")
+    print(f"    Total examples : {len(all_examples)} gold + {len(silver_examples)} silver")
     print(f"    Skipped        : {skipped}")
     print(f"    Train          : {len(train_examples)}")
     print(f"    Dev            : {len(dev_examples)}")
@@ -331,7 +337,7 @@ def prepare_intent(dataset: list[dict], tokenizer) -> None:
     sequence classification data for MuRIL fine-tuning.
 
     Also computes class weights (inverse-frequency) to handle
-    the skewed distribution (53 explain vs 5 formula).
+    the skewed distribution (e.g. ~1,500 explain_concept vs 5 assertion_reason).
     """
     print()
     _thick()
@@ -420,7 +426,7 @@ def prepare_intent(dataset: list[dict], tokenizer) -> None:
     for intent in INTENT_LABELS:
         cnt    = intent_counter[intent]
         weight = class_weights[intent]
-        bar    = "#" * cnt
+        bar    = "#" * (cnt * 40 // max(intent_counter.values(), default=1))
         print(f"      {intent:20s} {cnt:4d}  (weight: {weight:.2f})  {bar}")
     print()
     print(f"  [OK] Saved dataset    : {INTENT_OUTPUT_DIR}/")

@@ -31,46 +31,83 @@ class NCERTChunker:
     """
 
     # ── Chapter metadata mapping ─────────────────────────────────────────────
+    # Keys are folder names under data/processed/. Only folders listed here are
+    # indexed, so a new subject/class is added by adding its chapters below.
+    # (ss10_* folders are not listed yet — that dataset is still in progress.)
     CHAPTER_MAP = {
-        "class9_ch01": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch01",
-            "chapter_title": "Exploration: Entering the World of Secondary Science",
-        },
-        "class9_ch02": {
+        # ── Biology ──────────────────────────────────────────────────────────
+        "class9_bio_ch02": {
             "subject": "biology", "class_num": "9", "chapter_num": "ch02",
             "chapter_title": "Cell: The Building Block of Life",
         },
-        "class9_ch03": {
+        "class9_bio_ch03": {
             "subject": "biology", "class_num": "9", "chapter_num": "ch03",
             "chapter_title": "Tissues in Action",
         },
-        "class9_ch11": {
+        "class9_bio_ch11": {
             "subject": "biology", "class_num": "9", "chapter_num": "ch11",
             "chapter_title": "Reproduction: How Life Continues",
         },
-        "class9_ch12": {
+        "class9_bio_ch12": {
             "subject": "biology", "class_num": "9", "chapter_num": "ch12",
             "chapter_title": "Patterns in Life: Diversity and Classification",
         },
-        "class10_ch05": {
+        "class10_bio_ch05": {
             "subject": "biology", "class_num": "10", "chapter_num": "ch05",
             "chapter_title": "Life Processes",
         },
-        "class10_ch06": {
+        "class10_bio_ch06": {
             "subject": "biology", "class_num": "10", "chapter_num": "ch06",
             "chapter_title": "Control and Coordination",
         },
-        "class10_ch07": {
+        "class10_bio_ch07": {
             "subject": "biology", "class_num": "10", "chapter_num": "ch07",
             "chapter_title": "How do Organisms Reproduce?",
         },
-        "class10_ch08": {
+        "class10_bio_ch08": {
             "subject": "biology", "class_num": "10", "chapter_num": "ch08",
             "chapter_title": "Heredity",
         },
-        "class10_ch13": {
+        "class10_bio_ch13": {
             "subject": "biology", "class_num": "10", "chapter_num": "ch13",
             "chapter_title": "Our Environment",
+        },
+        # ── Social Science ───────────────────────────────────────────────────
+        "ss9_ch01": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch01",
+            "chapter_title": "Understanding Social Science",
+        },
+        "ss9_ch02": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch02",
+            "chapter_title": "Shaping of the Earth's Surface",
+        },
+        "ss9_ch03": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch03",
+            "chapter_title": "Atmosphere and Climate",
+        },
+        "ss9_ch04": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch04",
+            "chapter_title": "Early Humans and Beginning of Civilisation",
+        },
+        "ss9_ch05": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch05",
+            "chapter_title": "State and Society up to 1000 CE",
+        },
+        "ss9_ch06": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch06",
+            "chapter_title": "Democracy",
+        },
+        "ss9_ch07": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch07",
+            "chapter_title": "Elections",
+        },
+        "ss9_ch08": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch08",
+            "chapter_title": "Building Blocks in Economics: The Problem of Choice",
+        },
+        "ss9_ch09": {
+            "subject": "social_science", "class_num": "9", "chapter_num": "ch09",
+            "chapter_title": "The Price Puzzle: What Drives the Market",
         },
     }
 
@@ -85,6 +122,31 @@ class NCERTChunker:
         print(f"[OK] NCERTChunker initialized (chunk_size={chunk_size}, overlap={chunk_overlap})")
 
     # ── Text cleaning ────────────────────────────────────────────────────────
+
+    @staticmethod
+    def _is_doubled(token: str) -> bool:
+        """True for PDF-overprint tokens where every character is doubled ("PPMM", "117733")."""
+        return (any(c.isalnum() for c in token) and len(token) >= 2 and len(token) % 2 == 0
+                and all(token[i] == token[i + 1] for i in range(0, len(token), 2)))
+
+    def _strip_doubled_tokens(self, line: str) -> str:
+        """
+        Remove inline InDesign page footers such as
+        "CChhaapptteerr 77..iinndddd 117733 1188--JJuunn--2266 1122::0022::3322 PPMM".
+        Drops runs of 3+ doubled tokens, and single doubled tokens of 10+ chars.
+        """
+        tokens = line.split(" ")
+        keep = [True] * len(tokens)
+        i = 0
+        while i < len(tokens):
+            j = i
+            while j < len(tokens) and self._is_doubled(tokens[j]):
+                j += 1
+            for k in range(i, j):
+                if j - i >= 3 or len(tokens[k]) >= 10:
+                    keep[k] = False
+            i = max(j, i + 1)
+        return " ".join(t for t, k in zip(tokens, keep) if k)
 
     def _clean_text(self, text: str) -> str:
         """
@@ -139,6 +201,9 @@ class NCERTChunker:
                         break
                 if pairs_match and len(clean_chars) >= 10:
                     continue
+
+            # Remove inline doubled-character page footers (common in ss9 PDFs)
+            stripped = self._strip_doubled_tokens(stripped).strip()
 
             # Remove lines shorter than 20 characters (likely headers/artifacts)
             if len(stripped) < 20:
@@ -291,7 +356,7 @@ class NCERTChunker:
         Scan processed_dir for all chapter directories and chunk them all.
 
         Args:
-            processed_dir: Path to the directory containing class*_ch*/ folders.
+            processed_dir: Path to the directory containing chapter folders.
 
         Returns:
             Merged list of all chunks across all chapters.
@@ -312,11 +377,7 @@ class NCERTChunker:
         all_chunks = []
         chapter_stats = []
 
-        # Find all chapter directories matching class*_ch*
-        chapter_dirs = sorted([
-            d for d in processed_path.iterdir()
-            if d.is_dir() and re.match(r"class\d+_ch\d+", d.name)
-        ])
+        chapter_dirs = sorted(d for d in processed_path.iterdir() if d.is_dir())
 
         for chapter_dir in chapter_dirs:
             folder_name = chapter_dir.name

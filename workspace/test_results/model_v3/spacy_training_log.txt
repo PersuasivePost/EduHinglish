@@ -1,0 +1,517 @@
+EduHinglish — v3 spaCy training run (Biology 9/10 + Social Science 9, with --silver-lid)
+Date: 2026-10-28   Env: eduhinglish_env (local CPU)
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python scripts/build_unified_dataset.py --silver-lid
+
+  Loading sources
+  [legacy] data/processed/class10_bio_ch05/dataset.json: 170
+  [legacy] data/processed/class10_bio_ch06/dataset.json: 170
+  [legacy] data/processed/class10_bio_ch07/dataset.json: 170
+  [legacy] data/processed/class10_bio_ch08/dataset.json: 170
+  [legacy] data/processed/class10_bio_ch13/dataset.json: 170
+  [legacy] data/processed/class9_bio_ch02/dataset.json: 170
+  [legacy] data/processed/class9_bio_ch03/dataset.json: 170
+  [legacy] data/processed/class9_bio_ch11/dataset.json: 170
+  [legacy] data/processed/class9_bio_ch12/dataset.json: 170
+  [legacy] data/processed/general1/dataset.json: 170
+  [qa]     data/bio_9_10.json: 754/754  (0 without question_hinglish)
+  [qa]     data/ss9.json: 4438/4438  (770 without question_hinglish)
+
+  Silver LID labels added to 5192 entries
+
+  Total entries      : 6892
+  LID labels         : {'gold': 1700, 'silver': 5192}
+  Intent queries     : 5542
+    explain_concept        1693
+    definition             591
+    compare_concepts       330
+    give_example           416
+    application_reallife   655
+    list_enumerate         295
+    describe_function      86
+    analytical             543
+    short_answer           433
+    numerical_problem      14
+    mcq                    27
+    true_false             409
+    fill_blank             16
+    one_word               29
+    assertion_reason       5
+
+  [OK] Saved: data/unified_dataset_v3.json
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python training/prepare_spacy_data.py
+
+  ══════════════════════════════════════════════════
+  EduHinglish — Phase 3: Prepare spaCy Data
+  ══════════════════════════════════════════════════
+  Loaded 6892 entries from data/unified_dataset_v3.json
+
+  ══════════════════════════════════════════════════
+  Preparing LID (token classification) data
+  Using spaCy tokenizer (punctuation included as UNIV)
+  ══════════════════════════════════════════════════
+
+  Docs created   : 1700 gold + 5192 silver
+  Docs skipped   : 0
+  Total tokens   : 116819
+  Train docs     : 6552
+  Dev docs       : 340
+
+  Label distribution:
+    HI      46006 ( 39%)
+    EN      45589 ( 39%)
+    NE      11562 (  9%)
+    UNIV    13661 ( 11%)
+    MIX         1 (  0%)
+
+  ✓ Saved: training/data/lid_train_v3.spacy
+  ✓ Saved: training/data/lid_dev_v3.spacy
+
+  ══════════════════════════════════════════════════
+  Preparing NER (science entities) data
+  Using spaCy tokenizer (punctuation-aware entity boundaries)
+  ══════════════════════════════════════════════════
+
+  Docs with entities: 2310
+  Docs skipped      : 0
+  Total spans       : 2782
+  Train docs        : 1848
+  Dev docs          : 462
+
+  NER spans by label:
+    SCIENTIST     : 36
+    ORGANELLE     : 214
+    PROCESS       : 395
+    CONCEPT       : 930
+    INSTRUMENT    : 20
+    PERSON        : 83
+    PLACE         : 594
+    CIVILISATION  : 353
+    INSTITUTION   : 157
+
+  ✓ Saved: training/data/ner_train_v3.spacy
+  ✓ Saved: training/data/ner_dev_v3.spacy
+
+  ══════════════════════════════════════════════════
+  Preparing Intent (text classification) data
+  ══════════════════════════════════════════════════
+
+  Total intent entries: 5542
+  Train docs          : 4433
+  Dev docs            : 1109
+
+  Intent distribution:
+    explain_concept     : 1693
+    definition          : 591
+    compare_concepts    : 330
+    give_example        : 416
+    application_reallife: 655
+    list_enumerate      : 295
+    describe_function   : 86
+    analytical          : 543
+    short_answer        : 433
+    numerical_problem   : 14
+    mcq                 : 27
+    true_false          : 409
+    fill_blank          : 16
+    one_word            : 29
+    assertion_reason    : 5
+
+  ✓ Saved: training/data/intent_train_v3.spacy
+  ✓ Saved: training/data/intent_dev_v3.spacy
+
+  ══════════════════════════════════════════════════
+  All done! Files saved to training/data/
+  ══════════════════════════════════════════════════
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python training/train_lid.py
+
+  ══════════════════════════════════════════════════
+  EduHinglish — Phase 3: Train LID Model
+  ══════════════════════════════════════════════════
+
+  Creating pipeline: tok2vec + tagger
+  Loading train data: training/data/lid_train_v3.spacy
+  Train docs: 6552
+  Dev docs  : 340
+  Loading dev data  : training/data/lid_dev_v3.spacy
+
+  Initializing pipeline...
+  Labels: ('EN', 'HI', 'MIX', 'NE', 'UNIV')
+
+  ──────────────────────────────────────────────────
+  Training started
+  ──────────────────────────────────────────────────
+
+     Epoch |       Loss |    Dev Acc |       Best |
+  ─────────┼────────────┼────────────┼────────────┤
+      1/30 |  7548.1182 |      94.4% |      94.4% | ✓ new best
+      2/30 |  4906.7030 |      92.8% |      94.4% |
+      3/30 |  3887.9064 |      91.6% |      94.4% |
+      4/30 |  3112.0962 |      94.4% |      94.4% |
+      5/30 |  2634.4379 |      94.9% |      94.9% | ✓ new best
+      6/30 |  2308.3080 |      93.9% |      94.9% |
+      7/30 |  2035.2289 |      94.8% |      94.9% |
+      8/30 |  1843.4306 |      93.0% |      94.9% |
+      9/30 |  1712.1282 |      94.2% |      94.9% |
+     10/30 |  1531.6372 |      93.4% |      94.9% |
+
+  ⏹ Early stopping at epoch 10 (no improvement for 5 epochs)
+
+  ──────────────────────────────────────────────────
+  Running final evaluation on best model...
+  ──────────────────────────────────────────────────
+
+   Label |  Precision |     Recall |         F1 |  Support
+  ───────┼────────────┼────────────┼────────────┼─────────
+      HI |      98.1% |      93.2% |      95.6% |     3364
+      EN |      90.4% |      97.0% |      93.6% |     2395
+      NE |      60.0% |      47.4% |      52.9% |       38
+    UNIV |      99.5% |      99.5% |      99.5% |      577
+     MIX |       0.0% |       0.0% |       0.0% |        0
+
+  ══════════════════════════════════════════════════
+  LID Model Training Complete
+  ══════════════════════════════════════════════════
+  Best dev accuracy    : 94.9%
+  Best epoch           : 5
+  Saved to             : models/lid_v3/
+  Baseline (rule-based): ~75%
+  Improvement          : +19.9pp
+  ══════════════════════════════════════════════════
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python training/train_intent.py
+
+  ══════════════════════════════════════════════════
+  EduHinglish — Phase 3: Train Intent Model
+  ══════════════════════════════════════════════════
+
+  Creating pipeline: textcat (bow)
+  Train docs: 4433
+  Dev docs  : 1109
+
+  Training with BOW architecture (recommended for <200 examples).
+  ──────────────────────────────────────────────────
+  Training started
+  ──────────────────────────────────────────────────
+
+     Epoch |       Loss |    Dev Acc |       Best |
+  ─────────┼────────────┼────────────┼────────────┤
+         1 |     58.957 |     65.20% |    65.20% ✓
+         2 |     22.155 |     68.04% |    68.04% ✓
+         3 |     14.193 |     69.04% |    69.04% ✓
+         4 |     10.188 |     69.13% |    69.13% ✓
+         5 |      7.661 |     69.71% |    69.71% ✓
+         6 |      6.317 |     70.07% |    70.07% ✓
+         7 |      4.670 |     70.15% |    70.15% ✓
+         8 |      3.902 |     70.34% |    70.34% ✓
+         9 |      2.952 |     70.60% |    70.60% ✓
+        10 |      2.618 |     70.20% |    70.60%
+        11 |      2.090 |     70.83% |    70.83% ✓
+        12 |      1.756 |     70.79% |    70.83%
+        13 |      1.430 |     70.77% |    70.83%
+        14 |      1.225 |     70.41% |    70.83%
+        15 |      1.080 |     71.10% |    71.10% ✓
+        16 |      0.895 |     70.29% |    71.10%
+        17 |      0.860 |     70.07% |    71.10%
+        18 |      0.801 |     69.73% |    71.10%
+        19 |      0.850 |     71.25% |    71.25% ✓
+        20 |      0.747 |     70.81% |    71.25%
+        21 |      0.637 |     71.06% |    71.25%
+        22 |      0.619 |     71.08% |    71.25%
+        23 |      0.827 |     70.78% |    71.25%
+        24 |      0.701 |     69.33% |    71.25%
+        25 |      0.632 |     70.41% |    71.25%
+        26 |      0.715 |     70.75% |    71.25%
+        27 |      0.483 |     69.06% |    71.25%
+        28 |      0.453 |     70.28% |    71.25%
+        29 |      0.660 |     69.76% |    71.25%
+        30 |      0.455 |     68.77% |    71.25%
+        31 |      0.440 |     68.89% |    71.25%
+        32 |      0.378 |     68.91% |    71.25%
+        33 |      0.425 |     68.89% |    71.25%
+        34 |      0.489 |     68.92% |    71.25%
+        35 |      0.305 |     68.89% |    71.25%
+        36 |      0.320 |     68.17% |    71.25%
+        37 |      0.450 |     69.38% |    71.25%
+        38 |      0.431 |     68.99% |    71.25%
+        39 |      0.300 |     69.08% |    71.25%
+        40 |      0.419 |     68.92% |    71.25%
+        41 |      0.467 |     69.23% |    71.25%
+        42 |      0.430 |     68.74% |    71.25%
+        43 |      0.330 |     69.21% |    71.25%
+        44 |      0.444 |     68.47% |    71.25%
+        45 |      0.360 |     68.84% |    71.25%
+        46 |      0.386 |     69.61% |    71.25%
+        47 |      0.413 |     69.41% |    71.25%
+        48 |      0.470 |     69.08% |    71.25%
+        49 |      0.469 |     69.23% |    71.25%
+        50 |      0.445 |     69.29% |    71.25%
+
+  Confusion matrix (dev):
+  Predicted →  explain_c  definitio  compare_c  give_exam  applicati  list_enum  describe_  analytica  short_ans  numerical  mcq        true_fals  fill_blan  one_word   assertion
+  explain_c 296        11         1          0          3          4          3          9          5          0          0          0          0          0          0
+  definitio 11         98         0          0          0          3          1          0          1          0          0          0          0          0          0
+  compare_c 6          1          53         0          0          0          0          1          0          0          1          0          0          0          0
+  give_exam 0          1          0          85         0          0          1          0          0          0          0          0          0          0          0
+  applicati 5          2          0          0          117        0          0          0          1          0          0          0          0          0          0
+  list_enum 4          2          0          0          0          55         1          0          0          0          0          0          0          0          0
+  describe_ 5          1          0          0          0          1          14         0          2          0          0          0          0          0          0
+  analytica 17         0          0          0          0          0          1          79         3          0          0          0          0          0          0
+  short_ans 10         1          0          0          1          1          1          1          83         0          0          0          0          0          0
+  numerical 2          0          0          0          1          0          0          1          2          0          0          0          0          0          0
+  mcq       0          0          0          0          0          0          0          0          0          0          2          0          0          0          0
+  true_fals 0          0          0          0          0          0          0          0          0          0          0          86         0          0          0
+  fill_blan 1          0          0          0          0          0          0          0          0          0          0          0          3          0          0
+  one_word  1          4          0          0          0          0          0          0          0          0          0          0          0          2          0
+  assertion 1          0          0          0          0          0          0          0          0          0          0          0          0          0          0
+
+  ══════════════════════════════════
+  Intent Model Training Complete
+  Best dev accuracy: 71.25% (epoch 19)
+  Saved to: models/intent_v3
+  ══════════════════════════════════
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python training/train_ner.py
+
+  ══════════════════════════════════════════════════
+  EduHinglish — Phase 3: Train NER Model
+  ══════════════════════════════════════════════════
+
+  Creating pipeline: tok2vec + ner
+  Loading train data: training/data/ner_train_v3.spacy
+  Train docs: 1848
+  Dev docs  : 462
+  Loading dev data  : training/data/ner_dev_v3.spacy
+
+  Entity spans in training data:
+    SCIENTIST     : 28
+    ORGANELLE     : 169
+    PROCESS       : 305
+    CONCEPT       : 743
+    INSTRUMENT    : 13
+    PERSON        : 65
+    PLACE         : 492
+    CIVILISATION  : 288
+    INSTITUTION   : 123
+    TOTAL         : 2226
+
+  Initializing pipeline...
+  Labels: ('CIVILISATION', 'CONCEPT', 'INSTITUTION', 'INSTRUMENT', 'ORGANELLE', 'PERSON', 'PLACE', 'PROCESS', 'SCIENTIST')
+
+  ──────────────────────────────────────────────────
+  Training started
+  ──────────────────────────────────────────────────
+
+     Epoch |       Loss |     Dev F1 |    Best F1 |
+  ─────────┼────────────┼────────────┼────────────┤
+      1/40 |  1819.2557 |      90.2% |      90.2% | ✓ new best
+      2/40 |   446.5685 |      96.1% |      96.1% | ✓ new best
+      3/40 |   279.4311 |      96.3% |      96.3% | ✓ new best
+      4/40 |   241.9004 |      97.2% |      97.2% | ✓ new best
+      5/40 |   202.6507 |      97.1% |      97.2% |
+      6/40 |   172.0376 |      97.0% |      97.2% |
+      7/40 |   165.7967 |      97.0% |      97.2% |
+      8/40 |   192.0813 |      96.6% |      97.2% |
+      9/40 |   182.1443 |      95.3% |      97.2% |
+
+  ⏹ Early stopping at epoch 9 (no improvement for 5 epochs)
+
+  ──────────────────────────────────────────────────
+  Running final evaluation on best model...
+  ──────────────────────────────────────────────────
+
+          Entity |  Precision |     Recall |         F1 |  Support
+  ───────────────┼────────────┼────────────┼────────────┼─────────
+       SCIENTIST |     100.0% |      75.0% |      85.7% |        8
+       ORGANELLE |      95.7% |      97.8% |      96.7% |       45
+         PROCESS |     100.0% |      98.9% |      99.4% |       90
+         CONCEPT |      97.4% |      98.4% |      97.9% |      187
+      INSTRUMENT |     100.0% |      71.4% |      83.3% |        7
+          PERSON |      92.9% |      72.2% |      81.2% |       18
+           PLACE |      97.1% |      99.0% |      98.1% |      102
+    CIVILISATION |      96.9% |      96.9% |      96.9% |       65
+     INSTITUTION |      97.1% |     100.0% |      98.6% |       34
+  ───────────────┼────────────┼────────────┼────────────┼─────────
+       MICRO AVG |      97.5% |      96.9% |      97.2% |
+
+  ══════════════════════════════════════════════════
+  NER Model Training Complete
+  ══════════════════════════════════════════════════
+  Best dev F1          : 97.2%
+  Best epoch           : 4
+  Saved to             : models/ner_v3/
+  Baseline (no NER)    : 0%
+  Improvement          : +97.2pp
+  ══════════════════════════════════════════════════
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python training/evaluate_models.py
+
+══════════════════════════════════════════════════════════
+EduHinglish — Phase 3 Model Evaluation
+══════════════════════════════════════════════════════════
+
+── LID Model (models/lid_v3/) ──
+Input: "Mitochondria ko cell ka powerhouse kehte hain."
+  Mitochondria → EN
+  ko           → HI
+  cell         → EN
+  ka           → HI
+  powerhouse   → EN
+  kehte        → HI
+  hain         → HI
+  .            → UNIV
+
+Input: "Sir, photosynthesis kaise hoti hai?"
+  Sir          → UNIV
+  ,            → UNIV
+  photosynthesis → EN
+  kaise        → HI
+  hoti         → HI
+  hai          → HI
+  ?            → UNIV
+
+Input: "DNA replication mein enzyme kya role play karta hai?"
+  DNA          → EN
+  replication  → EN
+  mein         → HI
+  enzyme       → EN
+  kya          → HI
+  role         → EN
+  play         → EN
+  karta        → HI
+  hai          → HI
+  ?            → UNIV
+
+Input: "Mendel ne pea plants par experiments kiye the."
+  Mendel       → NE
+  ne           → HI
+  pea          → EN
+  plants       → EN
+  par          → HI
+  experiments  → EN
+  kiye         → EN
+  the          → HI
+  .            → UNIV
+
+Input: "Yeh process anaerobic respiration kehlata hai."
+  Yeh          → HI
+  process      → EN
+  anaerobic    → EN
+  respiration  → EN
+  kehlata      → HI
+  hai          → HI
+  .            → UNIV
+
+Input: "Harappan cities mein drainage system kaafi advanced tha."
+  Harappan     → HI
+  cities       → EN
+  mein         → HI
+  drainage     → EN
+  system       → EN
+  kaafi        → HI
+  advanced     → EN
+  tha          → HI
+  .            → UNIV
+
+
+── NER Model (models/ner_v3/) ──
+Input: "Mitochondria ko cell ka powerhouse kehte hain."
+  [Mitochondria] ORGANELLE
+
+Input: "Sir, photosynthesis kaise hoti hai?"
+  [photosynthesis] PROCESS
+
+Input: "DNA replication mein enzyme kya role play karta hai?"
+  (no entities)
+
+Input: "Mendel ne pea plants par experiments kiye the."
+  [Mendel] SCIENTIST
+
+Input: "Yeh process anaerobic respiration kehlata hai."
+  [anaerobic respiration] PROCESS
+
+Input: "Harappan cities mein drainage system kaafi advanced tha."
+  [Harappan] CIVILISATION
+
+
+── Intent Model (models/intent_v3/) ──
+Input: "Sir, nucleus ka kaam kya hota hai?"
+  Predicted: explain_concept (conf: 0.98)  ✓
+
+Input: "Mitochondria aur chloroplast mein kya fark hai?"
+  Predicted: compare_concepts (conf: 0.95)  ✓
+
+Input: "Ek example do osmosis ka?"
+  Predicted: give_example (conf: 0.58)  ✓
+
+Input: "Democracy ki definition kya hai?"
+  Predicted: definition (conf: 0.97)  ✓
+
+Input: "Lok Sabha aur Rajya Sabha mein kya antar hai?"
+  Predicted: compare_concepts (conf: 0.55)  ✓
+
+(eduhinglish_env) ashserver@vasant:~/AshWorks/EduHinglish$ python training/prepare_hf_data.py
+
+  ==========================================================
+  EduHinglish — Phase 4: Prepare HuggingFace Data
+  ==========================================================
+  Loaded 6892 entries from data/unified_dataset_v3.json
+
+  Loading tokenizer: google/muril-base-cased
+  ✓ Tokenizer loaded (vocab size: 197258)
+
+  ==========================================================
+  Preparing LID (Token Classification) data for MuRIL
+  ==========================================================
+
+  MuRIL LID Dataset:
+    Total examples : 1700 gold + 5192 silver
+    Skipped        : 0
+    Train          : 6552
+    Dev            : 340
+    Avg subword tokens per sentence: 21.9
+
+    Label distribution (first-subword only):
+      HI      46002 ( 39.3%) ###################
+      EN      45607 ( 38.9%) ###################
+      NE      11549 (  9.9%) ####
+      UNIV    14020 ( 12.0%) #####
+      MIX         0 (  0.0%)
+
+  [OK] Saved dataset : training/data/muril_lid_dataset_v3/
+  [OK] Saved label maps: training/data/muril_lid_dataset_v3/label_maps.json
+
+  ==========================================================
+  Preparing Intent (Sequence Classification) data for MuRIL
+  ==========================================================
+
+  MuRIL Intent Dataset:
+    Total queries  : 5542
+    Train          : 4433
+    Dev            : 1109
+
+    Intent distribution:
+      explain_concept      1693  (weight: 0.22)  ########################################
+      definition            591  (weight: 0.63)  #############
+      compare_concepts      330  (weight: 1.12)  #######
+      give_example          416  (weight: 0.89)  #########
+      application_reallife  655  (weight: 0.56)  ###############
+      list_enumerate        295  (weight: 1.25)  ######
+      describe_function      86  (weight: 4.30)  ##
+      analytical            543  (weight: 0.68)  ############
+      short_answer          433  (weight: 0.85)  ##########
+      numerical_problem      14  (weight: 26.39)
+      mcq                    27  (weight: 13.68)
+      true_false            409  (weight: 0.90)  #########
+      fill_blank             16  (weight: 23.09)
+      one_word               29  (weight: 12.74)
+      assertion_reason       5  (weight: 73.89)
+
+  [OK] Saved dataset    : training/data/muril_intent_dataset_v3/
+  [OK] Saved label maps : training/data/muril_intent_dataset_v3/label_maps.json
+
+  ==========================================================
+  All done! Datasets saved to training/data/
+  ==========================================================

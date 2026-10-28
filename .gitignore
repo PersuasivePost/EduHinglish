@@ -30,6 +30,8 @@ Social Science class 9/
 *.pth
 *.gguf
 *.ckpt
+# Model archives downloaded from Google Drive
+*.zip
 
 # Model cache (external downloaded models, not our trained ones)
 model_cache/
