@@ -10,7 +10,8 @@ This script uses word positions and font sizes from pdfplumber to:
   - drop figure labels, captions, running headers/footers and print-shop marks.
 
 Usage:
-    python scripts/clean_ncert_text.py                 # all biology chapters
+    python scripts/clean_ncert_text.py                 # all chapters
+    python scripts/clean_ncert_text.py --subject ss    # only Social Science
     python scripts/clean_ncert_text.py --only class9_bio_ch02
 """
 
@@ -26,7 +27,14 @@ RAW_DIR       = PROJECT_ROOT / "data" / "raw"
 PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
 
 # processed folder name -> source PDF
-CHAPTER_PDFS = {
+SS_PDFS = {
+    **{f"ss9_ch{n:02d}": f"class 9 ss/class 9 ss ch {n}.pdf" for n in range(1, 10)},
+    **{f"ss10_his_ch{n:02d}": f"class 10 ss/class 10 hist ch {n}.pdf" for n in range(1, 6)},
+    **{f"ss10_geo_ch{n:02d}": f"class 10 ss/class 10 geo ch {n}.pdf" for n in range(1, 8)},
+    **{f"ss10_civics_ch{n:02d}": f"class 10 ss/class 10 civics ch {n}.pdf" for n in range(1, 6)},
+    **{f"ss10_eco_ch{n:02d}": f"class 10 ss/class 10 eco ch {n}.pdf" for n in range(1, 6)},
+}
+BIO_PDFS = {
     "class9_bio_ch02":  "class 9 biology/class9_ch02.pdf",
     "class9_bio_ch03":  "class 9 biology/class9_ch03.pdf",
     "class9_bio_ch11":  "class 9 biology/class9_ch11.pdf",
@@ -37,6 +45,7 @@ CHAPTER_PDFS = {
     "class10_bio_ch08": "class 10 biology/class10_ch08.pdf",
     "class10_bio_ch13": "class 10 biology/class10_ch13.pdf",
 }
+CHAPTER_PDFS = {**BIO_PDFS, **SS_PDFS}
 
 HEADER_ZONE = 0.085  # fraction of page height: running chapter title / page number
 FOOTER_ZONE = 0.92   # fraction of page height: print-shop line (CChhaapptteerr--0022..iinndddd ...)
@@ -56,7 +65,7 @@ def body_font_size(pdf) -> float:
     return sizes.most_common(1)[0][0]
 
 
-def classify(word: dict, body: float, page_height: float) -> str | None:
+def classify(word: dict, body: float, page_height: float, box_depth: float = 1.4) -> str | None:
     size, font = word["size"], word["fontname"]
     if any(f in font for f in SKIP_FONTS):
         return None
@@ -66,15 +75,19 @@ def classify(word: dict, body: float, page_height: float) -> str | None:
         return "dropcap"
     if body + 0.9 <= size < 40:
         return "heading"
+    if "Bold" in font and word["text"].isupper() and len(word["text"]) > 1 and body - 3 <= size < body - 0.45:
+        return "smallcap"  # rest of a small-caps heading: 'D' (12pt) + 'EVELOPMENT' (8.4pt)
     if abs(size - body) < 0.45:
         return "body"
-    if body - 1.4 <= size <= body - 0.45:
+    if body - box_depth <= size <= body - 0.45:
         return "box"
     return None  # figure labels, captions, rotated text
 
 
 def collapse_overprint(token: str) -> str:
     """Older books fake bold by printing each glyph k times: 'HHHHHEEEEE' -> 'HE', '88..22' -> '8.2'."""
+    if len(token) in (4, 5) and len(set(token)) == 1:
+        return token[0]  # a single overprinted letter of a letter-spaced title ('UUUUU')
     for k in (5, 4, 3, 2):
         if len(token) >= 2 * k and len(token) % k == 0 and token == "".join(c * k for c in token[::k]):
             return token[::k]
@@ -90,13 +103,20 @@ def dedupe_words(text: str) -> str:
     return " ".join(out)
 
 
-def line_segments(words: list[dict]) -> list[dict]:
+def column_starts(words: list[dict], page_width: float) -> list[float]:
+    """Left edges of side columns (e.g. History 'New words' glossaries set at body size).
+    Many lines start at the same x there, which justified body text never does by chance."""
+    counts = Counter(round(w["x0"] / 2) * 2 for w in words if w["x0"] > page_width * 0.45)
+    return [x for x, n in counts.items() if n >= 5]
+
+
+def line_segments(words: list[dict], split_at: list[float] = ()) -> list[dict]:
     """Group words of one class into horizontal line segments."""
     # Cluster into lines first: bold words sit ~1.5pt lower than regular ones on the same line.
     lines = []
     for w in sorted(words, key=lambda w: w["top"]):
         w["text"] = collapse_overprint(w["text"])
-        if lines and abs(w["top"] - lines[-1][0]["top"]) < LINE_TOL:
+        if lines and abs(w["top"] - lines[-1][0]["top"]) < LINE_TOL + (1.5 if w["size"] < 9.5 else 0):
             lines[-1].append(w)
         else:
             lines.append([w])
@@ -105,8 +125,12 @@ def line_segments(words: list[dict]) -> list[dict]:
     for line in lines:
         current = None
         for w in sorted(line, key=lambda w: w["x0"]):
-            if current and -3 <= w["x0"] - current["x1"] < WORD_GAP:
-                current["text"] += ("" if w["text"] in ",.;:)" else " ") + w["text"]
+            glued = current and len(current["text"].split()[-1]) == 1 and current["text"][-1].isupper() \
+                and w["x0"] - current["x1"] < 1.5  # small-caps initial
+            starts_column = any(abs(w["x0"] - x) < 2.5 for x in split_at) and w["x0"] - current["x1"] > 6 \
+                if current else False
+            if current and -3 <= w["x0"] - current["x1"] < WORD_GAP and not starts_column:
+                current["text"] += ("" if glued or w["text"] in ",.;:)" else " ") + w["text"]
                 current["x1"] = w["x1"]
             else:
                 current = {"top": line[0]["top"], "x0": w["x0"], "x1": w["x1"], "text": w["text"]}
@@ -142,6 +166,7 @@ def join_lines(lines: list[str]) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+MIRRORED = re.compile(r"retpahC|NOITCES|tnirpeR")  # rotated side tabs read back-to-front
 SYMBOLS = {"\uf050": "✓", "\uf04f": "✗"}  # Wingdings2 tick / cross used in NCERT tables
 
 
@@ -160,27 +185,46 @@ def in_any(word: dict, bboxes: list[tuple]) -> bool:
                for x0, top, x1, bottom in bboxes)
 
 
-def extract_page(page, body: float) -> tuple[list[tuple[float, str, str]], list[str]]:
+CAPTION = re.compile(r"^(Fig\.?|Figure|Source\s*[A-Z]?\s*[:\-–]|Map\s+\d|Table\s+\d)", re.I)
+
+
+RUNNING_HEAD = re.compile(r"Understanding Society|India and Beyond|Beyond\b|Grade 9|Part 1")  # Class 9 SS footers
+CHAPTER_FOOTER = re.compile(r"^\d+ – [^.]{3,80} \d+$")                                       # "1 – Understanding ... 3"
+
+
+def is_page_furniture(text: str) -> bool:
+    return CHAPTER_FOOTER.match(text) is not None or (len(text.split()) <= 12 and RUNNING_HEAD.search(text) is not None)
+
+
+def extract_page(page, body: float, box_depth: float = 1.4,
+                 side_columns: bool = False) -> tuple[list[tuple[float, str, str]], list[str]]:
     tables, table_boxes = [], []
     for t in page.find_tables():
         rendered = render_table(t.extract())
-        if rendered:
+        if rendered and not MIRRORED.search(rendered):
             tables.append(f"[Table] {rendered}")
             table_boxes.append(t.bbox)
 
     words = [w for w in page.extract_words(extra_attrs=["size", "fontname"], x_tolerance=1.5)
              if not in_any(w, table_boxes)]
-    by_class = {"body": [], "heading": [], "box": [], "dropcap": []}
+    by_class = {"body": [], "heading": [], "box": [], "dropcap": [], "smallcap": []}
     for w in words:
-        cls = classify(w, body, page.height)
+        cls = classify(w, body, page.height, box_depth)
         if cls:
             by_class[cls].append(w)
 
     items = []  # (top, kind, text) for body + headings, in reading order
-    body_segments = line_segments(by_class["body"])
-    body_blocks = blocks(body_segments, body)
-    for b in body_blocks:
-        items.append((b[0]["top"], "body", join_lines([s["text"] for s in b])))
+    # Only the Class 10 History book keeps glossaries in a body-sized side column; elsewhere,
+    # lines that restart at one x are text wrapping around a figure and must stay in the body.
+    side_columns = column_starts(by_class["body"], page.width) if side_columns else []
+    body_segments = line_segments(by_class["body"], side_columns)
+    side_boxes = []
+    for b in blocks(body_segments, body):
+        text = join_lines([s["text"] for s in b])
+        if side_columns and any(abs(b[0]["x0"] - x) < 2.5 for x in side_columns):
+            side_boxes.append(text)  # glossary / margin note in a side column
+        else:
+            items.append((b[0]["top"], "body", text))
     # Older books open a chapter with a large drop-cap letter ("H" + "ow do we tell ...").
     for cap in by_class["dropcap"]:
         for i, (top, kind, text) in enumerate(items):
@@ -196,7 +240,7 @@ def extract_page(page, body: float) -> tuple[list[tuple[float, str, str]], list[
         col_x0, col_x1 = x0s[len(x0s) // 4] - 45, x1s[3 * len(x1s) // 4]
     else:
         col_x0, col_x1 = 0, page.width
-    for s in line_segments(by_class["heading"]):
+    for s in line_segments(by_class["heading"] + by_class["smallcap"]):
         text = dedupe_words(s["text"].strip())
         too_short = not any(len(t) >= 3 and t.isalpha() for t in text.split())  # decorative glyph runs
         if too_short or NOT_A_HEADING.match(text) or not (col_x0 <= s["x0"] < col_x1):
@@ -205,7 +249,8 @@ def extract_page(page, body: float) -> tuple[list[tuple[float, str, str]], list[
     items.sort(key=lambda t: t[0])
 
     boxes = [join_lines([s["text"] for s in b]) for b in blocks(line_segments(by_class["box"]), body - 1)]
-    boxes = [b for b in merge_boxes(boxes) if len(b.split()) >= 4]
+    boxes = [b for b in merge_boxes(side_boxes + boxes)
+             if len(b.split()) >= 4 and not CAPTION.match(b) and not is_page_furniture(b)]
     return items, boxes + tables
 
 
@@ -248,7 +293,8 @@ def manual_page(manual_dir: Path | None, index: int) -> list[tuple[str, str]] | 
     return items
 
 
-def extract_chapter(pdf_path: Path, manual_dir: Path | None = None) -> str:
+def extract_chapter(pdf_path: Path, manual_dir: Path | None = None, box_depth: float = 1.4,
+                    side_columns: bool = False) -> str:
     paragraphs, pending_boxes = [], []
     with pdfplumber.open(pdf_path) as pdf:
         body = body_font_size(pdf)
@@ -262,7 +308,7 @@ def extract_chapter(pdf_path: Path, manual_dir: Path | None = None) -> str:
                     else:
                         items.append((0, kind, text))
             else:
-                items, boxes = extract_page(page, body)
+                items, boxes = extract_page(page, body, box_depth, side_columns)
             page.close()
             for kind, text in merge_headings(items):
                 if kind == "heading":
@@ -282,12 +328,17 @@ def extract_chapter(pdf_path: Path, manual_dir: Path | None = None) -> str:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--only", help="process a single processed-folder name")
+    parser.add_argument("--subject", choices=["bio", "ss"], help="process only one subject's chapters")
     args = parser.parse_args()
 
-    for name, rel_pdf in CHAPTER_PDFS.items():
+    chapters = {"bio": BIO_PDFS, "ss": SS_PDFS}.get(args.subject, CHAPTER_PDFS)
+    for name, rel_pdf in chapters.items():
         if args.only and name != args.only:
             continue
-        text = extract_chapter(RAW_DIR / rel_pdf, PROCESSED_DIR / name)
+        # Social Science books set primary sources and activity boxes in 9pt, so look deeper for boxes.
+        box_depth = 2.6 if name in SS_PDFS else 1.4
+        text = extract_chapter(RAW_DIR / rel_pdf, PROCESSED_DIR / name, box_depth,
+                               side_columns=name.startswith(("ss10_his", "ss10_geo")))
         out = PROCESSED_DIR / name / "cleaned_text.txt"
         out.write_text(text, encoding="utf-8")
         print(f"[OK] {name}: {len(text.split())} words -> {out.relative_to(PROJECT_ROOT)}")

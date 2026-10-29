@@ -1,5 +1,7 @@
 """
-Add one chapter's hand-written QA entries to data/bio_9_10.json.
+Add one chapter's hand-written QA entries to the curated datasets:
+    Biology        -> data/bio_9_10.json
+    Social Science -> data/ss_9_10.json
 
 The input is a JSON list of compact entries:
     {"topic", "intent", "q", "a", "ctx", "q_hi", "a_hi"}
@@ -8,10 +10,12 @@ Each entry is validated (intent label, Roman-script Hinglish, context length, no
 questions against the whole dataset) and expanded into the dataset schema (question_english,
 answer_hinglish, ncert_context, Gemma-format messages / messages_english / text).
 
+Chapters are named like their data/processed/ folder (class10_bio_ch06, ss9_ch02, ss10_his_ch01).
+
 Usage:
-    python scripts/build_bio_dataset.py entries.json --chapter 10 ch06            # append
-    python scripts/build_bio_dataset.py entries.json --chapter 10 ch06 --replace  # redo a chapter
-    python scripts/build_bio_dataset.py entries.json --chapter 10 ch06 --check    # validate only
+    python scripts/build_dataset.py entries.json --chapter ss10_his_ch01            # append
+    python scripts/build_dataset.py entries.json --chapter ss10_his_ch01 --replace  # redo a chapter
+    python scripts/build_dataset.py entries.json --chapter ss10_his_ch01 --check    # validate only
 """
 
 import argparse
@@ -23,18 +27,73 @@ from collections import Counter
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-OUTPUT_PATH  = PROJECT_ROOT / "data" / "bio_9_10.json"
+DATA_DIR     = PROJECT_ROOT / "data"
+
+
+class Chapter:
+    def __init__(self, cls: str, num: str, title: str, subject: str, id_tag: str, sub_subject: str | None = None):
+        self.cls, self.num, self.title = cls, num, title          # cls "9"/"10", num "ch02"
+        self.subject, self.sub_subject, self.id_tag = subject, sub_subject, id_tag
+
+    @property
+    def id_prefix(self) -> str:
+        return f"c{int(self.cls):02d}_{self.id_tag}_{self.num}"
+
+    @property
+    def output(self) -> Path:
+        return DATA_DIR / ("bio_9_10.json" if self.subject == "Biology" else "ss_9_10.json")
+
+
+def _bio(cls, num, title):
+    return Chapter(cls, num, title, "Biology", "bio")
+
+
+def _ss(cls, num, title, sub_subject, id_tag):
+    return Chapter(cls, num, title, "Social Science", id_tag, sub_subject)
+
 
 CHAPTERS = {
-    ("09", "ch02"): "Cell: The Building Block of Life",
-    ("09", "ch03"): "Tissues in Action",
-    ("09", "ch11"): "Reproduction: How Life Continues",
-    ("09", "ch12"): "Patterns in Life: Diversity and Classification",
-    ("10", "ch05"): "Life Processes",
-    ("10", "ch06"): "Control and Coordination",
-    ("10", "ch07"): "How do Organisms Reproduce?",
-    ("10", "ch08"): "Heredity",
-    ("10", "ch13"): "Our Environment",
+    "class9_bio_ch02":  _bio("9", "ch02", "Cell: The Building Block of Life"),
+    "class9_bio_ch03":  _bio("9", "ch03", "Tissues in Action"),
+    "class9_bio_ch11":  _bio("9", "ch11", "Reproduction: How Life Continues"),
+    "class9_bio_ch12":  _bio("9", "ch12", "Patterns in Life: Diversity and Classification"),
+    "class10_bio_ch05": _bio("10", "ch05", "Life Processes"),
+    "class10_bio_ch06": _bio("10", "ch06", "Control and Coordination"),
+    "class10_bio_ch07": _bio("10", "ch07", "How do Organisms Reproduce?"),
+    "class10_bio_ch08": _bio("10", "ch08", "Heredity"),
+    "class10_bio_ch13": _bio("10", "ch13", "Our Environment"),
+    # Class 9 Social Science is a single integrated book.
+    "ss9_ch01": _ss("9", "ch01", "Understanding Social Science", "General", "ss"),
+    "ss9_ch02": _ss("9", "ch02", "Shaping of the Earth's Surface", "Geography", "ss"),
+    "ss9_ch03": _ss("9", "ch03", "Atmosphere and Climate", "Geography", "ss"),
+    "ss9_ch04": _ss("9", "ch04", "Early Humans and Beginning of Civilisation", "History", "ss"),
+    "ss9_ch05": _ss("9", "ch05", "State and Society up to 1000 CE", "History", "ss"),
+    "ss9_ch06": _ss("9", "ch06", "Democracy", "Political Science", "ss"),
+    "ss9_ch07": _ss("9", "ch07", "Elections", "Political Science", "ss"),
+    "ss9_ch08": _ss("9", "ch08", "Building Blocks in Economics: The Problem of Choice", "Economics", "ss"),
+    "ss9_ch09": _ss("9", "ch09", "The Price Puzzle: What Drives the Market", "Economics", "ss"),
+    "ss10_his_ch01": _ss("10", "ch01", "The Rise of Nationalism in Europe", "History", "his"),
+    "ss10_his_ch02": _ss("10", "ch02", "Nationalism in India", "History", "his"),
+    "ss10_his_ch03": _ss("10", "ch03", "The Making of a Global World", "History", "his"),
+    "ss10_his_ch04": _ss("10", "ch04", "The Age of Industrialisation", "History", "his"),
+    "ss10_his_ch05": _ss("10", "ch05", "Print Culture and the Modern World", "History", "his"),
+    "ss10_geo_ch01": _ss("10", "ch01", "Resources and Development", "Geography", "geo"),
+    "ss10_geo_ch02": _ss("10", "ch02", "Forest and Wildlife Resources", "Geography", "geo"),
+    "ss10_geo_ch03": _ss("10", "ch03", "Water Resources", "Geography", "geo"),
+    "ss10_geo_ch04": _ss("10", "ch04", "Agriculture", "Geography", "geo"),
+    "ss10_geo_ch05": _ss("10", "ch05", "Minerals and Energy Resources", "Geography", "geo"),
+    "ss10_geo_ch06": _ss("10", "ch06", "Manufacturing Industries", "Geography", "geo"),
+    "ss10_geo_ch07": _ss("10", "ch07", "Lifelines of National Economy", "Geography", "geo"),
+    "ss10_civics_ch01": _ss("10", "ch01", "Power-sharing", "Political Science", "civ"),
+    "ss10_civics_ch02": _ss("10", "ch02", "Federalism", "Political Science", "civ"),
+    "ss10_civics_ch03": _ss("10", "ch03", "Gender, Religion and Caste", "Political Science", "civ"),
+    "ss10_civics_ch04": _ss("10", "ch04", "Political Parties", "Political Science", "civ"),
+    "ss10_civics_ch05": _ss("10", "ch05", "Outcomes of Democracy", "Political Science", "civ"),
+    "ss10_eco_ch01": _ss("10", "ch01", "Development", "Economics", "eco"),
+    "ss10_eco_ch02": _ss("10", "ch02", "Sectors of the Indian Economy", "Economics", "eco"),
+    "ss10_eco_ch03": _ss("10", "ch03", "Money and Credit", "Economics", "eco"),
+    "ss10_eco_ch04": _ss("10", "ch04", "Globalisation and the Indian Economy", "Economics", "eco"),
+    "ss10_eco_ch05": _ss("10", "ch05", "Consumer Rights", "Economics", "eco"),
 }
 
 INTENTS = {
@@ -106,18 +165,17 @@ def keep_intent(record_id: str, dropout: float) -> bool:
     return bucket >= dropout
 
 
-def build_record(entry: dict, cls: str, chapter_num: str, idx: int, intent_dropout: float) -> dict:
-    chapter = CHAPTERS[(cls, chapter_num)]
-    record_id = f"c{cls}_bio_{chapter_num}_{idx:04d}"
+def build_record(entry: dict, chapter: Chapter, idx: int, intent_dropout: float) -> dict:
+    record_id = f"{chapter.id_prefix}_{idx:04d}"
     prompt_intent = entry["intent"] if keep_intent(record_id, intent_dropout) else None
     messages = gemma_messages(entry["ctx"], entry["q_hi"], entry["a_hi"], prompt_intent, INSTRUCTION_HI)
     messages_english = gemma_messages(entry["ctx"], entry["q"], entry["a"], prompt_intent, INSTRUCTION_EN)
-    return {
+    record = {
         "id": record_id,
-        "class": str(int(cls)),
-        "subject": "Biology",
-        "chapter": chapter,
-        "chapter_num": chapter_num,
+        "class": chapter.cls,
+        "subject": chapter.subject,
+        "chapter": chapter.title,
+        "chapter_num": chapter.num,
         "topic": entry["topic"],
         "source": "curated",
         "is_student_query": False,
@@ -132,26 +190,27 @@ def build_record(entry: dict, cls: str, chapter_num: str, idx: int, intent_dropo
         "messages_english": messages_english,
         "text": gemma_text(messages),
     }
+    if chapter.sub_subject:
+        record = {**{k: v for k, v in record.items() if k != "chapter"}, "sub_subject": chapter.sub_subject,
+                  "chapter": chapter.title}
+    return record
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("entries", type=Path, help="JSON list of compact entries for one chapter")
-    parser.add_argument("--chapter", nargs=2, required=True, metavar=("CLASS", "CHAPTER"),
-                        help="e.g. 10 ch06")
+    parser.add_argument("--chapter", required=True, choices=sorted(CHAPTERS), metavar="CHAPTER",
+                        help="processed-folder name, e.g. class10_bio_ch06 or ss10_his_ch01")
     parser.add_argument("--replace", action="store_true", help="drop the chapter's existing records first")
     parser.add_argument("--check", action="store_true", help="validate only, do not write")
     parser.add_argument("--intent-dropout", type=float, default=0.12,
                         help="share of records whose prompt omits the intent line (default 0.12)")
     args = parser.parse_args()
 
-    key = (args.chapter[0].zfill(2), args.chapter[1])
-    if key not in CHAPTERS:
-        sys.exit(f"unknown chapter {key}; known: {sorted(CHAPTERS)}")
-    cls, chapter_num = key
-
-    dataset = json.loads(OUTPUT_PATH.read_text(encoding="utf-8")) if OUTPUT_PATH.exists() else []
-    in_chapter = lambda r: r["class"] == str(int(cls)) and r["chapter_num"] == chapter_num
+    chapter = CHAPTERS[args.chapter]
+    output = chapter.output
+    dataset = json.loads(output.read_text(encoding="utf-8")) if output.exists() else []
+    in_chapter = lambda r: r["id"].rsplit("_", 1)[0] == chapter.id_prefix
     if args.replace:
         dataset = [r for r in dataset if not in_chapter(r)]
 
@@ -170,19 +229,18 @@ def main():
         sys.exit(1)
 
     start = sum(1 for r in dataset if in_chapter(r)) + 1
-    records = [build_record(e, cls, chapter_num, start + i, args.intent_dropout) for i, e in enumerate(entries)]
-    dataset.extend(records)
+    dataset.extend(build_record(e, chapter, start + i, args.intent_dropout) for i, e in enumerate(entries))
 
-    print(f"  c{cls} {chapter_num} {CHAPTERS[key]}: +{len(records)} entries")
-    for k in sorted(CHAPTERS):
-        n = sum(1 for r in dataset if r["class"] == str(int(k[0])) and r["chapter_num"] == k[1])
+    print(f"  {args.chapter} {chapter.title}: +{len(entries)} entries")
+    for name, ch in CHAPTERS.items():
+        n = sum(1 for r in dataset if r["id"].rsplit("_", 1)[0] == ch.id_prefix)
         if n:
-            print(f"    c{k[0]} {k[1]} {CHAPTERS[k]:<48} {n}")
-    print(f"  total: {len(dataset)}")
+            print(f"    {name:<18} {ch.title:<50} {n}")
+    print(f"  total in {output.name}: {len(dataset)}")
 
     if not args.check:
-        OUTPUT_PATH.write_text(json.dumps(dataset, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"[OK] updated {OUTPUT_PATH.relative_to(PROJECT_ROOT)}")
+        output.write_text(json.dumps(dataset, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"[OK] updated {output.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":
