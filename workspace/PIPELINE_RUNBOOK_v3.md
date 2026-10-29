@@ -1,13 +1,18 @@
-# EduHinglish — Training Runbook (v3: Biology 9/10 + Social Science 9)
+# EduHinglish — Training Runbook (v3: Biology 9/10 + Social Science 9/10)
 
 How to retrain every component on the current datasets, and where each piece
-runs. Social Science class 10 (`data/ss10.json`) is **not** included yet — see
-[Adding a new dataset](#adding-a-new-dataset-eg-ss10).
+runs. Social Science 9 and 10 are one file, `data/ss_9_10.json` (built by
+`scripts/build_dataset.py`). To add another subject, see
+[Adding a new dataset](#adding-a-new-dataset).
+
+> As of 2026-10-29, Gemma (v3 adapter) and RAG use `ss_9_10.json`. The spaCy and
+> MuRIL `*_v3` models were trained on the old class-9-only `ss9.json`; re-run
+> steps 1–3 to bring them up to date.
 
 ## How the components connect
 
 ```
-data/bio_9_10.json, data/ss9.json            (QA datasets: question/answer/intent/context)
+data/bio_9_10.json, data/ss_9_10.json        (QA datasets: question/answer/intent/context)
 data/processed/*/dataset.json                (legacy annotated sentences: gold word-level LID)
         │
         │  scripts/build_unified_dataset.py
@@ -20,7 +25,7 @@ data/processed/<chapter>/cleaned_text.txt
         ▼
 src/knowledge_base/  (ChromaDB, collection "ncert_textbooks")                                                                (local, CPU)
 
-data/bio_9_10.json, data/ss9.json ──► Colab 04 (Gemma-3-4B-it QLoRA) ──► gemma_eduhinglish_v2/adapter
+data/bio_9_10.json, data/ss_9_10.json ──► Colab 04 (Gemma-3-4B-it QLoRA) ──► gemma_eduhinglish_v3/adapter
 ```
 
 At inference the pieces line up like this:
@@ -90,13 +95,13 @@ python src/retriever.py               # sample Hinglish queries
 
 `src/knowledge_base/` is gitignored, so **every machine has to build it**.
 Only the chapters listed in `NCERTChunker.CHAPTER_MAP` (`src/chunker.py`) are
-indexed. That is currently 9 biology chapters and 9 ss9 chapters, giving 828 chunks.
+indexed. That is currently 9 biology, 9 ss9 and 22 ss10 chapters, giving 2,261 chunks.
 
 ## 5. Gemma (Colab)
 
-1. Upload `data/bio_9_10.json` and `data/ss9.json` to `MyDrive/EduHinglish/data/`.
+1. Upload `data/bio_9_10.json` and `data/ss_9_10.json` to `MyDrive/EduHinglish/data/`.
 2. Run `training/colab_notebooks/04_gemma_finetune.ipynb`. It needs the `HF_TOKEN` secret, and you must accept the Gemma licence on Hugging Face.
-3. The adapter is saved to `MyDrive/EduHinglish/models/gemma_eduhinglish_v2/adapter`.
+3. The adapter is saved to `MyDrive/EduHinglish/models/gemma_eduhinglish_v3/adapter` (500 steps, ~56 min on a T4).
 
 ## Google Drive layout
 
@@ -104,7 +109,7 @@ indexed. That is currently 9 biology chapters and 9 ss9 chapters, giving 828 chu
 MyDrive/EduHinglish/
 ├── data/                              ← Gemma input (upload from local data/)
 │   ├── bio_9_10.json
-│   └── ss9.json
+│   └── ss_9_10.json
 ├── training_data/                     ← MuRIL input (upload from local training/data/)
 │   ├── muril_lid_dataset_v3/
 │   └── muril_intent_dataset_v3/
@@ -113,7 +118,7 @@ MyDrive/EduHinglish/
     ├── muril_intent_v2/               ← optional: previous model, used as warm start if present
     ├── muril_lid_v3/                  ← written by notebook 01
     ├── muril_intent_v3/               ← written by notebook 02
-    └── gemma_eduhinglish_v2/
+    └── gemma_eduhinglish_v3/
         ├── checkpoints/               ← written by notebook 04 during training
         └── adapter/                   ← final LoRA adapter
 ```
@@ -122,11 +127,11 @@ If the old MuRIL models are still on Drive under `muril_models/muril_*_v2`,
 move them to `models/` to use them as a warm start. Otherwise the notebooks
 start from `google/muril-base-cased`.
 
-## Adding a new dataset (e.g. ss10)
+## Adding a new dataset
 
-1. Add `"data/ss10.json"` to `QA_SOURCES` in `scripts/build_unified_dataset.py`.
+1. Add the new file (e.g. `"data/sci_9_10.json"`) to `QA_SOURCES` in `scripts/build_unified_dataset.py`.
 2. Add any new intent names to `INTENT_LABELS` in `training/label_config.py`.
-3. Add the `ss10_*` folders to `CHAPTER_MAP` in `src/chunker.py`.
-4. Add `"ss10.json"` to `DATA_FILES` in notebook 04.
-5. Optionally, add class 10 terms to the NER gazetteers in `training/prepare_spacy_data.py`.
+3. Add its `data/processed/` chapter folders to `CHAPTER_MAP` in `src/chunker.py`.
+4. Add the file name to `DATA_FILES` in notebook 04.
+5. Optionally, add the new subject's terms to the NER gazetteers in `training/prepare_spacy_data.py`.
 6. Re-run steps 1–5.

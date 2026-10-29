@@ -33,7 +33,6 @@ class NCERTChunker:
     # ── Chapter metadata mapping ─────────────────────────────────────────────
     # Keys are folder names under data/processed/. Only folders listed here are
     # indexed, so a new subject/class is added by adding its chapters below.
-    # (ss10_* folders are not listed yet — that dataset is still in progress.)
     CHAPTER_MAP = {
         # ── Biology ──────────────────────────────────────────────────────────
         "class9_bio_ch02": {
@@ -108,6 +107,95 @@ class NCERTChunker:
         "ss9_ch09": {
             "subject": "social_science", "class_num": "9", "chapter_num": "ch09",
             "chapter_title": "The Price Puzzle: What Drives the Market",
+        },
+        # ── Social Science class 10 ───────────────────────────────────────
+        "ss10_his_ch01": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
+            "chapter_title": "The Rise of Nationalism in Europe",
+        },
+        "ss10_his_ch02": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
+            "chapter_title": "Nationalism in India",
+        },
+        "ss10_his_ch03": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
+            "chapter_title": "The Making of a Global World",
+        },
+        "ss10_his_ch04": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
+            "chapter_title": "The Age of Industrialisation",
+        },
+        "ss10_his_ch05": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
+            "chapter_title": "Print Culture and the Modern World",
+        },
+        "ss10_geo_ch01": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
+            "chapter_title": "Resources and Development",
+        },
+        "ss10_geo_ch02": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
+            "chapter_title": "Forest and Wildlife Resources",
+        },
+        "ss10_geo_ch03": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
+            "chapter_title": "Water Resources",
+        },
+        "ss10_geo_ch04": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
+            "chapter_title": "Agriculture",
+        },
+        "ss10_geo_ch05": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
+            "chapter_title": "Minerals and Energy Resources",
+        },
+        "ss10_geo_ch06": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch06",
+            "chapter_title": "Manufacturing Industries",
+        },
+        "ss10_geo_ch07": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch07",
+            "chapter_title": "Lifelines of National Economy",
+        },
+        "ss10_civics_ch01": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
+            "chapter_title": "Power-sharing",
+        },
+        "ss10_civics_ch02": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
+            "chapter_title": "Federalism",
+        },
+        "ss10_civics_ch03": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
+            "chapter_title": "Gender, Religion and Caste",
+        },
+        "ss10_civics_ch04": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
+            "chapter_title": "Political Parties",
+        },
+        "ss10_civics_ch05": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
+            "chapter_title": "Outcomes of Democracy",
+        },
+        "ss10_eco_ch01": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
+            "chapter_title": "Development",
+        },
+        "ss10_eco_ch02": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
+            "chapter_title": "Sectors of the Indian Economy",
+        },
+        "ss10_eco_ch03": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
+            "chapter_title": "Money and Credit",
+        },
+        "ss10_eco_ch04": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
+            "chapter_title": "Globalisation and the Indian Economy",
+        },
+        "ss10_eco_ch05": {
+            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
+            "chapter_title": "Consumer Rights",
         },
     }
 
