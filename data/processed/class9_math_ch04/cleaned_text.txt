@@ -1,0 +1,265 @@
+## Exploring Alge braic Identities
+
+## 4.1 Introduction
+
+In earlier chapters, you learnt about linear polynomials and how they can be used to represent and solve real-life problems. You also studied linear equations and discovered how they describe relationships between quantities. In this chapter, we will take the next step by exploring algebraic identities. These are special mathematical rules that not only make it easier to simplify complicated calculations but also help us work efficiently with algebraic expressions. Let us begin by exploring a few simple patterns. Example 1: Consider any three consecutive square numbers. For example, 1, 4, and 9. Add the smallest and the largest squares. Thus, 1 + 9 = 10. Then subtract twice the middle square from this sum. This leads to 10 – (2 × 4) = 10 – 8 = 2. Now try the same process with another set of three consecutive square numbers. Say 9, 16, 25.
+
+For example, consider the consecutive squares 25, 36, 49. Applying the same rule we get (25 + 49) – (2 × 36) = 74 – 72 = 2. Repeat this process with other sets of three consecutive square numbers. The result always seems to be 2! The pattern may look surprising, but soon we will uncover the reason behind it using algebra.
+
+## Think and Reflect
+
+## 4.2 Visualising Identities
+
+In this section we will revisit some algebraic identities that we have studied in earlier grades and try to visualise them using geometrical models. In particular, we will use squares and rectangles to represent terms. Consider two line segments of lengths a and b units, respectively, and make a longer line segment of length ( a + b) units as shown in Fig. 4.1.
+
+We can now construct a square of side ( a + b) units and partition it into smaller squares and rectangles as shown in Fig. 4.2.
+
+Observe that the area of the outer square is ( a + b). The area of the larger square inside the outer square is a while the area of the smaller square is b. The areas of the two rectangles are ab each. Together they make the bigger square; hence we can conclude that ( a + b) = a + 2 ab + b. From Fig. 4.2 it is clear that ( a + b) = a + 2 ab + b for all a and b when a and b are lengths of line segments. Think of numbers a and b where a and b do not represent lengths of line segments. What if a and b are negative numbers? Let us check for some negative numbers and see if this equation still works. Example 2: Let a = –2 and b = –3. Then ( a + b) = –5 and ( a + b) = 25. Also a = 4, b = 9 and 2 ab = 12. Thus a + 2 ab + b = 4 + 12 + 9 = 25. Hence, a + 2 ab + b = ( a + b) again!
+
+2 3 Now suppose a and b are rational numbers, say a = 3 and b = 4 2 3 1 Then ( a + b) = =.
+
+3 4 12 1 . 144 2 3 ( a b)
+
+2 3 3 (cid:28) 2 3 4 4 a 2 ab b 4 1 9 16 9 64 144 81 145 144 1 144 .
+
+144 144 So, a + 2 ab + b = ( a + b) seems to be true for rational numbers too. But we are still not sure if it is true for all numbers. To verify this, let us investigate further using the distributive property of numbers: ( a + b) = ( a + b) ( a + b) = a ( a + b) + b ( a + b) = a + ab + ba + b = a + 2 ab + b. Recall that in Grade 8 you were introduced to ( a + b) = a + 2 ab + b as an identity. What is the difference between an equation and an identity? An algebraic ide nti ty is an equation that is true for all values of the variables occurring in it, while an equation need not be true for all values.
+
+For example, x – 1 = 24 is true for only x = 5 or –5. Hence, it is an equation. But ( x + y) = x + 2 xy + y is true for all values of x and y. Therefore, this equation is also an identity. By now you must have observed that ( a + b) a + b. But can you find out which one of them will be greater? For example, if a = 10 and b = 2, what are the values of ( a + b) and a + b ? ( a + b) = (10 + 2) = 12 = 144 and a + b = 10 + 2 = 104. So in this case, ( a + b) > a + b But is it true for all numbers a and b ?
+
+[Box] Try and find other patterns like this one. For example, you could c onsider 4 consecutive squares and see if you can find a pattern.
+
+## Think and Reflect
+
+We can use the identity ( a + b) = a + 2 ab + b to find the square of general binomial expressions. Example 3: Let us try to expand (5 x + 2 y). Here a = 5 x and b = 2 y. Then (5 x + 2 y) = (5 x) + 2(5 x )(2 y) + (2 y) = 25 x + 20 xy + 4 y. We can also use the identity to help us with numerical calculations. Example 4: To calculate 43, we can write it as (40 + 3) = 40 + 2 40 3 + 3 = 1600 + 240 + 9 = 1849.
+
+## xErcisE Et
+
+1. Using the identity ( a + b) = a + 2 ab + b, expand the following: 7 3 (i) (7 x + 4 y)
+
+(ii) x y 5 2 (iii) (2.5 p + 1.5 q)
+
+3 s 8 t 4 1 x 2 y 1 1 x y (iv)
+
+(v)
+
+(vi)
+
+2. Using the same identity, find the values of the following: (i) (64)
+
+(ii) (105)
+
+(iii) (205)
+
+[Box] 1. What can you say about a and b if ( a + b) < a + b ? 2. What can you say about a and b if ( a + b) > a + b ? 3. When will ( a + b) be equal to a + b ? Did you observe that ( a + b) and a + b are both positive? What term will decide which is larger? Use the expansion of ( a + b) to decide.
+
+## 4.3 Factorisation of Algebraic Expressions Using Identities
+
+The identity ( a + b) = a + 2 ab + b can also be used to find factors of some algebraic expressions. Example 5: Consider the algebraic expression x + 4 x + 4. We observe that x = ( x), 4 = 2 and 4 x = 2(2)( x ). Hence, x + 4 x + 4 = x + 2( x )(2) + 2 can be compared with a + 2( a )( b) + b, where a = x and b = 2. We conclude that x + 4 x + 4 = ( x + 2). Therefore, we can say that ( x + 2) is a factor of x + 4 x + 4. Example 6: Let us try to find factors of another algebraic expression: 36 x + 12 x + 1. Writing this in the form a + 2 ab + b we get 36 x + 12 x + 1 = (6 x) + 2(6 x )(1) + 1, where a = 6 x and b = 1. Therefore, 36 x + 12 x + 1 = (6 x + 1). Thus (6 x + 1) is a factor of 36 x + 12 x + 1. Example 7: Let us try to factor 50 p + 60 pq + 18 q. What will a and b be in this case? Try to think of a term whose square is 50 p. It is p. But if we want to avoid using the square root symbol we may proceed as follows: We observe that 2 is a common factor of the terms 50 p, 60 pq, 18 q. Thus 50 p + 60 pq + 18 q = 2(25 p + 30 pq + 9 q ).
+
+50 Now let us focus on the expression 25 p + 30 pq + 9 q. Think of a term whose square is 25 p. What about 9 q ? 50 p + 60 pq + 18 q 2 5 p (cid:28) 2 5 p 3 q (cid:28) 3 q = 2 (5 p + 3 q). Here we have used the identity ( a + b) = a + 2 ab + b to factor the expression 25 p + 30 pq + 9 q, after taking 2 as a common factor. In all the examples described so far, we have used the identity ( a + b) = a + 2 ab + b to find factors of different algebraic expressions.
+
+## Think and Reflect
+
+We get ( a – b) = a – 2 ab + b, which is also an identity and can be used in ways similar to ( a + b) = a + 2 ab + b. Let us revisit the pattern we observed in Example 1. Any three consecutive numbers can be taken as ( n – 1), n and ( n + 1). Their respective squares are of the form ( n – 1), n and ( n +1). The sum of the smallest and largest squares is ( n – 1) + ( n + 1) = n – 2 n + 1 + n + 2 n + 1 = 2 n + 2. Subtracting 2 n from this leads to 2. Hence you always get 2! This is in fact a proof of the fact that if we add the smallest and largest of any three consecutive square numbers and subtract two times the middle square number, we will always arrive at 2. Just as the identity ( a + b) = a + 2 ab + b can be used to find the squares of numbers, we can also use ( a – b) = a – 2 ab + b in a similar manner. Example 8: Suppose we have to calculate 29. We can express this as (30 – 1) = 30 – 2 30 1 + 1 = 900 – 60 + 1 = 841. To visualise the identity ( a – b) = a – 2 ab + b, let us draw a square of side a units and split a in two parts, one of length ( a – b) units and another of length b units. Then the figure will look like this.
+
+The area of the big square is a square units. The small square has an area of ( a – b) square units. The larger rectangle has area ab square units while the smaller rectangle has area b ( a – b) square units. Thus, to obtain ( a – b) we can subtract the areas of the rectangles from the big square. We obtain (a – b) = a – ab – b(a – b) = a – ab – ba + b = a – 2 ab + b.
+
+[Box] What if we replace b by – b in ( a + b) = a + 2 ab + b ?
+
+## xErcisE Et
+
+1. Factor completely: (i) 9 x + 24 xy + 16 y (ii) 4 s + 20 st + 25 t (iii) 49 x + 28 xy + 4 y 32 4 pq q (iv)
+
+64 p 3 9 4 3 (cid:31)3 a 4 ab b *(v)
+
+9 (cid:31) s 6 sv 5 v 5 *(vi)
+
+( Hint: 2 was taken out as a common factor in Example 7. Is it possible to do something similar in Exercises (v) and (vi) above?) 2. Find the values of the following using the identity ( a – b) = a – 2 ab + b. (i) (79)
+
+(ii) (193)
+
+(iii) (299)
+
+## 4.4. More Identities
+
+What will happen if we want to find the square of the sum of three numbers a, b and c, that is, ( a + b + c) ? Let us replace b + c by d. We already know, ( a + d) = a + 2 ad + d. Thus, replacing d by ( b + c ), we get a + 2 ad + d = a + 2a ( b + c) + ( b + c). So, ( a + b + c) = a + 2 ab + 2 ac + b + 2 bc + c. It may be more convenient to remember this as. ( a + b + c) = a + b + c + 2 ab + 2 bc + 2 ca. Let us interpret this geometrically by drawing a square of side a + b + c as shown in Fig. 4.4.
+
+## Think and Reflect
+
+Example 9: Let us use this identity to find the square of a number, say 119: 119 = (100 + 10 + 9) = 100 + 10 + 9 + 2(100)(10) + 2(100)(9) + 2(10)(9) = 10000 + 100 + 81 + 2000 + 1800 + 180 = 14161. So far we have verified the following three identities and used them for performing calculations and manipulating algebraic expressions: 1. ( a + b) = a + 2 ab + b 2. ( a – b) = a – 2 ab + b 3. ( a + b + c) = a + b + c + 2 ab + 2 bc + 2 ca
+
+## xErcisE Et
+
+1. Find the following squares using one of the above identities. Determine which of these identities will make these calculations easier. (i) 117 (iv) 214 (ii) 78 (v) 1104 (iii) 198 (vi) 1120 2. Factor using suitable identities: (i) 16 y – 24 y + 9 9 s (cid:27) 6 st 4 t 4 (ii)
+
+m mk k (cid:27) 3 nk 2 mn 9 n 9 3 4 16 p p 2 (cid:28) (cid:28) 16 (iii)
+
+(iv)
+
+(v) 9 a (cid:26) 4 b (cid:26) c (cid:26) 12 ab 6 ac 4 bc (cid:26)
+
+3. Expand the following using the identity ( a + b + c) = a + b + c + 2 ab + 2 bc + 2 ca: (i) ( p + 3 q + 7 r) 4. Is this an identity? ( a b c) (cid:29)( a b c) ( a b c) 2 a 2 b 2 c (ii) (3 x – 2 y + 4 z)
+
+.
+
+In Grade 8, you were introduced to yet another identity, a – b = ( a + b) ( a – b ). This can be quite useful if it is rewritten as a = ( a + b) ( a – b) + b. Look at the following figure. Justify the identity a = ( a + b) ( a – b) + b for yourself.
+
+In 750 CE, this identity was proposed by Śhrīdharāchārya as a method to quickly compute the squares of numbers. For example, 55 = (55 + 5)(55 – 5) + 5 = 60 50 + 25 = 3000 + 25 = 3025.
+
+[Box] Label the squares and rectangles in Fig. 4.4 so that it represents the identity ( a + b + c) = a + b + c + 2 ab + 2 bc + 2 ca.
+
+## Think and Reflect
+
+## 4.5 Factorisation Using Algebra Tiles
+
+Consider a rectangle with sides x + 3 and x + 4 units. We know that the area of such a rectangle is ( x + 3) ( x + 4) sq. units. Using distributivity, we get ( x + 3)( x + 4) = x + 3 x + 4 x + 12 = x + 7 x + 12.
+
+Fig. 4.7 helps to visualise the product of x + 3 and x + 4 using algebra tiles. The expression x + 3 is represented using an x -tile and three unit tiles. Similarly x + 4 is represented using an x -tile and four unit tiles. The product of these two linear factors is shown in the inner rectangle comprising the x -tile, the 7 x -tiles, and 12 unit tiles.
+
+Note that the 7 x in x + 7 x + 12 has been split as 3 x + 4 x. This is represented by the fact that three x -tiles are placed on the right side of the x -tile and four x -tiles are arranged below it. Also, the 12 unit tiles are arranged in a 3 by 4 array. Once the rectangular arrangement is formed, we observe that the dimensions of the rectangle are x + 3 and x + 4 units respectively.
+
+[Box] 1. Try to evaluate the following using a suitable identity: (i) 35 Do you observe any interesting pattern? 2. Observe the two rows of figures below. They represent an algebraic identity. Try to identify it.
+
+## Think and Reflect
+
+Fig. 4.7 helps us to visualise two algebraic identities: (i) The linear expressions x + 3 and x + 4 can be multiplied to obtain the identity ( x + 3)( x + 4) = x + 7 x + 12. (ii) Also the expression x + 7 x + 12 can be factored into the linear factors ( x + 3) and ( x + 4), giving the same identity x + 7 x + 12 = ( x + 3)( x + 4).
+
+## Think and Reflect
+
+[Box] Suppose 7 x is split as 2 x + 5 x; can a similar rectangular arrangement be formed? Consider other possibilities and check.
+
+[Box] Algebra tiles can be used to represent products and find factors. 1. Figure out the product of x + 2 and x + 3 using algebra tiles. 2. Lay out algebra tiles for x + 11 x + 30 in such a way that you will see its factors.
+
+## Think and Reflect
+
+Now consider the case where we have a rectangle of sidelengths 2 x + 3 and 3 x + 1, as shown in Fig. 4.8. What can you say about its area (2 x + 3) (3 x + 1)?
+
+Fill in the blanks with the appropriate expressions to make the equation true. ( px + a) ( qx + b) = (_____) x + (_____) x + _. Also, verify your answer using the distributive property.
+
+## 4.6 Factorisation Without Using Algebra Tiles
+
+Consider the algebraic expression x + 7 x + 12 which was obtained by multiplying the linear terms x + 3 and x + 4. We also saw in Fig. 4.7 that 7 x was split as 3 x + 4 x so that a rectangle could be formed using the algebra tiles. But how do we achieve this ‘splitting of the x term’ without using tiles?
+
+Example 10: Let us begin with x + 7 x + 12 = x + ( a + b) x + ab. Comparing the coefficients of the x -term and the constant terms on both sides of the equation, we get a + b = 7 and ab = 12. Note that this is only possible when a = 3 and b = 4, or a = 4 and b = 3. Thus, we choose one of these two possibilities and write the factors as ( x + a) ( x + b ), that is, ( x + 3) ( x + 4). Example 11: Let us try to factor x + 11 x + 30 in a similar manner. x (cid:27) 11 x 30 x (cid:27)( a b) x ab.
+
+This leads to a + b = 11 and ab = 30. We need to choose values of a and b appropriately, so that a + b = 11 and ab = 30 are both satisfied. What if we choose a = 2 and b = 15? Or a = 3 and b = 10? Clearly these will not work as a + b is not equal to 11 even though ab = 30. So, we look at the factors of 30 and arrive at a = 5 and b = 6 or vice-versa. This way the x -term, 11 x, can be split as 5 x + 6 x. (cid:25) 11 30 Thus, x x Example 12: In order to factor x – 5 x + 6, we first note that the coefficient of x is negative. Once again comparing x – 5 x + 6 with x + ( a + b) x + ab, we get a + b = –5 and ab = 6. Note that these two equations can be satisfied together only when a = –2 and b = –3 or vice-versa.
+
+5 6 30 x 5 6. x x x
+
+[Box] We have seen that ( x + 3)( x + 4) = x + 7 x + 12. Also ( x + 6)( x + 7) = x + 13 x + 42. Generalise the pattern to get an expression for ( x + a) ( x + b ).
+
+## xErcisE Et
+
+1. Fill in the blanks to complete the following identities: (i) s – 11 s + 24 = (________) (________) (ii) (________) ( x + 1) = (3 x – 4 x –7) (iii) 10 x – 11 x – 6 = (2 x – ___) (___ + 2) (iv) 6 x + 7 x + 2 = (____________) (___________) 2. Select and use the identity that will help you to find the following products without multiplying directly: (i) (41) (iii) (23 17)
+
+(ii) (27) (iv) (135)
+
+(v) (97) (vii) (34 43) 3. Factor the following: (i) 9 a + b +4 c – 6 ab + 12 ac – 4 bc (ii) 16 s + 25 t – 40 st (iii) r – r – 42 (v) 64 u + 121 v + 4 w – 176 uv – 32 uw + 44 vw (vi) (18 29) (viii) (205)
+
+(iv) 49 g + 14 gh + h
+
+## Think and Reflect
+
+## 4.7 Finding New Identities
+
+In this section we will play around with algebraic expressions to see if we can arrive at new identities. What do you think ( a + b) will look like? Let us find out the answer using the distributive property: ( a + b) = ( a + b )( a + 2 ab + b) = a + 3 a b + 3 ab + b. Here we have found a new identity, namely, ( a + b) = a + 3 a b + 3 ab + b. Let us try to visualise this identity. We saw that a square of side a + b can be divided into squares and rectangles. This led us to the identity, ( a + b) = a + 2 ab + b. What if we have a cube of edge a + b ? Can we divide a cube of edge ( a + b) into smaller cubes and cuboids and represent this new identity?
+
+We know that the volume of this cube is ( a + b). Let us split this cube into smaller cubes and cuboids.
+
+Notice that the larger cube can be split into two cubes and six cuboids. The cubes have volumes, a and b cubic units, respectively. Amongst the other six cuboids, three have dimensions a units × a units × b units and other three have dimensions a units × b units × b units, and so their volumes are a b and ab cubic units, respectively. Hence the total volume of the six cuboids is 3 a b + 3 ab.
+
+This gives us, ( a + b) = ( a + b )( a + 2 ab + b) = a + 3 a b + 3 ab + b. Here we have found a new identity, namely, ( a b) a 3 a b 3 ab b. What happens when we replace b with – b in this new identity? a ( b) a 3 a ( b) 3 a ( b) ( b). ( a b) a 3 a b 3 ab b. This leads to the identity of the four terms, two are positive and two are negative. They appear alternately in the expression. Let us see how we can use these new identities. Example 13: What is the side of the cube whose volume is p + 6 p q + 12 pq + 8 q cubic units? Comparing p + 6 p q + 12 pq + 8 q with the right side of the identity ( a b) a 3 a b 3 ab b ( p) 3 (cid:29)( p) ( 2 q) 3 ( p )( 2 q) ( 2 q) which is ( p + 2 q), so that a = p and b = 2 q. Hence a side of the cube will be p + 2 q units. Example 14: Now consider the expression 8 n – 60 n m + 150 nm – 125 m. If you write it in the form ( a – b), what will be a and b ? Rewriting the expression 8 n – 60 n m + 150 nm – 125 m as (2 n) – 3(2 n) (5 m) + 3(2 n )(5 m) – (5 m) and comparing it with a 3 a b 3 ab b ( a b) b = 5 m. Now let us play with known identities to discover more identities. Try to multiply the following using the distributive property. 1. ( x – y )( x + xy + y) 2. ( x + y )( x – xy + y) Let us work out the product of the first one. ( x y )( x xy y) x x y (cid:29) xy x y xy y x x y (cid:29) xy x y xy y (cid:29) x y Note that out , we may rewrite it as , we get (2 n – 5 m). Hence a = 2 n and .
+
+Thus ( x – y )( x + x y + y) = x – y. This is also an identity! Verify this for yourself by choosing different values of x and y. Predict what ( x + y )( x – x y + y) will be.
+
+[Box] James and Reshma were talking about algebraic identities they learnt in school. James: ( a – b) ( a + b) = ( a – 2 ab + b )( a + b) Reshma: I have a different idea. ( a – b) ( a + b) = ( a – b) [( a – b) ( a + b )] = ( a – b )( a – b) I will find this product to get the answer. According to you, who is correct and why? Try to combine more such identities and find new results.
+
+[Box] 83 a b b a a b a a a b a b b b a a b b a b a a a b a a b a a a a b b b b a b a b a b b b b
+
+## Think and Reflect
+
+x (cid:30) y x y x y x (cid:29) y x y x xy y Exploring further, let us multiply ( x + y + z) and ( x + y + z – xy – xz – yz ). ( x + y + z) ( x + y + z – xy – xz – yz) = ( x + xy + xz – x y – x z – x yz) + ( x y + y + yz – xy – xyz – y z) + ( x z + y z + z – xyz – xz – yz) = ( x + xy + xz – x y – x z – x yz) + ( x y + y + yz – xy – xyz – y z) + ( x z + y z + z – xyz – xz – yz) = x + y + z – 3 x yz. So, ( x + y + z) ( x + y + z – xy – xz – yz) = x + y + z – 3 x yz. This is yet another identity. Let us explore some of its applications. Example 15: The sum of three numbers is 10 and their product is 25. The sum of their squares is 38. Try to use the previous identity to find the sum of the cubes of these three numbers. Let the three numbers be x, y and z, respectively. According to the problem x + y + z = 10, xyz = 25 and x + y + z = 38. Substituting in the identity ( x + y + z) ( x + y + z – xy – xz – yz) = x + y + z – 3 x yz, we get (10) (38 – xy – xz – yz) = x + y + z – 3 (25). Thus, x + y + z = 380 – 10 ( xy + xz + yz) + 75 = 455 – 10 ( xy + xz + yz ).
+
+To find ( xy + xz + yz ), we need to use the identity ( x + y + z) = x + y + z + 2 xy + 2 xz + 2 yz. We get 100 = 38 + 2 ( xy + xz + yz ). Thus xy + xz + yz = 31. Now, substituting this into our earlier equation, we obtain x + y + z = 455 – 10 ( xy + xz + yz) = 455 – 10 (31) = 455 – 310 = 145.
+
+[Box] We already know that Further, we have verified that Observe that x – y is a common factor of x – y and x – y. Do you think x – y is also a factor of x – y ? Note that x – y = ( x) – ( y) = ( x – y) ( x + y ). Can you see how x – y is a factor of x – y ? How about x – y ? Does this also have x – y as a factor?
+
+## 4.8 Simplifying Rational Expressions
+
+In the earlier sections of this chapter, we have learnt how to factorise algebraic expressions. Let us see how we can simplify some rational algebraic expressions using factorisation. Example 16: Simplify the rational expression assuming that 5 x + 5 x – 100 0. In order to simplify this rational expression, we need to cancel the common factors between the expressions in the numerator and denominator. We will need to use algebraic identities to simplify this rational expression. First, let us look at the numerator x – 7 x + 12. We need to find a and b such that a + b = –7 and ab = 12. Can you think of two such numbers? They are – 3 and – 4. Factor the expression, we get x – 7 x + 12 = ( x – 3)( x – 4). Now let us look at the denominator 5 x + 5 x – 100. We can see that all the three terms are multiples of 5 so we can take 5 as a common factor and simplify the expression: 5 x + 5 x – 100 = 5( x + x – 20). Now we need to find a and b such that, a + b = 1 and ab = – 20. Try to think of two such numbers. They are 5 and –4. Thus, we have 5 x + 5 x – 100 = 5 ( x – 4)( x + 5). Substituting the factored expressions in the numerator and denominator, we arrive at (cid:24) 7 12 (cid:26) 7 12 x x x x , 5 5 100 (cid:24) 7 12 x x 20) 5 4 5 x x 4 3 x x x x x x 5 5 100 5 ( x x (cid:24)
+
+.
+
+Thus, the common factor x – 4 can be cancelled as it is not equal to 0. We know this because 5 x + 5 x – 100 0. Thus, (cid:25) 7 12 3 . x x x 5 5 100 5 5 x x (cid:25) x (cid:25)
+
+## Think and Reflect
+
+36 s 12 st t ( 6 s t) ( )( )
+
+## xErcisE Et
+
+1. Simplify the following rational expressions assuming that the expressions in the denominators are not equal to zero: 3 p (cid:26) 3 pq 18 q (cid:26) (i)
+
+n 3 n m 3 nm m (cid:26) 5 m 10 mn 5 n 4 y 20 yz 25 z 25 z 4 y (ii)
+
+p 3 pq 10 q w (cid:29) v x (cid:29) 3 wvx (cid:29)(cid:29) w v x 2 wv 2 vx 2 wx 6 x x x x ( 6 8) 9 x x x (iii)
+
+(iv)
+
+7 12 16 p 4 4 (v)
+
+(vi)
+
+p p Example 17: Saira has arranged a square of side x units, 8 rectangular strips of sides x units and width 1 unit, and 15 squares of side 1 unit to form a bigger rectangle. Find the length and breadth of the rectangle in terms of x. Area covered by a square of side x units = x sq. units Area covered by rectangle of sides x units and 1 unit = x sq. units Total area covered by 8 such rectangles = 8 x sq. units Area covered by a square of side 1 unit = 1 sq. units Total area covered by 15 such squares = 15 sq. units Total area covered by all the squares and rectangles = x + 8 x + 15 sq. units. Area of Saira’s rectangle = x + 8 x + 15 sq. units. We can factor x + 8 x + 15 to obtain the dimensions of the rectangle prepared by Saira.
+
+For factoring x + 8 x + 15, we need a and b such that a + b = 8 and ab = 15 So, a = 3 and b = 5 is one possibility. The possible length and breadth of Saira’s rectangle in terms of x are: length = x + 5 units and breadth = x + 3 units. Now draw Saira’s rectangle using these pieces. Example 18: A rectangular pool is such that its breadth is 4 metres less than its length and its area is 96 sq. metres. Find the length and breadth of the pool. Let the length of the pool be x metres. Then the breadth of the pool is x – 4 metres. Since the area is given to be 96 sq. metres, we get x ( x – 4) = 96. x – 4 x = 96 or x – 4 x – 96 = 0. We choose appropriate factors of – 96 to split the term –4 x. We know that, (–12) 8 = 96 and (–12) + 8 = –4. Hence – 4 x can be written as –12 x + 8 x. x – 4 x – 96 = x – 12 x + 8 x – 96 = x ( x – 12) + 8 ( x – 12) = ( x – 12)( x + 8) = 0. Thus, x – 4x – 96 = 0 implies that ( x – 12)( x + 8) = 0. This means either x – 12 = 0 or x + 8 = 0. That is, x = 12 or x = –8. Since x is the length of the pool, it cannot be negative. Therefore, we ignore x = –8 and x = 12 metres must be the length of the pool. The breadth of the pool = x – 4 = 12 – 4 = 8 metres.
+
+[Box] Try to simplify the following rational expression:
+
+[Box] t 2 ts 48 s ___ ___ ___ ___
+
+[Box] ( Hint: Factor t + 2 ts – 48 s and simplify the rational expressions assuming that t + 2 ts – 48 s 0).
+
+## nd of haptEr xErcisEs
+
+1. Use suitable identities to find the following products: (i) (–3 x + 4) 1 (iii) p (ii) (2 s + 7) (2 s – 7)
+
+1 p 2 (cid:31)
+
+(iv) (2 n + 7) (2 n – 7) 1 (vi)
+
+2 4 r 2 r 1 3 (v) ( s – 2 t) ( s + 2 st + 4 t)
+
+(vii) (–3 m + 4 k – l)
+
+(viii) x y 7 2 2 3 (ix) k m 2. Find the values using suitable identities: (i) 17 21 (iii) 24 16 (v) 199 (vii) (–107) 3. Factor the following algebraic expressions: 1 (i) y (ii) 104 96 (iv) 147 (vi) 127 (viii) (–299)
+
+1 25 n 4 1 9 m (ii)
+
+16 y 5 1 x 6 6 1 64 y 125 (iii)
+
+(iv) x 1 27 9 u u 125 5 25 27 z (v) u (vi)
+
+p 27 q r 9 pqr (cid:27)
+
+(vii)
+
+(viii)
+
+8 z 3 3 (ix) 9 x y 6 xyz (x)
+
+1 9 u u 216 2 4 27 (xi) u 4. Simplify the following: 4 (cid:28) (cid:28) 4 1 x x (i)
+
+9 3 a 24 b 9 a 36 b s (cid:27) 125 t s 2 st 35 t (ii)
+
+(iii)
+
+4 (cid:28) 1 x Note: Assume that the denominators are not equal to 0. 5. Find possible expressions for the length and breadth of each of the following rectangles whose areas are given by the following expressions in square units. (i) 25 a – 30 ab + 9 b 6. Find possible expressions for the length, breadth, and heights of each of the following cuboids whose volumes are given by the following expressions in cubic units. (i) 6 a – 24 b (ii) 36 s – 49 t (ii) 3 ps – 15 ps + 12 p 7. The village playground is shaped as a square of side 40 metres. A path of width s metres is created around the playground for people to walk. Find an expression for the area of the path in terms of s. 8. If a number plus its reciprocal equals, find the number. 3 9. A rectangular pool has area 2 x + 7 x + 3 square hastas. If its width is 2 x + 1 hastas, find its length. Hasta was a unit used to measure length. *10. If both x – 2 and x – are factors of px + 5 x + r, show that p = r. 2 *11. If a + b + c = 5 and ab + bc + ca = 10, then prove that a + b + c –3 abc = – 25. *12. By factoring the expression, check that n – n is always divisible by 6 for all natural numbers n. Give reasons. *13. Find the value of (i) x + y – 12 xy + 64, when x + y = – 4 (ii) x – 8 y – 36 xy – 216, when x = 2 y + 6 10 1
+
+## Chapter summary
+
+• Identities are equations that are true for all values of the variables. • One of the ways to visualise identities is using geometrical models or algebra tiles. • Identities can also be used to factor algebraic expressions. • Factorisation of quadratic expressions may be visualised by means of algebra tiles. • Identities can also be used to simplify calculations such as squaring numbers or evaluating products of numbers. • Rational algebraic expressions may be simplified by factorisation and removing the common factors in the numerator and denominator, provided such a factor exists and it is not equal to zero.
+
+• We have studied the following identities in this chapter: ( x + y) = x + 2 xy + y ( x – y) = x – 2 xy + y ( x + y + z) = x + y + z + 2 xy + 2 yz + 2 zx ( x + y) (x – y) = x – y ( x + a) (x + b) = x + ( a + b) x + ab ( ax + b) (cx + d) = acx + ( ad + bc) x + bd x – y = (x – y) ( x + xy + y)
+
+x + y = (x + y) ( x – xy + y) ( x + y) = x + 3 x y + 3 xy + y ( x – y) = x – 3 x y + 3 xy – y x + y + z – 3 xyz = ( x + y + z)(x + y + z – xy – xz – yz)

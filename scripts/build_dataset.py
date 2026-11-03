@@ -1,6 +1,8 @@
 """
 Add one chapter's hand-written QA entries to the curated datasets:
     Biology        -> data/bio_9_10.json
+    Chemistry      -> data/chem_9_10.json
+    Physics        -> data/phys_9_10.json
     Social Science -> data/ss_9_10.json
 
 The input is a JSON list of compact entries:
@@ -41,11 +43,27 @@ class Chapter:
 
     @property
     def output(self) -> Path:
-        return DATA_DIR / ("bio_9_10.json" if self.subject == "Biology" else "ss_9_10.json")
+        return DATA_DIR / OUTPUTS[self.subject]
+
+
+OUTPUTS = {"Biology": "bio_9_10.json", "Chemistry": "chem_9_10.json", "Physics": "phys_9_10.json",
+           "Mathematics": "maths_9_10.json", "Social Science": "ss_9_10.json"}
 
 
 def _bio(cls, num, title):
     return Chapter(cls, num, title, "Biology", "bio")
+
+
+def _chem(cls, num, title):
+    return Chapter(cls, num, title, "Chemistry", "chem")
+
+
+def _phys(cls, num, title):
+    return Chapter(cls, num, title, "Physics", "phys")
+
+
+def _math(cls, num, title):
+    return Chapter(cls, num, title, "Mathematics", "math")
 
 
 def _ss(cls, num, title, sub_subject, id_tag):
@@ -62,6 +80,49 @@ CHAPTERS = {
     "class10_bio_ch07": _bio("10", "ch07", "How do Organisms Reproduce?"),
     "class10_bio_ch08": _bio("10", "ch08", "Heredity"),
     "class10_bio_ch13": _bio("10", "ch13", "Our Environment"),
+    "class9_chem_ch05":  _chem("9", "ch05", "Exploring Mixtures and their Separation"),
+    "class9_chem_ch08":  _chem("9", "ch08", "Journey Inside the Atom"),
+    "class9_chem_ch09":  _chem("9", "ch09", "Atomic Foundations of Matter"),
+    "class10_chem_ch01": _chem("10", "ch01", "Chemical Reactions and Equations"),
+    "class10_chem_ch02": _chem("10", "ch02", "Acids, Bases and Salts"),
+    "class10_chem_ch03": _chem("10", "ch03", "Metals and Non-metals"),
+    "class10_chem_ch04": _chem("10", "ch04", "Carbon and its Compounds"),
+    "class9_phys_ch04":  _phys("9", "ch04", "Describing Motion Around Us"),
+    "class9_phys_ch06":  _phys("9", "ch06", "How Forces Affect Motion"),
+    "class9_phys_ch07":  _phys("9", "ch07", "Work, Energy, and Simple Machines"),
+    "class9_phys_ch10":  _phys("9", "ch10", "Sound Waves: Characteristics and Applications"),
+    "class10_phys_ch09": _phys("10", "ch09", "Light – Reflection and Refraction"),
+    "class10_phys_ch10": _phys("10", "ch10", "The Human Eye and the Colourful World"),
+    "class10_phys_ch11": _phys("10", "ch11", "Electricity"),
+    "class10_phys_ch12": _phys("10", "ch12", "Magnetic Effects of Electric Current"),
+    "class9_math_ch01":  _math("9", "ch01", "Orienting Yourself: The Use of Coordinates"),
+    "class9_math_ch02":  _math("9", "ch02", "Introduction to Linear Polynomials"),
+    "class9_math_ch03":  _math("9", "ch03", "The World of Numbers"),
+    "class9_math_ch04":  _math("9", "ch04", "Exploring Algebraic Identities"),
+    "class9_math_ch05":  _math("9", "ch05", "I'm Up and Down, and Round and Round"),
+    "class9_math_ch06":  _math("9", "ch06", "Measuring Space: Perimeter and Area"),
+    "class9_math_ch07":  _math("9", "ch07", "The Mathematics of Maybe: Introduction to Probability"),
+    "class9_math_ch08":  _math("9", "ch08", "Predicting What Comes Next: Exploring Sequences and Progressions"),
+    "class9_math_ch09":  _math("9", "ch09", "Propositions and their Converses"),
+    "class9_math_ch10":  _math("9", "ch10", "How Quantities Combine: Understanding Data"),
+    "class9_math_ch11":  _math("9", "ch11", "The World of Algorithms"),
+    "class9_math_ch12":  _math("9", "ch12", "Quadrilaterals"),
+    "class9_math_ch13":  _math("9", "ch13", "Two Variables, One Line"),
+    "class9_math_ch14":  _math("9", "ch14", "Math of Space: Surface Area and Volume"),
+    "class10_math_ch01": _math("10", "ch01", "Real Numbers"),
+    "class10_math_ch02": _math("10", "ch02", "Polynomials"),
+    "class10_math_ch03": _math("10", "ch03", "Pair of Linear Equations in Two Variables"),
+    "class10_math_ch04": _math("10", "ch04", "Quadratic Equations"),
+    "class10_math_ch05": _math("10", "ch05", "Arithmetic Progressions"),
+    "class10_math_ch06": _math("10", "ch06", "Triangles"),
+    "class10_math_ch07": _math("10", "ch07", "Coordinate Geometry"),
+    "class10_math_ch08": _math("10", "ch08", "Introduction to Trigonometry"),
+    "class10_math_ch09": _math("10", "ch09", "Some Applications of Trigonometry"),
+    "class10_math_ch10": _math("10", "ch10", "Circles"),
+    "class10_math_ch11": _math("10", "ch11", "Areas Related to Circles"),
+    "class10_math_ch12": _math("10", "ch12", "Surface Areas and Volumes"),
+    "class10_math_ch13": _math("10", "ch13", "Statistics"),
+    "class10_math_ch14": _math("10", "ch14", "Probability"),
     # Class 9 Social Science is a single integrated book.
     "ss9_ch01": _ss("9", "ch01", "Understanding Social Science", "General", "ss"),
     "ss9_ch02": _ss("9", "ch02", "Shaping of the Earth's Surface", "Geography", "ss"),
@@ -128,7 +189,7 @@ def validate(entry: dict, where: str) -> list[str]:
 
 
 # Gemma has no system role, so the NCERT context goes inside the user turn.
-# Keep this identical to the prompt used at inference time (src/pipeline.py).
+# Keep this identical to the prompt used at inference time (src/generator.py).
 # For a share of records the intent line is left out (intent dropout), so Gemma learns
 # to answer from the question itself and treats the MuRIL-predicted intent as a hint.
 # At inference, drop the line too when the classifier is unsure.

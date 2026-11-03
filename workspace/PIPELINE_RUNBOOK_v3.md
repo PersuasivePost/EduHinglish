@@ -33,8 +33,8 @@ The intent labels must match the `intent` field in the QA datasets, which is
 what Gemma was trained on. All label sets live in `training/label_config.py`.
 
 > Current state of `src/pipeline.py`:
-> - It still uses rule-based LID (`script_detector.py`) and the IndicBART generator.
-> - It does not load the trained spaCy/MuRIL models or Gemma yet.
+> - It still uses rule-based LID (`script_detector.py`); `src/generator.py` loads Gemma-3-4b-it + the LoRA adapter.
+> - It does not load the trained spaCy/MuRIL models yet, so no intent is passed to Gemma.
 > - Connecting them is a separate task.
 
 ## 0. Local setup (once per machine)

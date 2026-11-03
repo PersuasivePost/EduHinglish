@@ -12,6 +12,8 @@ This script uses word positions and font sizes from pdfplumber to:
 Usage:
     python scripts/clean_ncert_text.py                 # all chapters
     python scripts/clean_ncert_text.py --subject ss    # only Social Science
+    python scripts/clean_ncert_text.py --subject chem  # only Chemistry
+    python scripts/clean_ncert_text.py --subject phys  # only Physics
     python scripts/clean_ncert_text.py --only class9_bio_ch02
 """
 
@@ -45,7 +47,24 @@ BIO_PDFS = {
     "class10_bio_ch08": "class 10 biology/class10_ch08.pdf",
     "class10_bio_ch13": "class 10 biology/class10_ch13.pdf",
 }
-CHAPTER_PDFS = {**BIO_PDFS, **SS_PDFS}
+CHEM_PDFS = {
+    "class9_chem_ch05":  "class 9 chemistry/class9_ch05.pdf",
+    "class9_chem_ch08":  "class 9 chemistry/class9_ch08.pdf",
+    "class9_chem_ch09":  "class 9 chemistry/class9_ch09.pdf",
+    "class10_chem_ch01": "class 10 chemistry/class10_ch01.pdf",
+    "class10_chem_ch02": "class 10 chemistry/class10_ch02.pdf",
+    "class10_chem_ch03": "class 10 chemistry/class10_ch03.pdf",
+    "class10_chem_ch04": "class 10 chemistry/class10_ch04.pdf",
+}
+PHYS_PDFS = {
+    **{f"class9_phys_ch{n:02d}": f"class 9 physics/class9_ch{n:02d}.pdf" for n in (4, 6, 7, 10)},
+    **{f"class10_phys_ch{n:02d}": f"class 10 physics/class10_ch{n:02d}.pdf" for n in (9, 10, 11, 12)},
+}
+MATH_PDFS = {
+    **{f"class9_math_ch{n:02d}": f"class 9 maths/class9_ch{n:02d}.pdf" for n in range(1, 15)},
+    **{f"class10_math_ch{n:02d}": f"class 10 maths/class10_ch{n:02d}.pdf" for n in range(1, 15)},
+}
+CHAPTER_PDFS = {**BIO_PDFS, **CHEM_PDFS, **PHYS_PDFS, **MATH_PDFS, **SS_PDFS}
 
 HEADER_ZONE = 0.085  # fraction of page height: running chapter title / page number
 FOOTER_ZONE = 0.92   # fraction of page height: print-shop line (CChhaapptteerr--0022..iinndddd ...)
@@ -328,10 +347,10 @@ def extract_chapter(pdf_path: Path, manual_dir: Path | None = None, box_depth: f
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--only", help="process a single processed-folder name")
-    parser.add_argument("--subject", choices=["bio", "ss"], help="process only one subject's chapters")
+    parser.add_argument("--subject", choices=["bio", "chem", "phys", "math", "ss"], help="process only one subject's chapters")
     args = parser.parse_args()
 
-    chapters = {"bio": BIO_PDFS, "ss": SS_PDFS}.get(args.subject, CHAPTER_PDFS)
+    chapters = {"bio": BIO_PDFS, "chem": CHEM_PDFS, "phys": PHYS_PDFS, "math": MATH_PDFS, "ss": SS_PDFS}.get(args.subject, CHAPTER_PDFS)
     for name, rel_pdf in chapters.items():
         if args.only and name != args.only:
             continue

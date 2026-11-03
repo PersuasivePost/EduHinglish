@@ -67,7 +67,6 @@ chromadb>=0.4.24
 sentence-transformers>=2.7.0
 tqdm>=4.66.2
 
-# --- Phase 6: IndicBART Hinglish Generator ---
-rouge-score>=0.1.2            # for generator evaluation
-sacrebleu>=2.4.0              # for BLEU score computation
-# (IndicBART uses sentencepiece which is already in Phase 4 deps)
+# --- Phase 6: Gemma Hinglish Generator ---
+# transformers + peft above are enough for inference.
+# bitsandbytes>=0.43.0          # 4-bit Gemma on CUDA only (Colab / Linux GPU), not Mac
