@@ -70,3 +70,7 @@ tqdm>=4.66.2
 # --- Phase 6: Gemma Hinglish Generator ---
 # transformers + peft above are enough for inference.
 # bitsandbytes>=0.43.0          # 4-bit Gemma on CUDA only (Colab / Linux GPU), not Mac
+
+# --- Publishing (scripts/push_to_hub.py, scripts/publish_kaggle_dataset.py) ---
+huggingface_hub>=0.23.0
+# kaggle>=1.6.0                 # only needed to publish the dataset

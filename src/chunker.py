@@ -71,6 +71,181 @@ class NCERTChunker:
             "subject": "biology", "class_num": "10", "chapter_num": "ch13",
             "chapter_title": "Our Environment",
         },
+        # ── Chemistry ─────────────────────────────────────────────────────
+        "class9_chem_ch05": {
+            "subject": "chemistry", "class_num": "9", "chapter_num": "ch05",
+            "chapter_title": 'Exploring Mixtures and their Separation',
+        },
+        "class9_chem_ch08": {
+            "subject": "chemistry", "class_num": "9", "chapter_num": "ch08",
+            "chapter_title": 'Journey Inside the Atom',
+        },
+        "class9_chem_ch09": {
+            "subject": "chemistry", "class_num": "9", "chapter_num": "ch09",
+            "chapter_title": 'Atomic Foundations of Matter',
+        },
+        "class10_chem_ch01": {
+            "subject": "chemistry", "class_num": "10", "chapter_num": "ch01",
+            "chapter_title": 'Chemical Reactions and Equations',
+        },
+        "class10_chem_ch02": {
+            "subject": "chemistry", "class_num": "10", "chapter_num": "ch02",
+            "chapter_title": 'Acids, Bases and Salts',
+        },
+        "class10_chem_ch03": {
+            "subject": "chemistry", "class_num": "10", "chapter_num": "ch03",
+            "chapter_title": 'Metals and Non-metals',
+        },
+        "class10_chem_ch04": {
+            "subject": "chemistry", "class_num": "10", "chapter_num": "ch04",
+            "chapter_title": 'Carbon and its Compounds',
+        },
+        # ── Physics ───────────────────────────────────────────────────────
+        "class9_phys_ch04": {
+            "subject": "physics", "class_num": "9", "chapter_num": "ch04",
+            "chapter_title": 'Describing Motion Around Us',
+        },
+        "class9_phys_ch06": {
+            "subject": "physics", "class_num": "9", "chapter_num": "ch06",
+            "chapter_title": 'How Forces Affect Motion',
+        },
+        "class9_phys_ch07": {
+            "subject": "physics", "class_num": "9", "chapter_num": "ch07",
+            "chapter_title": 'Work, Energy, and Simple Machines',
+        },
+        "class9_phys_ch10": {
+            "subject": "physics", "class_num": "9", "chapter_num": "ch10",
+            "chapter_title": 'Sound Waves: Characteristics and Applications',
+        },
+        "class10_phys_ch09": {
+            "subject": "physics", "class_num": "10", "chapter_num": "ch09",
+            "chapter_title": 'Light – Reflection and Refraction',
+        },
+        "class10_phys_ch10": {
+            "subject": "physics", "class_num": "10", "chapter_num": "ch10",
+            "chapter_title": 'The Human Eye and the Colourful World',
+        },
+        "class10_phys_ch11": {
+            "subject": "physics", "class_num": "10", "chapter_num": "ch11",
+            "chapter_title": 'Electricity',
+        },
+        "class10_phys_ch12": {
+            "subject": "physics", "class_num": "10", "chapter_num": "ch12",
+            "chapter_title": 'Magnetic Effects of Electric Current',
+        },
+        # ── Mathematics ───────────────────────────────────────────────────
+        "class9_math_ch01": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch01",
+            "chapter_title": 'Orienting Yourself: The Use of Coordinates',
+        },
+        "class9_math_ch02": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch02",
+            "chapter_title": 'Introduction to Linear Polynomials',
+        },
+        "class9_math_ch03": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch03",
+            "chapter_title": 'The World of Numbers',
+        },
+        "class9_math_ch04": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch04",
+            "chapter_title": 'Exploring Algebraic Identities',
+        },
+        "class9_math_ch05": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch05",
+            "chapter_title": "I'm Up and Down, and Round and Round",
+        },
+        "class9_math_ch06": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch06",
+            "chapter_title": 'Measuring Space: Perimeter and Area',
+        },
+        "class9_math_ch07": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch07",
+            "chapter_title": 'The Mathematics of Maybe: Introduction to Probability',
+        },
+        "class9_math_ch08": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch08",
+            "chapter_title": 'Predicting What Comes Next: Exploring Sequences and Progressions',
+        },
+        "class9_math_ch09": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch09",
+            "chapter_title": 'Propositions and their Converses',
+        },
+        "class9_math_ch10": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch10",
+            "chapter_title": 'How Quantities Combine: Understanding Data',
+        },
+        "class9_math_ch11": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch11",
+            "chapter_title": 'The World of Algorithms',
+        },
+        "class9_math_ch12": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch12",
+            "chapter_title": 'Quadrilaterals',
+        },
+        "class9_math_ch13": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch13",
+            "chapter_title": 'Two Variables, One Line',
+        },
+        "class9_math_ch14": {
+            "subject": "mathematics", "class_num": "9", "chapter_num": "ch14",
+            "chapter_title": 'Math of Space: Surface Area and Volume',
+        },
+        "class10_math_ch01": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch01",
+            "chapter_title": 'Real Numbers',
+        },
+        "class10_math_ch02": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch02",
+            "chapter_title": 'Polynomials',
+        },
+        "class10_math_ch03": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch03",
+            "chapter_title": 'Pair of Linear Equations in Two Variables',
+        },
+        "class10_math_ch04": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch04",
+            "chapter_title": 'Quadratic Equations',
+        },
+        "class10_math_ch05": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch05",
+            "chapter_title": 'Arithmetic Progressions',
+        },
+        "class10_math_ch06": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch06",
+            "chapter_title": 'Triangles',
+        },
+        "class10_math_ch07": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch07",
+            "chapter_title": 'Coordinate Geometry',
+        },
+        "class10_math_ch08": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch08",
+            "chapter_title": 'Introduction to Trigonometry',
+        },
+        "class10_math_ch09": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch09",
+            "chapter_title": 'Some Applications of Trigonometry',
+        },
+        "class10_math_ch10": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch10",
+            "chapter_title": 'Circles',
+        },
+        "class10_math_ch11": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch11",
+            "chapter_title": 'Areas Related to Circles',
+        },
+        "class10_math_ch12": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch12",
+            "chapter_title": 'Surface Areas and Volumes',
+        },
+        "class10_math_ch13": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch13",
+            "chapter_title": 'Statistics',
+        },
+        "class10_math_ch14": {
+            "subject": "mathematics", "class_num": "10", "chapter_num": "ch14",
+            "chapter_title": 'Probability',
+        },
         # ── Social Science ───────────────────────────────────────────────────
         "ss9_ch01": {
             "subject": "social_science", "class_num": "9", "chapter_num": "ch01",
