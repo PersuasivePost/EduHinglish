@@ -57,4 +57,4 @@ Full logs:
 - spaCy run: `spacy_training_log.txt`
 - MuRIL dev evaluation: `muril_eval_log.txt` (`python training/evaluate_muril.py`)
 - MuRIL training: outputs saved in `training/colab_notebooks/01_train_muril_lid.ipynb` and `02_train_muril_intent.ipynb`
-- Gemma v3 training and test generations: `training/colab_notebooks/04_gemma_finetune.ipynb` (last cell)
+- Gemma v3 training and test generations: `training/colab_notebooks/OLD_04_gemma_finetune_v3_bio_ss.ipynb` (last cell)

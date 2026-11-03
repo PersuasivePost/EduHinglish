@@ -230,7 +230,7 @@ graph TD
 * **Input:** The curated QA datasets and student Hinglish questions.
 * **Processing:**
   1. `scripts/build_dataset.py` renders every entry into the Gemma chat format (`Context / Question / Intent Type / instruction`).
-  2. `training/colab_notebooks/04_gemma_finetune.ipynb` fine-tunes `google/gemma-3-4b-it` with QLoRA on a Colab GPU.
+  2. `training/colab_notebooks/05_gemma_finetune_v4_resumable.ipynb` fine-tunes `google/gemma-3-4b-it` with QLoRA on a Colab GPU.
   3. `src/generator.py` loads the base model plus the adapter and rebuilds the same prompt at inference time.
   4. Integration combines M1 preprocessor, M2 ChromaDB retriever, and M3 generator.
 * **Desired Output:** Context-grounded Hinglish answers.
@@ -244,8 +244,8 @@ python scripts/build_dataset.py <entries.json> --chapter <chapter_key>
 * **What it does:** Validates a chapter's entries and appends them to `data/bio_9_10.json` or `data/ss_9_10.json` in Gemma format.
 
 #### Step B: Fine-Tune Gemma (Colab)
-Open `training/colab_notebooks/04_gemma_finetune.ipynb` on a Colab GPU and run all cells.
-* **What it does:** QLoRA fine-tunes Gemma-3-4b-it and saves the LoRA adapter.
+Open `training/colab_notebooks/05_gemma_finetune_v4_resumable.ipynb` on a Colab GPU and run all cells (re-run after a disconnect to resume).
+* **What it does:** QLoRA fine-tunes Gemma-3-4b-it on all five subjects and saves the LoRA adapter.
 
 #### Step C: Local Generator Inference Test
 ```bash
@@ -295,7 +295,7 @@ python training/train_muril_intent.py
 
 ### 5. Re-train Phase 6 Generator (Gemma)
 Rebuild the Gemma data with `scripts/build_dataset.py`, then re-run
-`training/colab_notebooks/04_gemma_finetune.ipynb` on Colab.
+`training/colab_notebooks/05_gemma_finetune_v4_resumable.ipynb` on Colab.
 
 ### 6. Rebuild Vector Database (Optional)
 If your dataset changes involved adding or modifying the raw NCERT text corpus, you must also rebuild the ChromaDB knowledge base:

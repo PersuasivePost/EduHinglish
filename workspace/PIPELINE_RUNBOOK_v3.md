@@ -121,7 +121,7 @@ indexed. That is currently 83 chapters: 9 biology, 7 chemistry, 8 physics, 28 ma
 5. 2 epochs ≈ 860 steps ≈ 1.5–2 h on a T4. This can be spread over several sessions.
 6. At the end, the adapter is saved to `models/gemma_eduhinglish_v4/adapter` and pushed to `HF_REPO_ID` (private).
 
-Notebook 04 is the old v3 (bio + ss) run, kept for reference.
+The old v3 (bio + ss) notebooks are renamed `OLD_04_*` and kept only for reference. Don't use them for training.
 
 ## 6. Publish: Hugging Face (models) and Kaggle (dataset)
 
@@ -160,6 +160,20 @@ python src/pipeline.py --query "Ohm ka law kya hai?" --subject physics --class 1
 EDUHINGLISH_ADAPTER=<hf-user>/eduhinglish-gemma-3-4b-it-lora python src/pipeline.py --query "..."
 ```
 
+## 8. Model server + backend
+
+- `training/colab_notebooks/07_colab_model_server.ipynb` serves the pipeline from Colab.
+  - It runs `src/model_server.py`, a FastAPI app with `/health`, `/ask` and `/preprocess`, protected by `X-API-Key`.
+  - It exposes the server through an ngrok tunnel (fixed URL with a static domain) or a Cloudflare quick tunnel (random URL).
+- `backend/` is the API the frontend calls: `/api/health`, `/api/ask`, `/api/preprocess`.
+  - It forwards requests to `MODEL_SERVER_URL` with `MODEL_API_KEY` (set in `backend/.env`) and holds no model.
+  - Run it with `uvicorn backend.app.main:app --port 8080`.
+- On a GPU machine, the model server can run without Colab:
+
+  ```bash
+  MODEL_API_KEY=... EDUHINGLISH_ADAPTER=<hf-user>/eduhinglish-gemma-3-4b-it-lora python src/model_server.py
+  ```
+
 ## Google Drive layout
 
 ```
@@ -179,7 +193,7 @@ MyDrive/EduHinglish/
     ├── muril_intent_v2/               ← optional: previous model, used as warm start if present
     ├── muril_lid_v3/                  ← written by notebook 01
     ├── muril_intent_v3/               ← written by notebook 02
-    ├── gemma_eduhinglish_v3/          ← old bio+ss run (notebook 04); warm start for v4
+    ├── gemma_eduhinglish_v3/          ← old bio+ss run (OLD_04 notebook); warm start for v4
     │   └── adapter/
     └── gemma_eduhinglish_v4/
         ├── checkpoints/               ← written by notebook 05 every 50 steps (resume point)
