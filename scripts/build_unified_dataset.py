@@ -38,7 +38,7 @@ from label_config import DATA_VERSION, INTENT_LABELS, normalize_intent  # noqa: 
 # ss10.json is still being built — add it here once it is ready.
 QA_SOURCES = [
     "data/bio_9_10.json",
-    "data/ss9.json",
+    "data/ss_9_10.json",
 ]
 LEGACY_GLOB    = "data/processed/*/dataset.json"
 OUTPUT_PATH    = PROJECT_ROOT / "data" / f"unified_dataset_{DATA_VERSION}.json"
