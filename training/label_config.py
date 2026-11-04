@@ -10,7 +10,7 @@ ss9.json, ...). The intent classifier's prediction is passed to Gemma as
 "Intent Type: <intent>", so both must use the same taxonomy.
 """
 
-DATA_VERSION = "v3"
+DATA_VERSION = "v4"
 
 # ── Word-level language ID ───────────────────────────────────────────────────
 LID_LABELS = ["HI", "EN", "NE", "UNIV", "MIX"]

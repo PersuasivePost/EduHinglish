@@ -45,7 +45,7 @@ if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
 # DEPENDENCY CHECK
 # ─────────────────────────────────────────────────────────────────────────────
 
-from label_config import INTENT_LABELS as _INTENT_LABELS, LID_LABELS as _LID_LABELS
+from label_config import INTENT_LABELS as _INTENT_LABELS, LID_LABELS as _LID_LABELS, DATA_VERSION
 
 try:
     from transformers import AutoTokenizer
@@ -66,9 +66,9 @@ except ImportError:
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_DATASET   = Path("data/unified_dataset_v3.json")
-LID_OUTPUT_DIR    = Path("training/data/muril_lid_dataset_v3")
-INTENT_OUTPUT_DIR = Path("training/data/muril_intent_dataset_v3")
+DEFAULT_DATASET   = Path(f"data/unified_dataset_{DATA_VERSION}.json")
+LID_OUTPUT_DIR    = Path(f"training/data/muril_lid_dataset_{DATA_VERSION}")
+INTENT_OUTPUT_DIR = Path(f"training/data/muril_intent_dataset_{DATA_VERSION}")
 
 MODEL_NAME = "google/muril-base-cased"
 MAX_LENGTH = 128

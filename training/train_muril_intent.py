@@ -32,7 +32,7 @@ import sys
 import time
 from pathlib import Path
 
-from label_config import INTENT_LABELS
+from label_config import INTENT_LABELS, DATA_VERSION
 
 # Ensure stdout handles UTF-8 on Windows
 if sys.platform == "win32" and hasattr(sys.stdout, "buffer"):
@@ -84,8 +84,8 @@ if _missing:
 # CONSTANTS
 # -------------------------------------------------------------------------
 
-DATASET_DIR = Path("training/data/muril_intent_dataset_v3")
-OUTPUT_DIR  = Path("models/muril_intent_v3")
+DATASET_DIR = Path(f"training/data/muril_intent_dataset_{DATA_VERSION}")
+OUTPUT_DIR  = Path(f"models/muril_intent_{DATA_VERSION}")
 MODEL_NAME  = "google/muril-base-cased"
 SEED        = 42
 
