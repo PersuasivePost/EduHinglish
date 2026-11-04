@@ -58,6 +58,7 @@ class NCERTChunker:
     # and the curated datasets share one chapter registry.
     CHAPTER_MAP = _chapter_map()
 
+
     def __init__(self, chunk_size: int = 200, chunk_overlap: int = 30):
         """
         Args:

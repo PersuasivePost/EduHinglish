@@ -13,6 +13,7 @@ Usage:
     # Runs a quick generation test with mock retrieved chunks.
 """
 
+import os
 import time
 from pathlib import Path
 from colorama import Fore, Style, init as colorama_init
@@ -20,7 +21,35 @@ from colorama import Fore, Style, init as colorama_init
 colorama_init(autoreset=True)
 
 BASE_MODEL = "google/gemma-3-4b-it"
-DEFAULT_ADAPTER = "models/gemma_eduhinglish_v2/adapter"
+# v4 = all five subjects (bio/chem/phys/maths/ss, class 9-10); falls back to v3
+# (bio + ss) when v4 has not been downloaded. EDUHINGLISH_ADAPTER overrides both
+# and may be a local folder or a Hugging Face Hub repo id ("user/repo").
+ADAPTER_CANDIDATES = [
+    "models/gemma_eduhinglish_v4/adapter",
+    "models/gemma_eduhinglish_v3/adapter",
+]
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def resolve_adapter(adapter_path: str = None) -> tuple[str | None, bool]:
+    """
+    Return (path_or_repo_id, is_local). None means no adapter was found.
+    """
+    adapter_path = adapter_path or os.environ.get("EDUHINGLISH_ADAPTER")
+    if adapter_path:
+        p = Path(adapter_path)
+        for candidate in (p, PROJECT_ROOT / p):
+            if (candidate / "adapter_config.json").exists():
+                return str(candidate), True
+        # Not on disk: treat "user/repo" as a Hub repo id
+        if "/" in adapter_path and not p.is_absolute() and not adapter_path.startswith("."):
+            return adapter_path, False
+        return None, True
+    for rel in ADAPTER_CANDIDATES:
+        if (PROJECT_ROOT / rel / "adapter_config.json").exists():
+            return str(PROJECT_ROOT / rel), True
+    return None, True
+
 
 # Gemma has no system role, so the NCERT context goes inside the user turn.
 # Keep this identical to PROMPT_TEMPLATE / INSTRUCTION_* in scripts/build_dataset.py,
@@ -64,7 +93,7 @@ class HinglishGenerator:
 
     def __init__(
         self,
-        adapter_path: str = DEFAULT_ADAPTER,
+        adapter_path: str = None,
         base_model: str = BASE_MODEL,
         device: str = None,
         use_lora: bool = True,
@@ -74,7 +103,9 @@ class HinglishGenerator:
         Load model + tokenizer.
 
         Args:
-            adapter_path: LoRA adapter directory (relative to project root).
+            adapter_path: LoRA adapter folder (absolute, or relative to the project
+                          root) or a Hub repo id. None = $EDUHINGLISH_ADAPTER,
+                          then ADAPTER_CANDIDATES.
             base_model:   HuggingFace model ID of the Gemma base model.
             device:       'cuda', 'mps', 'cpu', or None for auto-detect.
             use_lora:     If True, attempt to load the LoRA adapter.
@@ -117,6 +148,11 @@ class HinglishGenerator:
         # ── Tokenizer ─────────────────────────────────────────────────────────
         self.base_model_name = base_model
         self.tokenizer = AutoTokenizer.from_pretrained(base_model)
+        # Gemma ends a reply with <end_of_turn>; stop there as well as at <eos>.
+        end_turn = self.tokenizer.convert_tokens_to_ids("<end_of_turn>")
+        self.eos_token_ids = [self.tokenizer.eos_token_id] + (
+            [end_turn] if isinstance(end_turn, int) and end_turn != self.tokenizer.unk_token_id else []
+        )
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
@@ -141,22 +177,23 @@ class HinglishGenerator:
 
         # ── Optional LoRA adapter ─────────────────────────────────────────────
         self.lora_loaded = False
-        project_root = Path(__file__).parent.parent
-        adapter_dir = project_root / adapter_path
+        self.adapter_source = None
+        adapter, _ = resolve_adapter(adapter_path) if use_lora else (None, True)
 
-        if use_lora and adapter_dir.exists():
+        if adapter:
             try:
                 from peft import PeftModel
             except ImportError:
                 raise ImportError("peft not installed (needed for the LoRA adapter). Run:\n  pip install peft")
 
-            print(f"  Loading LoRA adapter from {adapter_dir}")
-            self.model = PeftModel.from_pretrained(self.model, str(adapter_dir))
+            print(f"  Loading LoRA adapter from {adapter}")
+            self.model = PeftModel.from_pretrained(self.model, adapter)
             if not load_in_4bit:
                 self.model = self.model.merge_and_unload()
             self.lora_loaded = True
+            self.adapter_source = adapter
         elif use_lora:
-            print(f"  {Fore.YELLOW}[WARN] LoRA adapter not found at: {adapter_dir}")
+            print(f"  {Fore.YELLOW}[WARN] No LoRA adapter found ({adapter_path or ADAPTER_CANDIDATES})")
             print(f"        Falling back to the base Gemma model (no fine-tuning)")
 
         if not load_in_4bit:
@@ -168,7 +205,7 @@ class HinglishGenerator:
         print(f"  {Fore.GREEN}[OK] HinglishGenerator initialized")
         print(f"       Model:        {model_desc}")
         print(f"       Device:       {self.device}{' (4-bit)' if load_in_4bit else ''}")
-        print(f"       LoRA adapter: {'loaded' if self.lora_loaded else 'not found (using base)'}")
+        print(f"       LoRA adapter: {self.adapter_source if self.lora_loaded else 'not found (using base)'}")
 
     # ── Single generation ────────────────────────────────────────────────────
 
@@ -205,7 +242,8 @@ class HinglishGenerator:
             "max_new_tokens": max_new_tokens,
             "repetition_penalty": repetition_penalty,
             "do_sample": do_sample,
-            "pad_token_id": self.tokenizer.eos_token_id,
+            "pad_token_id": self.tokenizer.pad_token_id,
+            "eos_token_id": self.eos_token_ids,
         }
         if do_sample:
             gen_kwargs["temperature"] = temperature
@@ -221,7 +259,8 @@ class HinglishGenerator:
         return {
             "input": prompt,
             "output": output_text,
-            "generation_config": {k: v for k, v in gen_kwargs.items() if k != "pad_token_id"},
+            "generation_config": {k: v for k, v in gen_kwargs.items()
+                                  if k not in ("pad_token_id", "eos_token_id")},
         }
 
     # ── Pipeline answer generation (M1→M2→M3) ────────────────────────────────

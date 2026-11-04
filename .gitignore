@@ -81,3 +81,6 @@ outputs/pipeline_results/*.json
 
 data/ncert_kaggle
 
+
+# Staging folder for scripts/publish_kaggle_dataset.py
+outputs/kaggle_dataset/

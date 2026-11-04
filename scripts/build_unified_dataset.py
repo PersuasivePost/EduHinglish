@@ -6,7 +6,7 @@ for training/prepare_spacy_data.py and training/prepare_hf_data.py:
 
   1. Legacy annotated sentences (data/processed/*/dataset.json)
      → gold word_level_labels (LID), plus student queries with intents.
-  2. QA datasets (QA_SOURCES, e.g. data/bio_9_10.json, data/ss9.json)
+  2. QA datasets (QA_SOURCES: bio/chem/phys/maths/ss _9_10.json)
      → every question_hinglish becomes a student query with its intent.
        These have no word-level labels; pass --silver-lid to auto-tag them
        with the existing spaCy LID model (models/lid_v2). Silver-labelled
@@ -18,7 +18,7 @@ To add a new subject/class later, append its JSON to QA_SOURCES (or pass
 Usage:
   python scripts/build_unified_dataset.py
   python scripts/build_unified_dataset.py --silver-lid
-  python scripts/build_unified_dataset.py --sources data/bio_9_10.json data/ss9.json data/ss10.json
+  python scripts/build_unified_dataset.py --sources data/bio_9_10.json data/ss_9_10.json
 """
 
 from __future__ import annotations
@@ -35,9 +35,11 @@ sys.path.insert(0, str(PROJECT_ROOT / "training"))
 from label_config import DATA_VERSION, INTENT_LABELS, normalize_intent  # noqa: E402
 
 # ── Sources ──────────────────────────────────────────────────────────────────
-# ss10.json is still being built — add it here once it is ready.
 QA_SOURCES = [
     "data/bio_9_10.json",
+    "data/chem_9_10.json",
+    "data/phys_9_10.json",
+    "data/maths_9_10.json",
     "data/ss_9_10.json",
 ]
 LEGACY_GLOB    = "data/processed/*/dataset.json"
