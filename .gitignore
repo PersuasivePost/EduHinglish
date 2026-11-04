@@ -84,3 +84,6 @@ data/ncert_kaggle
 
 # Staging folder for scripts/publish_kaggle_dataset.py
 outputs/kaggle_dataset/
+
+# Backend chat history (SQLite)
+backend/data/

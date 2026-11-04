@@ -15,3 +15,5 @@ MODEL_API_KEY = os.environ.get("MODEL_API_KEY", "")
 MODEL_TIMEOUT_SEC = float(os.environ.get("MODEL_TIMEOUT_SEC", "180"))
 # Frontend origins allowed to call the backend (comma-separated; * = any)
 ALLOWED_ORIGINS = [o.strip() for o in os.environ.get("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
+# SQLite file for chats, messages and feedback
+DB_PATH = os.environ.get("DB_PATH", str(Path(__file__).resolve().parent.parent / "data" / "eduhinglish.db"))

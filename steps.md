@@ -133,32 +133,41 @@ Edit `backend/.env`:
 Then start it:
 
 ```bash
-uvicorn backend.app.main:app --reload --port 8080
+uvicorn backend.app.main:app --reload --port 8000
 ```
 
 **Check it works**
-- Open http://localhost:8080/api/health. `model_server.status` should be `"ok"`, with `lora_loaded: true`.
-- Open http://localhost:8080/docs → `POST /api/ask` → **Try it out** with:
+- Open http://localhost:8000. This is the chat page, served by the backend itself (no Node, no build step). The dot at the bottom left turns green when the Colab model is reachable.
+- Open http://localhost:8000/api/health. `model_server.status` should be `"ok"`, with `lora_loaded: true`.
+- Open http://localhost:8000/docs → `POST /api/ask` → **Try it out** with:
   ```json
   {"query": "Ohm ka law kya hai?", "subject": "physics", "class_num": "10"}
   ```
 - Or from a terminal:
   ```bash
-  curl -X POST http://localhost:8080/api/ask -H "Content-Type: application/json" \
+  curl -X POST http://localhost:8000/api/ask -H "Content-Type: application/json" \
        -d '{"query": "Ohm ka law kya hai?", "subject": "physics", "class_num": "10"}'
   ```
 
-**What the frontend calls** (backend at `http://<backend-host>:8080`):
+**What the frontend (and later the Flutter app) calls** (backend at `http://<backend-host>:8000`):
 
 | Endpoint | Body | Returns |
 |---|---|---|
 | `GET /api/health` | — | backend status + model server status |
+| `POST /api/chat` | `message`, optional `chat_id` (omit for a new chat), `subject`, `class_num`, `language` | `chat`, `user_message`, `assistant_message` (`content`, `intent`, `sources[]`, `timings`, `feedback`). Nothing is saved if the model fails, so just retry |
+| `GET /api/chats` | — | past chats, newest first |
+| `GET /api/chats/{id}` | — | one chat with all its `messages` |
+| `PATCH /api/chats/{id}` | any of `title`, `subject`, `class_num`, `language` | updated chat |
+| `DELETE /api/chats/{id}` | — | 204 |
+| `POST /api/messages/{id}/feedback` | `value`: 1 (👍), -1 (👎), 0 (clear) | updated message |
 | `POST /api/ask` | `query`, optional `subject` (biology/chemistry/physics/mathematics/social_science), `class_num` ("9"/"10"), `language` (hinglish/english) | `answer`, `intent`, `sources[]` (chapter, subject, class_num, score), `timings` |
 | `POST /api/preprocess` | `sentence` | M1 trace (script, normalisation, LID…) |
 
 An answer takes about 10–40 s on a T4, so show a loading state in the frontend.
 
-If Colab is off, `/api/ask` returns **503** with "Model server unreachable … Is the Colab notebook running?".
+Chats and feedback are stored in SQLite at `backend/data/eduhinglish.db` (git-ignored; change with `DB_PATH`).
+
+If Colab is off, `/api/chat` and `/api/ask` return **503** with "Model server unreachable … Is the Colab notebook running?".
 
 ## Step 8: Publish the dataset on Kaggle (laptop, anytime)
 
