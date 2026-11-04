@@ -120,6 +120,9 @@ def main():
         ("Harappan civilisation cities", ["harappa", "harappan", "sindhu"]),
         ("elections and voting in democracy", ["election", "vote", "voting"]),
         ("demand supply and market price", ["demand", "supply", "price"]),
+        ("acids bases and indicators", ["acid", "base", "indicator"]),
+        ("refraction of light through a lens", ["refraction", "lens"]),
+        ("arithmetic progression common difference", ["progression", "common difference"]),
     ]
 
     all_passed = True

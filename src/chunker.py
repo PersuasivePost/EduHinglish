@@ -21,6 +21,28 @@ from colorama import Fore, Style, init as colorama_init
 colorama_init(autoreset=True)
 
 
+def _chapter_map() -> dict:
+    """Folder name -> chunk metadata, from the build_dataset chapter registry."""
+    import sys
+    scripts_dir = str(Path(__file__).resolve().parent.parent / "scripts")
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    from build_dataset import CHAPTERS
+
+    chapter_map = {}
+    for folder, ch in CHAPTERS.items():
+        meta = {
+            "subject": ch.subject.lower().replace(" ", "_"),
+            "class_num": ch.cls,
+            "chapter_num": ch.num,
+            "chapter_title": ch.title,
+        }
+        if ch.sub_subject:  # ChromaDB metadata values cannot be None
+            meta["sub_subject"] = ch.sub_subject
+        chapter_map[folder] = meta
+    return chapter_map
+
+
 class NCERTChunker:
     """
     Splits cleaned NCERT chapter text into paragraph-level chunks
@@ -32,172 +54,9 @@ class NCERTChunker:
 
     # ── Chapter metadata mapping ─────────────────────────────────────────────
     # Keys are folder names under data/processed/. Only folders listed here are
-    # indexed, so a new subject/class is added by adding its chapters below.
-    CHAPTER_MAP = {
-        # ── Biology ──────────────────────────────────────────────────────────
-        "class9_bio_ch02": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch02",
-            "chapter_title": "Cell: The Building Block of Life",
-        },
-        "class9_bio_ch03": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch03",
-            "chapter_title": "Tissues in Action",
-        },
-        "class9_bio_ch11": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch11",
-            "chapter_title": "Reproduction: How Life Continues",
-        },
-        "class9_bio_ch12": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch12",
-            "chapter_title": "Patterns in Life: Diversity and Classification",
-        },
-        "class10_bio_ch05": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch05",
-            "chapter_title": "Life Processes",
-        },
-        "class10_bio_ch06": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch06",
-            "chapter_title": "Control and Coordination",
-        },
-        "class10_bio_ch07": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch07",
-            "chapter_title": "How do Organisms Reproduce?",
-        },
-        "class10_bio_ch08": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch08",
-            "chapter_title": "Heredity",
-        },
-        "class10_bio_ch13": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch13",
-            "chapter_title": "Our Environment",
-        },
-        # ── Social Science ───────────────────────────────────────────────────
-        "ss9_ch01": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch01",
-            "chapter_title": "Understanding Social Science",
-        },
-        "ss9_ch02": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch02",
-            "chapter_title": "Shaping of the Earth's Surface",
-        },
-        "ss9_ch03": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch03",
-            "chapter_title": "Atmosphere and Climate",
-        },
-        "ss9_ch04": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch04",
-            "chapter_title": "Early Humans and Beginning of Civilisation",
-        },
-        "ss9_ch05": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch05",
-            "chapter_title": "State and Society up to 1000 CE",
-        },
-        "ss9_ch06": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch06",
-            "chapter_title": "Democracy",
-        },
-        "ss9_ch07": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch07",
-            "chapter_title": "Elections",
-        },
-        "ss9_ch08": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch08",
-            "chapter_title": "Building Blocks in Economics: The Problem of Choice",
-        },
-        "ss9_ch09": {
-            "subject": "social_science", "class_num": "9", "chapter_num": "ch09",
-            "chapter_title": "The Price Puzzle: What Drives the Market",
-        },
-        # ── Social Science class 10 ───────────────────────────────────────
-        "ss10_his_ch01": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
-            "chapter_title": "The Rise of Nationalism in Europe",
-        },
-        "ss10_his_ch02": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
-            "chapter_title": "Nationalism in India",
-        },
-        "ss10_his_ch03": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
-            "chapter_title": "The Making of a Global World",
-        },
-        "ss10_his_ch04": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
-            "chapter_title": "The Age of Industrialisation",
-        },
-        "ss10_his_ch05": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
-            "chapter_title": "Print Culture and the Modern World",
-        },
-        "ss10_geo_ch01": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
-            "chapter_title": "Resources and Development",
-        },
-        "ss10_geo_ch02": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
-            "chapter_title": "Forest and Wildlife Resources",
-        },
-        "ss10_geo_ch03": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
-            "chapter_title": "Water Resources",
-        },
-        "ss10_geo_ch04": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
-            "chapter_title": "Agriculture",
-        },
-        "ss10_geo_ch05": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
-            "chapter_title": "Minerals and Energy Resources",
-        },
-        "ss10_geo_ch06": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch06",
-            "chapter_title": "Manufacturing Industries",
-        },
-        "ss10_geo_ch07": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch07",
-            "chapter_title": "Lifelines of National Economy",
-        },
-        "ss10_civics_ch01": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
-            "chapter_title": "Power-sharing",
-        },
-        "ss10_civics_ch02": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
-            "chapter_title": "Federalism",
-        },
-        "ss10_civics_ch03": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
-            "chapter_title": "Gender, Religion and Caste",
-        },
-        "ss10_civics_ch04": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
-            "chapter_title": "Political Parties",
-        },
-        "ss10_civics_ch05": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
-            "chapter_title": "Outcomes of Democracy",
-        },
-        "ss10_eco_ch01": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch01",
-            "chapter_title": "Development",
-        },
-        "ss10_eco_ch02": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch02",
-            "chapter_title": "Sectors of the Indian Economy",
-        },
-        "ss10_eco_ch03": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch03",
-            "chapter_title": "Money and Credit",
-        },
-        "ss10_eco_ch04": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch04",
-            "chapter_title": "Globalisation and the Indian Economy",
-        },
-        "ss10_eco_ch05": {
-            "subject": "social_science", "class_num": "10", "chapter_num": "ch05",
-            "chapter_title": "Consumer Rights",
-        },
-    }
+    # indexed. Built from scripts/build_dataset.py CHAPTERS so the knowledge base
+    # and the curated datasets share one chapter registry.
+    CHAPTER_MAP = _chapter_map()
 
     def __init__(self, chunk_size: int = 200, chunk_overlap: int = 30):
         """
@@ -434,6 +293,7 @@ class NCERTChunker:
                     "folder_name": folder_name,
                     "chunk_index": idx,
                     "total_chunks": total_chunks,
+                    **({"sub_subject": metadata["sub_subject"]} if "sub_subject" in metadata else {}),
                 },
             })
 
