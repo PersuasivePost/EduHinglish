@@ -1,19 +1,21 @@
 """
 Upload a trained EduHinglish model folder to the Hugging Face Hub.
 
-Works for both kinds of model we serve:
-    gemma  — LoRA adapter folder (adapter_config.json + adapter_model.safetensors)
-    intent — MuRIL intent classifier (config.json + model.safetensors)
+Works for all three kinds of model we serve:
+    gemma  — Gemma LoRA adapter  (adapter_config.json + adapter_model.safetensors)
+    intent — MuRIL intent LoRA   (adapter_config.json + adapter_model.safetensors)
+    lid    — MuRIL LID LoRA      (adapter_config.json + adapter_model.safetensors)
 
 A model card (README.md) is written into the upload. Repos are private by default.
 
 Setup (once):
     pip install huggingface_hub
-    huggingface-cli login            # paste a WRITE token from https://huggingface.co/settings/tokens
+    hf auth login                    # paste a WRITE token from https://huggingface.co/settings/tokens
 
 Usage:
-    python scripts/push_to_hub.py gemma  models/gemma_eduhinglish_v4/adapter  your-hf-user/eduhinglish-gemma-3-4b-it-lora
-    python scripts/push_to_hub.py intent models/muril_intent_v3               your-hf-user/eduhinglish-muril-intent
+    python scripts/push_to_hub.py gemma  models/gemma_eduhinglish_v3/adapter   your-hf-user/eduhinglish-gemma-3-4b-it-lora
+    python scripts/push_to_hub.py intent models/muril_intent_v4                your-hf-user/eduhinglish-muril-intent
+    python scripts/push_to_hub.py lid    models/muril_lid_v4                   your-hf-user/eduhinglish-muril-lid
     add --public to make the repo public
 """
 
@@ -65,30 +67,54 @@ Use of this adapter is subject to the Gemma Terms of Use.
 
 INTENT_CARD = """---
 base_model: google/muril-base-cased
-library_name: transformers
+library_name: peft
 license: apache-2.0
 language: [en, hi]
-tags: [hinglish, intent-classification, education, code-mixing]
+tags: [lora, hinglish, intent-classification, education, code-mixing]
 pipeline_tag: text-classification
 ---
-# EduHinglish — MuRIL query-intent classifier
+# EduHinglish — MuRIL query-intent classifier (LoRA)
 
 Classifies a student's Hinglish/English question into one of {n} intents
 ({labels}). The prediction is passed to the EduHinglish Gemma generator as a hint.
 
 ```python
-from transformers import pipeline
-clf = pipeline("text-classification", model="{repo}")
-clf("Photosynthesis kya hota hai?")
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from peft import PeftModel
+base = AutoModelForSequenceClassification.from_pretrained("google/muril-base-cased", num_labels={n})
+model = PeftModel.from_pretrained(base, "{repo}")
+tok = AutoTokenizer.from_pretrained("google/muril-base-cased")
+```
+"""
+
+LID_CARD = """---
+base_model: google/muril-base-cased
+library_name: peft
+license: apache-2.0
+language: [en, hi]
+tags: [lora, hinglish, language-identification, token-classification, education, code-mixing]
+pipeline_tag: token-classification
+---
+# EduHinglish — MuRIL word-level LID (LoRA)
+
+Token-level language identification for Hinglish text. Labels: HI, EN, NE, UNIV, MIX.
+Part of the EduHinglish pipeline (K.J. Somaiya College of Engineering).
+
+```python
+from transformers import AutoModelForTokenClassification, AutoTokenizer
+from peft import PeftModel
+base = AutoModelForTokenClassification.from_pretrained("google/muril-base-cased", num_labels=5)
+model = PeftModel.from_pretrained(base, "{repo}")
+tok = AutoTokenizer.from_pretrained("google/muril-base-cased")
 ```
 """
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("kind", choices=["gemma", "intent"])
+    ap.add_argument("kind", choices=["gemma", "intent", "lid"])
     ap.add_argument("folder", type=Path)
-    ap.add_argument("repo_id", help="e.g. your-hf-user/eduhinglish-gemma-3-4b-it-lora")
+    ap.add_argument("repo_id", help="e.g. your-hf-user/eduhinglish-muril-intent")
     ap.add_argument("--public", action="store_true")
     args = ap.parse_args()
 
@@ -98,7 +124,9 @@ def main():
     if args.kind == "gemma":
         need = ["adapter_config.json", "adapter_model.safetensors"]
     else:
-        need = ["config.json", "model.safetensors"]
+        # Accept LoRA adapter OR full model
+        is_lora = (folder / "adapter_config.json").exists()
+        need = ["adapter_config.json", "adapter_model.safetensors"] if is_lora else ["config.json", "model.safetensors"]
     missing = [f for f in need if not (folder / f).exists()]
     if missing:
         sys.exit(f"[FAIL] {folder} is missing {missing}")
@@ -107,10 +135,17 @@ def main():
         cfg = json.loads((folder / "adapter_config.json").read_text())
         card = GEMMA_CARD.format(r=cfg["r"], alpha=cfg["lora_alpha"],
                                  targets=", ".join(sorted(cfg["target_modules"])), repo=args.repo_id)
-    else:
-        cfg = json.loads((folder / "config.json").read_text())
-        labels = [cfg["id2label"][k] for k in sorted(cfg["id2label"], key=int)]
-        card = INTENT_CARD.format(n=len(labels), labels=", ".join(labels), repo=args.repo_id)
+    elif args.kind == "intent":
+        cfg_path = folder / "config.json"
+        if cfg_path.exists():
+            cfg = json.loads(cfg_path.read_text())
+            labels = [cfg["id2label"][k] for k in sorted(cfg["id2label"], key=int)]
+            n = len(labels)
+        else:
+            n, labels = 15, ["explain_concept", "definition", "..."]
+        card = INTENT_CARD.format(n=n, labels=", ".join(labels), repo=args.repo_id)
+    else:  # lid
+        card = LID_CARD.format(repo=args.repo_id)
 
     api = HfApi()
     api.create_repo(args.repo_id, private=not args.public, exist_ok=True)
