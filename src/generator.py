@@ -147,7 +147,8 @@ class HinglishGenerator:
 
         # ── Tokenizer ─────────────────────────────────────────────────────────
         self.base_model_name = base_model
-        self.tokenizer = AutoTokenizer.from_pretrained(base_model)
+        _hf_token = os.environ.get("HF_TOKEN") or None
+        self.tokenizer = AutoTokenizer.from_pretrained(base_model, token=_hf_token)
         # Gemma ends a reply with <end_of_turn>; stop there as well as at <eos>.
         end_turn = self.tokenizer.convert_tokens_to_ids("<end_of_turn>")
         self.eos_token_ids = [self.tokenizer.eos_token_id] + (
@@ -173,7 +174,7 @@ class HinglishGenerator:
                 "cpu": torch.float32,
             }[device]
 
-        self.model = AutoModelForCausalLM.from_pretrained(base_model, **load_kwargs)
+        self.model = AutoModelForCausalLM.from_pretrained(base_model, token=_hf_token, **load_kwargs)
 
         # ── Optional LoRA adapter ─────────────────────────────────────────────
         self.lora_loaded = False
