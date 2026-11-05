@@ -3,234 +3,265 @@ EduHinglish — Hinglish Answer Generator
 =========================================
 Author  : Jatin
 Module  : M3 — Hinglish Answer Generator (Phase 6)
-Purpose : Inference module that loads the fine-tuned IndicBART model and
-          generates Hinglish explanations from English NCERT text + student
-          queries. Integrates with M1 (preprocessing) and M2 (retriever)
-          to form the complete M1→M2→M3 pipeline.
+Purpose : Inference module that loads Gemma-3-4b-it with the fine-tuned LoRA
+          adapter and answers a student's question from retrieved NCERT text.
+          Integrates with M1 (preprocessing) and M2 (retriever) to form the
+          complete M1→M2→M3 pipeline.
 
 Usage:
     python src/generator.py
-    # Runs a quick generation test with sample NCERT sentences.
+    # Runs a quick generation test with mock retrieved chunks.
 """
 
+import os
 import time
-import warnings
 from pathlib import Path
 from colorama import Fore, Style, init as colorama_init
 
-# Suppress transformers deprecation: IndicBART config uses old `use_return_dict`
-warnings.filterwarnings(
-    "ignore",
-    message=".*use_return_dict.*",
-    category=FutureWarning,
-)
-
 colorama_init(autoreset=True)
+
+BASE_MODEL = "google/gemma-3-4b-it"
+# v4 = all five subjects (bio/chem/phys/maths/ss, class 9-10); falls back to v3
+# (bio + ss) when v4 has not been downloaded. EDUHINGLISH_ADAPTER overrides both
+# and may be a local folder or a Hugging Face Hub repo id ("user/repo").
+ADAPTER_CANDIDATES = [
+    "models/gemma_eduhinglish_v4/adapter",
+    "models/gemma_eduhinglish_v3/adapter",
+]
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def resolve_adapter(adapter_path: str = None) -> tuple[str | None, bool]:
+    """
+    Return (path_or_repo_id, is_local). None means no adapter was found.
+    """
+    adapter_path = adapter_path or os.environ.get("EDUHINGLISH_ADAPTER")
+    if adapter_path:
+        p = Path(adapter_path)
+        for candidate in (p, PROJECT_ROOT / p):
+            if (candidate / "adapter_config.json").exists():
+                return str(candidate), True
+        # Not on disk: treat "user/repo" as a Hub repo id
+        if "/" in adapter_path and not p.is_absolute() and not adapter_path.startswith("."):
+            return adapter_path, False
+        return None, True
+    for rel in ADAPTER_CANDIDATES:
+        if (PROJECT_ROOT / rel / "adapter_config.json").exists():
+            return str(PROJECT_ROOT / rel), True
+    return None, True
+
+
+# Gemma has no system role, so the NCERT context goes inside the user turn.
+# Keep this identical to PROMPT_TEMPLATE / INSTRUCTION_* in scripts/build_dataset.py,
+# which renders the training data.
+PROMPT_TEMPLATE = (
+    "Context:\n{context}\n\n"
+    "Question:\n{question}\n\n"
+    "{intent_line}"
+    "{instruction}"
+)
+INSTRUCTIONS = {
+    "hinglish": "Answer the question in Hinglish using only the given context.",
+    "english": "Answer the question in English using only the given context.",
+}
+
+# The training data drops the intent line for ~12% of records, so the model
+# treats the classifier's intent as a hint. Below this confidence we drop it too.
+INTENT_CONFIDENCE_THRESHOLD = 0.6
+
+
+def build_prompt(context: str, question: str, intent: str = None,
+                 language: str = "hinglish") -> str:
+    """Build the user-turn text exactly as it was rendered for training."""
+    intent_line = f"Intent Type: {intent}\n" if intent else ""
+    return PROMPT_TEMPLATE.format(
+        context=context,
+        question=question,
+        intent_line=intent_line,
+        instruction=INSTRUCTIONS[language],
+    )
 
 
 class HinglishGenerator:
     """
     M3 — Hinglish Answer Generator
 
-    Loads fine-tuned IndicBART and generates Hinglish explanations
-    from NCERT English text. Supports LoRA adapter loading when
-    fine-tuned weights are available, with automatic fallback to
-    the base model.
+    Loads google/gemma-3-4b-it plus the LoRA adapter and generates answers
+    grounded in retrieved NCERT chunks. Falls back to the base model when the
+    adapter is not found.
     """
 
     def __init__(
         self,
-        model_path: str = "models/indicbart_v1",
-        base_model: str = "ai4bharat/IndicBART",
+        adapter_path: str = None,
+        base_model: str = BASE_MODEL,
         device: str = None,
         use_lora: bool = True,
+        load_in_4bit: bool = None,
     ):
         """
         Load model + tokenizer.
 
         Args:
-            model_path: Path to LoRA adapter weights directory.
-            base_model: HuggingFace model ID for IndicBART base.
-            device:     'cuda', 'cpu', or None for auto-detect.
-            use_lora:   If True, attempt to load LoRA adapter from model_path.
+            adapter_path: LoRA adapter folder (absolute, or relative to the project
+                          root) or a Hub repo id. None = $EDUHINGLISH_ADAPTER,
+                          then ADAPTER_CANDIDATES.
+            base_model:   HuggingFace model ID of the Gemma base model.
+            device:       'cuda', 'mps', 'cpu', or None for auto-detect.
+            use_lora:     If True, attempt to load the LoRA adapter.
+            load_in_4bit: NF4 quantisation (CUDA + bitsandbytes only).
+                          None = enable automatically when available.
         """
         print(f"\n  Loading Hinglish generator: {base_model}")
 
         try:
             import torch
         except ImportError:
-            raise ImportError(
-                "torch not installed. Run:\n"
-                "  pip install torch"
-            )
+            raise ImportError("torch not installed. Run:\n  pip install torch")
 
         try:
-            from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+            from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
         except ImportError:
-            raise ImportError(
-                "transformers not installed. Run:\n"
-                "  pip install transformers"
-            )
+            raise ImportError("transformers not installed. Run:\n  pip install transformers")
 
         # ── Device selection ──────────────────────────────────────────────────
         if device is None:
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        else:
-            self.device = device
+            if torch.cuda.is_available():
+                device = "cuda"
+            elif torch.backends.mps.is_available():
+                device = "mps"
+            else:
+                device = "cpu"
+        self.device = device
 
-        # ── Load tokenizer ────────────────────────────────────────────────────
+        # ── 4-bit availability ────────────────────────────────────────────────
+        if load_in_4bit is None:
+            try:
+                import bitsandbytes  # noqa: F401
+                load_in_4bit = device == "cuda"
+            except ImportError:
+                load_in_4bit = False
+        if load_in_4bit and device != "cuda":
+            raise ValueError("4-bit loading needs a CUDA device.")
+        self.load_in_4bit = load_in_4bit
+
+        # ── Tokenizer ─────────────────────────────────────────────────────────
         self.base_model_name = base_model
-        self.tokenizer = AutoTokenizer.from_pretrained(base_model)
+        _hf_token = os.environ.get("HF_TOKEN") or None
+        self.tokenizer = AutoTokenizer.from_pretrained(base_model, token=_hf_token)
+        # Gemma ends a reply with <end_of_turn>; stop there as well as at <eos>.
+        end_turn = self.tokenizer.convert_tokens_to_ids("<end_of_turn>")
+        self.eos_token_ids = [self.tokenizer.eos_token_id] + (
+            [end_turn] if isinstance(end_turn, int) and end_turn != self.tokenizer.unk_token_id else []
+        )
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        # ── Load model (base + optional LoRA) ─────────────────────────────────
+        # ── Base model ────────────────────────────────────────────────────────
+        load_kwargs = {}
+        if load_in_4bit:
+            load_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.float16,
+            )
+            load_kwargs["device_map"] = "auto"
+        else:
+            load_kwargs["torch_dtype"] = {
+                "cuda": torch.bfloat16,
+                "mps": torch.float16,
+                "cpu": torch.float32,
+            }[device]
+
+        self.model = AutoModelForCausalLM.from_pretrained(base_model, token=_hf_token, **load_kwargs)
+
+        # ── Optional LoRA adapter ─────────────────────────────────────────────
         self.lora_loaded = False
+        self.adapter_source = None
+        adapter, _ = resolve_adapter(adapter_path) if use_lora else (None, True)
 
-        # Resolve model_path relative to project root
-        project_root = Path(__file__).parent.parent
-        adapter_path = project_root / model_path
-
-        if use_lora and adapter_path.exists():
-            # Attempt to load base model + LoRA adapter
+        if adapter:
             try:
                 from peft import PeftModel
             except ImportError:
-                raise ImportError(
-                    "peft not installed (needed for LoRA adapter loading). Run:\n"
-                    "  pip install peft"
-                )
+                raise ImportError("peft not installed (needed for the LoRA adapter). Run:\n  pip install peft")
 
-            print(f"  Loading base model + LoRA adapter from {adapter_path}")
-            base = AutoModelForSeq2SeqLM.from_pretrained(base_model)
-            self.model = PeftModel.from_pretrained(base, str(adapter_path))
-            self.model = self.model.merge_and_unload()
+            print(f"  Loading LoRA adapter from {adapter}")
+            self.model = PeftModel.from_pretrained(self.model, adapter)
+            if not load_in_4bit:
+                self.model = self.model.merge_and_unload()
             self.lora_loaded = True
+            self.adapter_source = adapter
+        elif use_lora:
+            print(f"  {Fore.YELLOW}[WARN] No LoRA adapter found ({adapter_path or ADAPTER_CANDIDATES})")
+            print(f"        Falling back to the base Gemma model (no fine-tuning)")
 
-        elif use_lora and not adapter_path.exists():
-            # LoRA requested but adapter not found — fallback to base
-            print(f"  {Fore.YELLOW}[WARN] LoRA adapter not found at: {adapter_path}")
-            print(f"        Falling back to base IndicBART model (no fine-tuning)")
-            self.model = AutoModelForSeq2SeqLM.from_pretrained(base_model)
-
-        else:
-            # use_lora=False — load base model only
-            print(f"  Loading base IndicBART model (LoRA disabled)")
-            self.model = AutoModelForSeq2SeqLM.from_pretrained(base_model)
-
-        self.model = self.model.to(self.device)
+        if not load_in_4bit:
+            self.model = self.model.to(self.device)
         self.model.eval()
 
         # ── Status report ─────────────────────────────────────────────────────
-        model_desc = "IndicBART + LoRA" if self.lora_loaded else "IndicBART base"
-        lora_status = "loaded" if self.lora_loaded else "not found (using base)"
-
+        model_desc = "Gemma-3-4b-it + LoRA" if self.lora_loaded else "Gemma-3-4b-it base"
         print(f"  {Fore.GREEN}[OK] HinglishGenerator initialized")
         print(f"       Model:        {model_desc}")
-        print(f"       Device:       {self.device}")
-        print(f"       LoRA adapter: {lora_status}")
+        print(f"       Device:       {self.device}{' (4-bit)' if load_in_4bit else ''}")
+        print(f"       LoRA adapter: {self.adapter_source if self.lora_loaded else 'not found (using base)'}")
 
     # ── Single generation ────────────────────────────────────────────────────
 
     def generate(
         self,
-        english_text: str,
-        max_length: int = 128,
-        num_beams: int = 4,
+        prompt: str,
+        max_new_tokens: int = 256,
+        repetition_penalty: float = 1.1,
+        do_sample: bool = False,
         temperature: float = 0.7,
         top_p: float = 0.9,
-        do_sample: bool = False,
-        prefix: str = "Translate to Hinglish: ",
     ) -> dict:
         """
-        Generate Hinglish explanation from English input.
-
-        Args:
-            english_text: NCERT English paragraph or sentence.
-            max_length:   Maximum generation length in tokens.
-            num_beams:    Beam search width (4 is a good default).
-            temperature:  Sampling temperature (lower = more conservative).
-            top_p:        Nucleus sampling threshold.
-            do_sample:    Whether to use sampling (False = greedy/beam search).
-            prefix:       Task prefix prepended to input (matches training format).
+        Generate a reply for an already-built user prompt (see build_prompt()).
 
         Returns:
-            dict with keys:
-              - "input":             original English text
-              - "output":            generated Hinglish text
-              - "generation_config": dict of all generation parameters used
+            dict with keys "input", "output" and "generation_config".
         """
         import torch
 
-        # Guard: handle None or empty input gracefully
-        if not english_text or not isinstance(english_text, str):
-            return {
-                "input": english_text,
-                "output": "",
-                "generation_config": {},
-            }
+        if not prompt or not isinstance(prompt, str):
+            return {"input": prompt, "output": "", "generation_config": {}}
 
-        # Build input with task prefix
-        input_text = prefix + english_text
-        inputs = self.tokenizer(
-            input_text,
-            return_tensors="pt",
-            max_length=512,
-            truncation=True,
-            padding=True,
-        ).to(self.device)
+        # The chat template adds <bos>, so tokenize without special tokens
+        # (a doubled <bos> hurts Gemma).
+        text = self.tokenizer.apply_chat_template(
+            [{"role": "user", "content": prompt}],
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        inputs = self.tokenizer(text, return_tensors="pt", add_special_tokens=False).to(self.model.device)
 
-        # Cap output length relative to input to prevent runaway generation
-        input_len = inputs["input_ids"].shape[-1]
-        effective_max = min(max_length, input_len + 80)
-
-        # Build generation kwargs
         gen_kwargs = {
-            "max_new_tokens": effective_max,
-            "num_beams": num_beams,
-            "no_repeat_ngram_size": 3,
-            "repetition_penalty": 1.3,
-            "length_penalty": -1.0,   # negative = penalise long outputs
-            "early_stopping": True,
+            "max_new_tokens": max_new_tokens,
+            "repetition_penalty": repetition_penalty,
+            "do_sample": do_sample,
+            "pad_token_id": self.tokenizer.pad_token_id,
+            "eos_token_id": self.eos_token_ids,
         }
-
         if do_sample:
-            gen_kwargs["do_sample"] = True
             gen_kwargs["temperature"] = temperature
             gen_kwargs["top_p"] = top_p
-        else:
-            gen_kwargs["do_sample"] = False
 
-        # Generate
         with torch.no_grad():
-            output_ids = self.model.generate(
-                **inputs,
-                **gen_kwargs,
-            )
+            output_ids = self.model.generate(**inputs, **gen_kwargs)
 
-        # Decode and strip stray special tokens from output
-        output_text = self.tokenizer.decode(
-            output_ids[0],
-            skip_special_tokens=True,
-            clean_up_tokenization_spaces=True,
-        ).strip()
-
-        # Strip stray BOS artifact '<s>' that IndicBART sometimes leaves
-        # even after skip_special_tokens (known tokenizer quirk)
-        if output_text.startswith("<s>"):
-            output_text = output_text[3:].strip()
-
-        generation_config = {
-            "max_length": max_length,
-            "num_beams": num_beams,
-            "temperature": temperature,
-            "top_p": top_p,
-            "do_sample": do_sample,
-            "prefix": prefix,
-        }
+        # Decode only the newly generated tokens (skip the echoed prompt)
+        new_tokens = output_ids[0][inputs["input_ids"].shape[-1]:]
+        output_text = self.tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
 
         return {
-            "input": english_text,
+            "input": prompt,
             "output": output_text,
-            "generation_config": generation_config,
+            "generation_config": {k: v for k, v in gen_kwargs.items()
+                                  if k not in ("pad_token_id", "eos_token_id")},
         }
 
     # ── Pipeline answer generation (M1→M2→M3) ────────────────────────────────
@@ -239,24 +270,33 @@ class HinglishGenerator:
         self,
         query: str,
         retrieved_chunks: list[dict],
-        max_length: int = 100,
+        intent: str = None,
+        intent_confidence: float = None,
+        language: str = "hinglish",
+        max_new_tokens: int = 256,
     ) -> dict:
         """
-        Generate a Hinglish answer given a student query and retrieved NCERT chunks.
+        Generate an answer given a student query and retrieved NCERT chunks.
         This is the PRIMARY method used in the full pipeline (M1→M2→M3).
 
         Args:
-            query:            Student's question (could be Hinglish or English).
-            retrieved_chunks: List of chunk dicts from NCERTRetriever.search().
-                              Each has: text, metadata, relevance_score.
-            max_length:       Maximum generation length in tokens.
+            query:             Student's question (Hinglish or English).
+            retrieved_chunks:  Chunk dicts from NCERTRetriever.search().
+                               Each has: text, metadata, relevance_score.
+            intent:            Predicted intent label (optional).
+            intent_confidence: Classifier confidence. The intent line is left
+                               out of the prompt when this is below
+                               INTENT_CONFIDENCE_THRESHOLD.
+            language:          "hinglish" or "english".
+            max_new_tokens:    Maximum generation length in tokens.
 
         Returns:
             dict with keys:
-              - "query":            original student query
-              - "context_used":     the combined chunk text
-              - "context_sources":  list of (chapter_title, chunk_id, relevance_score)
-              - "hinglish_answer":  generated Hinglish text
+              - "query":             original student query
+              - "context_used":      the combined chunk text
+              - "context_sources":   list of (chapter_title, chunk_id, relevance_score)
+              - "hinglish_answer":   generated answer text
+              - "prompt_intent":     intent placed in the prompt, or None
               - "generation_config": generation parameters
         """
         # 1. Combine top retrieved chunks into context (2-3 chunks, ~400 words max)
@@ -275,7 +315,6 @@ class HinglishGenerator:
             context_parts.append(chunk_text)
             word_count += len(chunk_words)
 
-            # Track sources for attribution
             meta = chunk.get("metadata", {})
             context_sources.append((
                 meta.get("chapter_title", "Unknown"),
@@ -285,78 +324,24 @@ class HinglishGenerator:
 
         context = " ".join(context_parts)
 
-        # 2. Build structured prompt
-        chapter_title = context_sources[0][0] if context_sources else "NCERT Biology"
-        prompt = (
-            f"Topic: {chapter_title} | "
-            f"Context: {context} | "
-            f"Student asks: {query} | "
-            f"Explain in Hinglish:"
+        # 2. Decide whether to show the intent hint
+        use_intent = intent is not None and (
+            intent_confidence is None or intent_confidence >= INTENT_CONFIDENCE_THRESHOLD
         )
+        prompt_intent = intent if use_intent else None
 
-        # 3. Generate using self.generate() with a pipeline-specific prefix
-        result = self.generate(
-            prompt,
-            max_length=max_length,
-            prefix="",  # prompt already contains the task instruction
-        )
+        # 3. Build the training-format prompt and generate
+        prompt = build_prompt(context, query, prompt_intent, language)
+        result = self.generate(prompt, max_new_tokens=max_new_tokens)
 
         return {
             "query": query,
             "context_used": context,
             "context_sources": context_sources,
             "hinglish_answer": result["output"],
+            "prompt_intent": prompt_intent,
             "generation_config": result["generation_config"],
         }
-
-    # ── Batch generation ─────────────────────────────────────────────────────
-
-    def generate_batch(
-        self,
-        english_texts: list[str],
-        batch_size: int = 8,
-        **kwargs,
-    ) -> list[dict]:
-        """
-        Batch generation for evaluation. Generates for multiple inputs at once.
-
-        Args:
-            english_texts: List of English strings.
-            batch_size:    Number to process at once.
-            **kwargs:      Additional keyword arguments passed to generate().
-
-        Returns:
-            List of output dicts (same format as generate()).
-        """
-        import torch
-
-        results = []
-        total = len(english_texts)
-
-        print(f"\n  Batch generation: {total} inputs (batch_size={batch_size})")
-
-        start_time = time.time()
-
-        for i in range(0, total, batch_size):
-            batch_texts = english_texts[i : i + batch_size]
-            batch_end = min(i + batch_size, total)
-
-            print(f"    Processing batch {i // batch_size + 1} "
-                  f"({i + 1}–{batch_end} of {total})...")
-
-            # Process each item in the batch individually
-            # (IndicBART handles variable-length inputs better this way)
-            for text in batch_texts:
-                result = self.generate(text, **kwargs)
-                results.append(result)
-
-        elapsed = time.time() - start_time
-        rate = total / elapsed if elapsed > 0 else 0
-
-        print(f"  Batch complete: {total} items in {elapsed:.1f}s "
-              f"({rate:.1f} items/sec)")
-
-        return results
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -364,38 +349,12 @@ class HinglishGenerator:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def main():
-    """Load generator and test with sample NCERT sentences."""
+    """Load generator and test with mock retrieved chunks."""
     print(f"\n{'='*65}")
     print(f"  EduHinglish -- Hinglish Generator Test")
     print(f"{'='*65}")
 
     generator = HinglishGenerator()
-
-    # ── Test 1: generate() with sample NCERT sentences ────────────────────────
-    test_sentences = [
-        "Photosynthesis is the process by which green plants make food using sunlight.",
-        "The nucleus contains chromosomes which carry genetic information.",
-        "Respiration involves breaking down of glucose to release energy.",
-        "Stomata are tiny pores on leaves that allow gas exchange.",
-        "DNA replication is the process of making an identical copy of DNA.",
-    ]
-
-    print(f"\n  {'─'*60}")
-    print(f"  Test 1: generate() — English → Hinglish")
-    print(f"  {'─'*60}")
-
-    for i, sentence in enumerate(test_sentences):
-        result = generator.generate(sentence)
-
-        print(f"\n  [{i + 1}] English:")
-        print(f"      \"{sentence}\"")
-        print(f"      {Fore.CYAN}Hinglish:{Style.RESET_ALL}")
-        print(f"      \"{result['output']}\"")
-
-    # ── Test 2: generate_answer() with mock retrieved chunks ──────────────────
-    print(f"\n  {'─'*60}")
-    print(f"  Test 2: generate_answer() — Pipeline simulation (M1→M2→M3)")
-    print(f"  {'─'*60}")
 
     mock_chunks = [
         {
@@ -420,25 +379,27 @@ def main():
     test_query = "Photosynthesis kaise hoti hai?"
 
     print(f"\n  Query: \"{test_query}\"")
-    print(f"  Retrieved chunks: {len(mock_chunks)}")
-
     for j, chunk in enumerate(mock_chunks):
         score = chunk["relevance_score"]
         color = Fore.GREEN if score >= 0.5 else Fore.YELLOW
         print(f"    Chunk {j + 1} ({color}score: {score:.2f}{Style.RESET_ALL}): "
               f"{chunk['metadata']['chapter_title']}")
 
-    answer_result = generator.generate_answer(test_query, mock_chunks)
+    t0 = time.time()
+    answer_result = generator.generate_answer(
+        test_query, mock_chunks, intent="explain_concept", intent_confidence=0.9
+    )
+    elapsed = time.time() - t0
 
     print(f"\n  {Fore.CYAN}Hinglish Answer:{Style.RESET_ALL}")
     print(f"  \"{answer_result['hinglish_answer']}\"")
-
-    print(f"\n  Context sources:")
+    print(f"\n  Intent in prompt: {answer_result['prompt_intent']}")
+    print(f"  Context sources:")
     for title, chunk_id, score in answer_result["context_sources"]:
         print(f"    - {title} ({chunk_id}, score: {score:.2f})")
 
     print(f"\n{'='*65}")
-    print(f"  {Fore.GREEN}[OK] Generator test complete")
+    print(f"  {Fore.GREEN}[OK] Generator test complete ({elapsed:.1f}s)")
     print(f"{'='*65}")
 
 

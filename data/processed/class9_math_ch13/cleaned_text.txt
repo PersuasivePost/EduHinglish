@@ -1,0 +1,355 @@
+## Two Variables, One Line
+
+In Chapter 2 of Ganita Manjari, Part I, we explored linear patterns and learnt about linear polynomials. In this chapter, we will go a step further in exploring linear equations in two variables, by learning how to solve a pair of linear equations.
+
+Radha stops at a fruit cart. The price tags say that mangoes cost ₹60 per kg and bananas cost ₹50 per kg. She buys some kilograms of mangoes and some kilograms of bananas. Altogether, she pays ₹280. Can we express this situation as an equation? Since we do not know how many kilograms of mangoes or bananas she bought, let us assume that x = number of kilograms of mangoes y = number of kilograms of bananas The cost of the mangoes is ₹60 x and the cost of the bananas is ₹50 y. The total cost is ₹280. Hence, we can express this using the linear equation 60 x + 50 y = 280.
+
+Notice that the left-hand side (LHS) and the right-hand side (RHS) of the equation both represent the same quantity, that is, the total cost (in ₹). The equation 60 x + 50 y = 280 is a linear equation in two variables.
+
+[Box] inear quations in wo ariabLes
+
+## 13.1.1 Standard Form of Linear Equations in Two Variables
+
+Any equation that can be expressed in the form ax + by + c = 0, where a, b and c are real numbers, and a and b are not both zero, is called a linear equation in two variables. ax + by + c = 0 is referred to as the standard form of the linear equation. Here a and b are the coefficients of the variables x and y respectively and c is a constant. It is useful to note the following: (i) The coefficients a and b and the constant c can also be rational numbers. For example, x + y – = 0 is also a linear equation in two variables in standard form. However, for convenience, in such cases we often multiply the equation by a suitable number to remove the fractions and write the equation with integer coefficients. Here we can multiply by 20 to get the equation 5 x + 12 y – 10 = 0. (ii) Equations of the type ax + c = 0 are special cases of linear equations in two variables as they can be expressed as ax + 0× y + c = 0. For example, 7 + 4 x = 0 can be written as 4 x + 0× y + 7 = 0, with a = 4, b = 0 and c = 7.
+
+Example 1: Write each of the following equations in standard form, ax + by + c = 0, and indicate the values of a, b and c in each case: x 3 (i) 5 x + 2 y = 2.7 (iv) 3 y = 5 Solution: (i) 5 x + 2 y = 2.7 can be written as 5 x + 2 y – 2.7 = 0. Here a = 5, b = 2 and c = – 2.7. The equation can also be rewritten as –5 x –2 y + 2.7 = 0. In this case a = –5, b = –2, c = 2.7. x 3 (ii) – 4 = y can be written as – y – 4 = 0. 2 2 (ii) – 4 = y 2 2 (iii) 4 = 1.5 x – 1.3 y x 3 2 2 1 2 3 2 Here a =, b = – and c = – 4.
+
+(iii) 4 = 1.5 x – 1.3 y can be written as 1.5 x – 1.3 y – 4 = 0. Here a = 1.5, b = –1.3 and c = – 4. It can also be written as –1.5 x + 1.3 y + 4 = 0. In this case a = –1.5, b =1.3 and c = 4.
+
+(iv) 3 y = 5 can be written as 0× x + 3 y – 5 = 0. Here a = 0, b = 3 and c = –5.
+
+[Box] 1 3 1 4 5 2
+
+## xErcisE Et
+
+1. Write a linear equation in two variables in which a = 3, b = 0 and 1 c = –. 5 2. Complete the following table after expressing the given linear equations in standard form.
+
+3. (i) The cost of a notebook is twice the cost of a pen. Consider the cost of a notebook to be ₹ t and that of a pen to be ₹ p. Charlie wrote t = 2 p, whereas Meera wrote p = 2 t. Which of these two representations is correct?
+
+(ii) In a one-day International Cricket match between India and Sri Lanka played in Nagpur, two Indian batsmen together scored 176 runs. Manisha expressed this situation as x + y = 176, where the number of runs scored by one batsman is x, and the number of runs scored by the other is y. Is this a correct representation?
+
+[Table] Linear equation in two variables | Standard Form | Coefficient of x | Coefficient of y | Constant term / y – 15 = 2x / 3y – 2x = 0 / 5x = 3y / x = 8 / 3y = 1
+
+## 13.2 Solution of Linear Equation in Two Variables
+
+In earlier grades, we have seen how to solve linear equations in one variable. What can we say about the solution of a linear equation involving two variables?
+
+## 13.2.1 Algebraic Meaning of Solution
+
+A solution of a linear equation in two variables is a pair of values of x and y which satisfy the given equation. Let us consider the equation 3 x + 2 y = 12. Here, x = 2 and y = 3 is a solution because substituting the values of x and y into the given equation satisfies the equation. Note that, 3 x + 2 y = (3 2) + (2 3) = 12. Asolution can be written compactly as a pair of numbers. For example, the solution x = 2 and y = 3 can be written as (2, 3). The order of the numbers in this pair matters: the first number is the x-value, and the second number is the y-value. Hence we call this an ordered pair. Similarly, (4, 0) is also a solution of the equation 3 x + 2 y = 12 since substituting x = 4 and y = 0 leads to 3 x + 2 y = (3 4) + (2 0) = 12. What about the ordered pair (1, 3)? We see that 3 x + 2 y = 3 × 1 + 2 × 3 = 9 12. So, (1, 3) is not a solution.
+
+## Think and Reflect
+
+Suppose we are given a linear equation in two variables. For any value u that we assign to x, we can find a value v for y such that ( u, v) is a solution. We first substitute u for x in the equation. This gives us a new linear equation in y that can be solved to find v. This allows us to generate an infinite number of solutions to the original equation.
+
+## 13.2.2 Geometric Visualisation of Solutions
+
+Consider all the solutions of a linear equation in two variables, expressed as ordered pairs. What do we get when we plot the points corresponding to these ordered pairs? The equation 3 x + 2 y = 12 can be rewritten as 3 12 2 y = – 3 x + 12 or y = – x + which is the same as y = – x + 6 2 2 3 2 We have already seen in the chapter on Linear Polynomials that plotting the solutions of an equation of the form y = mx + d leads to a straight line joining them. Every solution ( x, y) of the equation is a point on the line. Clearly the solutions of y = – x + 6 are the same as those of 2 3 x + 2 y = 12. Hence the graph of 3 x + 2 y = 12 is the same as that of 3 y = – x + 6. 2 Example 2: Find any two solutions of 2 x + y = 7. Draw the graph of this equation. Use the graph to find 4 more solutions. When we substitute x = 0 in the equation, we get (2 0) + y = 7, that is, y = 7. Hence one solution is (0, 7). By substituting y = 0, we get 7 2 x + 0 = 7, that is, x =. Thus,, 0 is also a solution. 2 3 7 2 We can represent these solutions or ordered pairs in the form of a table.
+
+7 2 Using these two points, we can draw the graph of the equation.
+
+7 2 3 2 From the graph, we see that (1, 5), (2, 3), (3, 1),, 4 are also solutions of 2 x + y = 7. Note that an easy way of identifying two points on a line is to substitute x = 0 in the linear equation and obtain the corresponding value of y. This will give us the point where the line intersects the y -axis. Similarly, we can substitute y = 0 and obtain the corresponding value of x. This will give us the point where the line intersects the x -axis. Example 3: Find any two solutions for each of the following equations and draw their graphs: (i) 4 x + 3 y = 12 Solution: (i) Substituting x = 0 in the equation, we get 3 y = 12, that is, y = 4. So (0, 4) is a solution of the given equation. Similarly, by substituting y = 0, we get x = 3. Thus, (3, 0) is also a solution.
+
+(ii) 2 x + 5 y = 0 (ii) Substituting x = 0, we get 5 y = 0, that is, y = 0. So (0, 0) is a solution of the given equation. To get another solution, substitute x = 1. The corresponding value of y is –. So, (1, –) is also a solution. In fact, we can substitute any value for x and obtain a corresponding value of y. For example, substituting x = 5 we obtain y = – 2. Let us represent these solutions or ordered pairs in the form of a table.
+
+When we plot the ordered pairs A (0, 0), B 1, and C (5, –2) we see that they lie on a line.
+
+Example 4: In the equations shown below, a and b are unknown numbers.
+
+3 ax + 4 y = –2 2 x + by = 14.
+
+If (–3, 4) is the solution of both equations, find the values of a and b. Solution: Step 1: Substitute (–3, 4) into the first equation, (that is, x = –3 and y = 4).
+
+3 a (–3) + 4(4) = –2 –9 a + 16 = –2 –9 a = –18 a = 2 or or or Step 2: Substitute (–3, 4) into the second equation. 2(–3) + b (4) = 14 –6 + 4 b = 14 4 b = 20 b = 5 or or or
+
+[Box] 1 21 2 4
+
+[Box] Are 1,, (0, 6), (4, 1) and, solutions of the equation 3 x + 2 y = 12?
+
+[Box] Can you find any other solution? How many solutions can you find?
+
+[Box] 90 x 0 y 7
+
+[Box] 2 5 x 0
+
+[Box] 5 y 0 –
+
+## Think and Reflect
+
+[Box] Four friends—Ranju, Meena, Farhan, and Toshi — are solving problems. Ranju: I noticed something! If c = 0 in the standard form of a line ax + by + c = 0, then the line must pass through the origin. Look, if I substitute x = 0 and y = 0, in equation ax + by = 0, the equation is satisfied. So, the origin lies on the line! We can also say that the line passes through the origin. Farhan: Let us try for the equation 2 x + 3 y = 0. Here a = 2, b = 3 but c = 0. If we substitute x = 0, then we get 3 y = 0 or y = 0. This means (0, 0) lies on the line. So yes, this line passes through the origin. Toshi: Suppose our equation has b = c = 0, say, 5 x = 0. This becomes x = 0 which is the equation of the y-axis. And the y-axis passes through the origin. Meena: And if we take a = c = 0, say, 7 y = 0, that means y = 0, which is the equation of the x-axis that also passes through the origin. So, they conclude: Whenever c = 0, the line ax + by + c = 0 will always pass through the origin, irrespective of the values of a or b. Do you agree with them?
+
+## xErcisE Et
+
+1. Verify if the ordered pair (4, 3) is a solution of 5 x – 6 y = 2. Explain your reasoning. 2. Find any two solutions for each of the following equations: (i) 7 x – 3 y = 21 3. In the equations given below, m and n are unknown constants: 2 mx + 3 y = 7; 4 x + ny = –10. If (2, –1) is the solution of both equations, find the values of m and n. 4. Find two solutions which lie in different quadrants for each of the following linear equations. Identify the quadrants in which the points lie. (i) 5 x + 3 y = 7 (iii) –5 x + 3 y = 7 Verify your solutions by representing the linear equations on a graph paper. 5. Consider the graph of the equation 3 x – 7 y = 21 shown below. Does the point C (2, 3) lie on the line? Does it satisfy the equation? Can points that do not lie on the line satisfy the equation?
+
+(ii) 2 x + 3 y = 5 (ii) 5 x – 3 y = 7 (iv) –5 x – 3 y = 7 6. State whether the following sentences are True or False. Justify your answer. (i) A linear equation in two variables has only one solution.
+
+(ii) The graph of a linear equation in two variables always passes through the origin. (iii) A linear equation in two variables can never have rational solutions. (iv) x = 3 is a valid linear equation in two variables. (v) The equation 2 x + 3 y = 7 has infinitely many solutions. (vi) The point (1, 2) is a solution of the equation 2 x + 3 y = 7.
+
+7. (i) Compare the solutions of the equations 3 x + 4 y = 7 and 6 x + 8 y = 14. Argue that they have the same set of solutions, that is, every solution of one is also a solution of the other.
+
+(ii) Show that the equations ax + by = c and kax + kby = kc, with k 0, have the same set of solutions.
+
+## 13.3 Slope-intercept form of a Linear Equation in Two Variables 13.3.1 Understanding Slope
+
+Have you ever walked or cycled up a steep hill? How did it feel compared to walking on a flat road? On a flat road, you can move without much effort. But as the road becomes steeper, you have to work harder to climb. The steeper it is, the more effort is needed to cycle. In mathematics, the idea of ‘steepness’ of a line is called its slope or gradient. 1. A positive slope means going ‘upward’ as we move from left to right. 2. A negative slope means going ‘downward’ as we move from left to right.
+
+Fig. 13.5: (i) represents the case of a positive slope, whereas (ii) represents that of a negative slope.
+
+Let us consider a line passing through two points A ( x, y) and B ( x, y ).
+
+The horizontal distance between the two points is ( x – x) and is often referred to as the Run. It tells you how far the line goes to the left or right. Moving to the right means a positive run while moving to the left means a negative run. The vertical distance between the two points is ( y – y) and is often referred to as the Rise. It tells you how much the line goes up or down when moving from one point to another. If the line goes up, the rise is positive. If the line goes down, the rise is negative. The slope of a line = = .
+
+Consider the graph of the equation shown in Fig. 13.7 which passes through the points A (2, 0) and B (4, 3).
+
+Point B can be reached from point A by moving 2 units along the positive x-direction (the run), and 3 units along the positive y-direction 3 (the rise). Hence slope of the line = =. 2 Now consider the same line AB further extended beyond B as shown in Fig. 13.8.
+
+3 2 The slope of the line using points A and B is and using B and D 6 3 we get =. We may therefore conclude that the slope of the line 4 2 remains the same and is independent of where we measure it on the line.
+
+[Box] Rise Run x – x
+
+## Think and Reflect
+
+Example 5: Consider the straight line that passes through A (–1, 0), B (1, 2), and C (4, 5). Plot the points and find the slope of the line.
+
+Take any two points, say B and C, and find the ratio of vertical step (rise) to the horizontal step (run). CP 5 – 2 Hence, slope = = = 1. BP 4 – 1 It may be verified that we will get the same slope by considering any two points. Example 6: Consider the line in Fig. 13.10 which passes through A(–4, 5) and B(–1, 2). Find the slope of the line.
+
+If we denote the points A(–4, 5) and B(–1, 2) as ( x, y) and ( x, y) respectively, then AP 2 – 5 – 3 = = –1. BP –1– (– 4) 3 Slope = = If we do the reverse, taking B(–1, 2) as ( x, y) and A(–4, 5) as ( x, y ), then PA 5 – 2 3 = = –1. PB – 4 – (– 1) – 3 Slope = = Hence the slope remains the same irrespective of the order in which we choose the points. In general, if ( x, y) and ( x, y) are two points on a line, the slope is given by the expression , and it remains the same for any two points on the line. There is a simple and elegant proof of this result which you will see below.
+
+[Box] 1. Consider the point on the line AB whose x-coordinate is 8. What is the y-coordinate of this point? Express this as an ordered pair. 2. What is the x-coordinate of the point on the line AB whose y-coordinate is 6? Express this as an ordered pair.
+
+## 13.3.2 Slope-Intercept Form
+
+In the chapter on linear polynomials, we were introduced to the fact that in the linear equation y = mx + d, ‘ m ’ represents the slope or steepness of the line while ‘ d ’ represents the y -intercept, that is, the length cut off by the line on the y-axis from the origin. Thus, y = mx + d is also referred to as the slope-intercept form of a line.
+
+But why does ‘ m ’ represent the slope? To understand this let us consider two points A ( x, y) and B ( x, y) which lie on the line y = mx + d. Since they satisfy the equation we get, y = mx + d and y = mx + d. Now, the slope of the line passing through the points A and B is y – y (mx + d) – (mx + d) mx – mx m ( x – x) = x – x This is the reason why we can just read off the slope of a line if its equation is in the form y = mx + d. This also shows that the slope m of y – y a line with equation y = mx + d is given by ( x, y) and ( x, y) on the line, regardless of which points they are. Note that the standard form of the equation of a line ax + by + c = 0 can be rewritten as by = – ax – c or y = x, ( b 0), b b a which is of the form y = mx + d. Here m = Hence y = mx + d is another form of expressing the linear equation ax + by + c = 0, provided b 0. Consider the line 5 x + y = 3. Rewrite it as y = –5 x + 3. Can you now find its slope? What does it mean? In y = –5 x + 3, m = –5 is the slope, which means for every increase of 1 unit in x, y decreases by 5 units. d = 3 is the y -intercept which means the line crosses the y-axis at (0, 3). Let us make a table of values to draw its graph.
+
+= x – x = x – x = m x – x for any two points x – x a c c b d. and = b Plotting the ordered pairs A(0, 3), B(1, –2), C (–1, 8) and drawing the line through them we get the graph of y = –5 x + 3.
+
+## Think and Reflect
+
+Let us further explore the geometrical meaning of the slope of a line y = mx + d. To do this we will consider the following cases: 1. Positive Slope ( m 0). The line goes upward from left to right. As x increases, y increases. In y = 2 x + 1, the slope is m = 2. It means for every unit you move to the right, you also go up 2 units. 2. Negative Slope ( m 0). The line goes downward from left to right. As x increases, y decreases. In y = –3 x + 4, the slope is m = –3. It means for every unit you move to the right, you go down by 3 units. 3. Zero Slope ( m = 0). In this case the line is horizontal and parallel to the x-axis. That is, y remains constant as x changes. For example, in y = 5, the slope = m = 0.
+
+4. Undefined Slope. Here the line is vertical and parallel to the y-axis. x is constant as y changes. The line x = 2 is an example. But it is not of the form y = mx + d. While calculating the slope of this line we get 0 in the denominator. Since division by 0 is undefined, we take the slope also to be undefined.
+
+[Box] Can you use the points A, B and C to verify that the slope of this line is indeed –5?
+
+## xErcisE Et
+
+1. The following diagrams represent ski hills. Rank the hills in order of their steepness, from least to greatest.
+
+2. The ramp at a loading dock rises 2.5 metres over a run of 4 metres. Find the slope of the ramp.
+
+3. Find the slope of the line l in each of the following diagrams.
+
+(i)
+
+(ii)
+
+(iii)
+
+(iv)
+
+4. An accessibility ramp for wheelchairs is to be made alongside the staircase. The guidelines given for the slope of the ramp is 1 cm vertical rise to 12 cm horizontal length. What should be the horizontal length of the ramp if the total height of the stairs is 18 cm?
+
+## 13.4. Pair of Linear Equations in Two Variables
+
+## Think and Reflect
+
+Do you remember Rakesh’s puzzle from Grade 7 ? “I have thought of two numbers”, he said. “Their sum is 25 and their difference is 11”. We solved the problem by making a table and listing possible combinations. We can also solve this using a pair of linear equations.
+
+If the two numbers are x and y, we get the equations x + y = 25 and x – y = 11. Such problems lead to a pair of linear equations in two variables. A solution to such a pair of equations is an ordered pair ( a, b) that satisfies both equations. How do we find a solution? We shall soon see. Consider another situation. A science exhibition charges an entry fee that is different for adults and children. Here are the amount paid by two different groups. Group A: 2 adult tickets and 3 child tickets for ₹600 Group B: 3 adult tickets and 2 child tickets for ₹700 How much do individual adult and child tickets cost? If the cost of one adult ticket is ₹ x and one child ticket is ₹ y, then: 2 x + 3 y = 600, 3 x + 2 y = 700. This gives us another pair of linear equations in two variables. A solution to these equations will give us the answer that we seek. Can you see why?
+
+In general, a pair of linear equations in two variables x and y can be written as: a x + b y + c = 0 and a x + b y + c = 0, where a, b, c, a, b, c are all real numbers, a and b are not both zero, and a and b are not both zero.
+
+[Box] The cost of one paratha and 2 bowls of dahi is ₹90. Also, the cost of 2 parathas and 7 bowls of dahi is ₹260. Can you figure out the cost of one paratha and one bowl of dahi and explain your reasoning?
+
+[Table] First Number | Second Number | Sum | Difference / 10 | 15 | 25 | –5 / 20 | 5 | 25 | 15 / 18 | 7 | 25 | 11
+
+## xErcisE Et
+
+Given below are some everyday situations. Construct a pair of linear equations in two variables for each situation: 1. On two different days a family buys movie tickets and snack boxes. Let the cost of one movie ticket be ₹ x and the cost of one snack box be ₹ y. Frame a pair of linear equations in x and y to represent the following situations: (i) On the first day, the family buys 2 movie tickets and 3 snack boxes for ₹850. (ii) On the second day, the family buys 4 movie tickets and 1 snack box for ₹1100. 2. Two friends, Sahil and Meena, travelled by taxi. Let the fixed charge for one taxi trip be ₹ x and the additional charge per kilometre be ₹ y. Frame a pair of linear equations in x and y to represent the following situation: (i) Sahil travelled 6 km and paid a total fare of ₹122. (ii) Meena travelled 8 km and paid a total fare of ₹160. 3. In a sports meet, tickets for adults cost ₹150 each and tickets for children cost ₹100 each. A total of 200 people attended the meet, and the total amount collected from ticket sales was ₹25,000. (Let the number of adult tickets sold be x and the number of children’s tickets sold be y.) Frame a pair of linear equations in x and y to represent this situation.
+
+## 13.5 Finding Solutions to a Pair of Linear Equations
+
+We have already seen how to solve a linear equation in a single variable. In order to find the solution of a pair of linear equations, we need to think of methods by which we can reduce the pair to a linear equation in one variable. In this section we shall study two methods.
+
+## 13.5.1 Algebraic Methods for Solving a Pair of Linear Equations Think and Reflect
+
+We note from the first row that the values of 2 triangles and 2 rectangles add up to 28. We may express this as 2T + 2R = 28 or as T + R = 14. Similarly, the last column may be written as 2C + T + R = 22. Here T, S and C represent the values assigned to a triangle, a rectangle and a circle respectively. Since we know that T + R = 14, we can rewrite the second equation as 2C + 14 = 22, solving which, we get C = 4. Once you have the value of C, you can find the values of the other shapes. Try it for yourself. We will now learn two methods for solving a pair of linear equations. One is called the method of substitution while the other is referred to as the method of elimination. Substitution Method: We will demonstrate the method of substitution by solving a pair of linear equations in two variables. Example 7: Solve the following pair of equations by substitution method:
+
+7 x – 15 y = 2 x + 2 y = 3 (1) (2)
+
+Solution: Step 1: We select either of the equations and express one variable in terms of the other. Let us consider Equation (2), that is, x + 2 y = 3 and write it as x = 3 – 2 y Step 2: Clearly, all ( x, y) that satisfy both the given equations must also satisfy x = 3 – 2 y. Since this relation must hold true in Equation (1), substituting x = 3 – 2 y in it we get 7(3 – 2 y) – 15 y = 2 (3)
+
+or or 19 29 21 – 14 y – 15 y = 2 – 29 y = –19 Therefore, y =.
+
+Step 3: We can find the value of x by substituting the value of y in any of the equations. Let us use Equation (3). 19 49 29 29 Therefore, the solution of the Equations (1) and (2) is x =, =. 29 29 To verify if the solution is correct, we substitute x =, =, in 29 Equations (1) and (2) and check if they are satisfied. Try it for yourself.
+
+x = 3 – 2 =.
+
+49 y 19 49 y 19 29
+
+[Box] Solve the puzzle and discuss your strategy with your friends. Can you determine the value represented by each shape?
+
+## Think and Reflect
+
+Example 8: If two angles of a triangle are x ° and y ° with y = 4 x, and the third angle is 50°, what are the angles? The three angles of the triangle are x °, y °, and 50°. Using the angle sum property of triangles, x ° + y ° + 50° = 180° Also, Substituting the value of y in Equation (1), we get (1) (2)
+
+y = 4 x.
+
+x + 4 x + 50 = 180 5 x = 130 x = 26°.
+
+or or Therefore, y = 4 x = 104°.
+
+## Elimination Method
+
+Now let us consider the method of elimination for solving a pair of linear equations. This requires us to eliminate one of the variables x or y. Sometimes it is more convenient than the substitution method. Let us see how this method works.
+
+Example 9: The ratio of incomes of two persons is 9: 7 and the ratio of their expenditures is 4: 3. If each of them manages to save ₹2000 per month, find their monthly incomes. Since the ratio of the incomes of the two persons is 9: 7, it means that for every 9 equal parts of income of the first person, the second person has 7 equal parts. If the equal part is x, the incomes of the two persons will be 9 x and 7 x. In a similar manner, we may consider their expenditures to be 4 y and 3 y, respectively. Then the equations formed by subtracting the expenditure from the income leading to a saving of ₹ 2000 are as follows: 9 x – 4 y = 2000 7 x – 3 y = 2000 To solve these by the method of elimination, we proceed as follows: Step 1: We first decide which variable to eliminate. Suppose we wish to eliminate y from both equations. We multiply each side of Equation (1) by 3 [the coefficient of y in Equation (2)], and multiply Equation (2) by 4 [the coefficient of y in (1)]. By doing this the coefficients of y in both equations become equal. We get the equations: 27 x – 12 y = 6000 28 x – 12 y = 8000 Step 2: Subtract the LHS and RHS of Equation 3 from the LHS and RHS of Equation 4 respectively. Since we are subtracting equal quantities from equal quantities, we get (28 x – 27 x) – (12 y – 12 y) = 2000. This step eliminates the variable y, leaving us with (28 x – 27 x) = 2000 or x = 2000. Step 3: Substituting this value of x in (1), we get 9(2000) – 4 y = 2000 i.e., y = 4000. Hence, the solution of the equations is x = 2000, y = 4000. Therefore, the monthly incomes of the two persons are ₹18,000 and ₹14,000, respectively. Let us verify our solution. The ratio of the incomes is 18000: 14000 = 9: 7. Also, the ratio of their expenditures = (18000 – 2000): (14000 – 2000) = 16000: 12000 = 4: 3. Hence, the conditions of the problem are satisfied.
+
+(1) (2)
+
+(3) (4)
+
+[Box] What if we had expressed y in terms of x, i.e., take Equation (2) and write 1 y = (3 – x ). Would we still get the same solution? 2
+
+## Think and Reflect
+
+Example 10: The sum of a two-digit number and the number obtained by reversing its digits is 66. If the digits of the number differ by 2, find the number. How many such numbers are there? Let the ten’s and the unit’s digits in the first number be x and y, respectively. Also let us assume that x is the larger digit and y is the smaller one. So, the first number may be written as 10 x + y in the expanded form (for example, 73 = 10 7 + 3). When the digits are reversed, x becomes the unit’s digit and y becomes the ten’s digit. This number, in the expanded notation, is 10 y + x (for example, when 73 is reversed, we get 37 = 10 3 + 7). According to the given condition, we have (10 x + y) + (10 y + x) = 66. Thus 11( x + y) = 66, i.e., x + y = 6 (1)
+
+We are also given that the digits differ by 2, i.e., x – y = 2 Solving (1) and (2) by elimination, we get x = 4 and y = 2, so, the two-digit number is 42.
+
+(2)
+
+The number 42 and its reverse 24 when added gives 66, and this is the unique solution.
+
+## Think and Reflect
+
+Consider the linear equations x – y = 10 (1) (2)
+
+10 x – 10 y = 100 To eliminate x, we multiply the first equation by 10. But by doing this, both equations become 10 x – 10 y = 100. Since both equations are the same, every solution of 10 x – 10 y = 100 is a solution of both equations. We know that 10 x – 10 y = 100 has infinitely many solutions. Hence, the given pair of equations has infinitely many solutions.
+
+[Box] The method used in solving this problem is called the Elimination Method because we eliminate one of the variables to obtain a linear equation in the other variable. In the example above, we eliminated y. Try the same problem by eliminating x instead of y. Also try to solve the two equations using the Substitution Method. Assess the pros and cons of each method.
+
+[Box] Does a pair of linear equations always have a unique solution? Can you analyse this using the Elimination Method? While subtracting the equations to eliminate a particular variable, if the other variable remains, then clearly there is a unique solution. But what if the second variable gets eliminated too while eliminating the first variable? Can you think of a situation where this happens?
+
+## Think and Reflect
+
+Consider a general pair of equations a x + b y + c = 0 a x + b y + c = 0 with a, b and c each not equal to 0. From the discussion above, it can be seen that whenever one of the equations is a constant multiple of another, the equations are the same and so have an infinite number of solutions. Suppose this constant multiple is k, where k is not necessarily an integer but may be any number. Then a = ka, b = kb, c = kc, where k 0. a b c a b c Thus, when = = = k, the pair of equations has infinitely many solutions.
+
+## Think and Reflect
+
+## Think and Reflect
+
+Consider the linear equations x – y = 10 (1) (2)
+
+10 x – 10 y = 101 Multiplying both sides of (1) by 10 gives 10 x – 10 y = 100 The left hand side in (2) and (3) are equal expressions, but the right hand side are not. Hence we cannot find values of x and y that satisfy both (2) and (3). Thus, this pair of equations has no solution!
+
+(3)
+
+[Box] How many solutions are there to the equations 10 x – 5 y = 20 and 4 x – 2 y = 8? Give 3 more examples of pairs of equations that lead to 0 = 0 after subtraction, and therefore have infinitely many solutions. Can you find a simple rule to check when this happens?
+
+[Box] What if one of a, b, c is zero?
+
+[Box] Does a pair of linear equations always have either a unique solution or infinitely many solutions?
+
+## Think and Reflect
+
+When a pair of equations a x + b y + c = 0 a x + b y + c = 0 (with a, b and c all not equal to 0) is such that after suitable multiplications, we can make (i) the coefficients of x of both equations equal, and (ii) the coefficients of y of both equations equal while the constants c and c remain unequal, the pair has no solution. These conditions mean a = ka, b = kb, c kc, where k 0. a b c Hence, when a = c, the pair has no solution. b a b b When a =, both the variables get eliminated during the Elimination Method. Based on what happens to the constants, the pair can either have an infinite number of solutions or no solution. We have already seen that when one of the variables remains during the Elimination Method, there exists a unique solution. This can happen a b only when .
+
+a b Summarising, we have the following cases: a b 1. when a, the pair has a unique solution, b a b c b a b c b 2. when a = = c, the pair has an infinite number of solutions, and 3. when a = c, the pair has no solution.
+
+[Box] Give 3 more examples of pairs of equations that have no solution. Can you find a simple rule to check when this will happen?
+
+## Think and Reflect
+
+Thus, (1), (2) and (3) can be used as simple rules to check for the nature of solutions.
+
+## Think and Reflect
+
+## A Pinch of History
+
+Solving systems of linear equations is one of the oldest problems in mathematics, going back thousands of years. The earliest traces appear in Babylonian cuneiform tablets (c. 2000 BCE). They were studied systematically in ancient China; the Nine Chapters on the Mathematical Art (compiled roughly two thousand years ago) devotes an entire chapter, fangcheng, to systems of linear equations, solved by arranging coefficients in columns of counting rods and then combining columns to cancel out variables — a procedure essentially identical to modern elimination, fully eighteen centuries before Gaussʼs name became attached to it in Europe. Many Indian mathematicians, including Āryabhaṭa (499 CE) and Brahmagupta (628 CE), also studied general systems of equations in several unknowns using their own systematic reduction techniques including elimination.
+
+## 13.6 Graphical Method for Solving A Pair of Linear Equations in Two Variables
+
+In this section, we learn how to solve a pair of linear equations graphically, that is by plotting the lines represented by the two equations.
+
+Consider the following pairs of linear equations in two variables. Pair 1: 2 x + y = 6 and x – y = 2 Pair 2: x + y = 4 and 2 x + 2 y = 8 Pair 3: 3 x – 2 y = 6 and 6 x – 4 y = 12 Pair 4: x – 2 y = 4 and 2 x – 4 y = 6 For each pair, prepare a table of values (with at least two ordered pairs). Plot the points on the Cartesian plane. Draw the straight lines.
+
+[Box] Are the converses of the above statements true?
+
+[Box] Can there be methods other than elimination and substitution to reduce a pair of linear equations in two variables to a linear equation in one variable? If so, describe them.
+
+## Think and Reflect
+
+Solutions to the pair of equations are points that lie on both lines. Thus (i) when the lines intersect in a single point, there is a unique solution; (ii) when the lines are parallel, there are no solutions; and (iii) when the lines are coincident, there are infinitely many solutions. Example 11: Solve the pair of linear equations x + 3 y = 6 and 2 x – 3 y = 12 graphically. Comment on the nature of the solution. Consider the equation x + 3 y = 6. Expressing y in terms of x, we get 6 – x y =. 3 Considering x to be first 0 and then 6 we obtain the corresponding values of y as 2 and 0 respectively. Hence (0, 2) and (6, 0) are points on the line.
+
+Now consider the equation 2 x – 3 y = 12. Expressing y in terms of x, we 2 x – 12 get y = y as –4, and –2 respectively. Hence (0, –4) and (3, –2) are points on the line.
+
+. Considering x to be 0 and then 3, we obtain the values of 3 Now plot the points A(0, 2), B(6, 0), P(0, – 4) and Q(3, – 2) on a graph paper, and join the points to form the lines AB and PQ as shown in Fig. 13.14. We observe that the point B(6, 0) is common to both the lines. In fact the lines AB and PQ intersect at B. So, the solution of the pair of linear equations is x = 6 and y = 0. Also, we can say that the given pair of equations has a unique solution.
+
+If we consider the ratios of the corresponding coefficients and a constants in the equations x + 3 y = 6 and 2 x – 3 y = 12, we get =, a b 3 = = –1. Here a. We have also seen graphically that the lines b –3 intersect. Example 12: Determine if the lines x + 2 y – 4 = 0 and 2 x + 4 y – 12 = 0 intersect, coincide or are parallel to each other. Then verify your answer by graphing the equations. On comparing the coefficients of these two equations we get a =, 2 b 2 1 = =, c = =. We observe that a = but is not equal to c. b 4 2 Thus, the equations have no solution and hence the lines are parallel. As before, we identify the points (0, 2) and (4, 0) on the line x + 2 y – 4 = 0 1 2 a b b a 1 c c –12 3 a b b –4 1 Similarly we find two points on the line 2 x + 4 y – 12 = 0, say, (0, 3) and (6, 0).
+
+To represent the equations graphically, we plot the points R(0, 2) and S(4, 0), to get the line RS and the points P(0, 3) and Q(6, 0) to get the line PQ.
+
+We observe in Fig. 13.15 that the lines do not intersect anywhere and are parallel.
+
+[Box] How do we find solutions from the graph? What can we say about the number of solutions when the two lines (i) intersect at a point, (ii) are parallel, (iii) are coincident?
+
+[Box] 1 2 = y 3 x – 2
+
+## Think and Reflect
+
+Example 13: Romila went to a stationery shop and purchased 2 erasers and 3 A4 sheets for ₹9. Her friend Sonali saw the new variety of erasers and A4 sheets Romila bought, and she also bought 4 erasers and 6 A4 sheets of the same kind for ₹18. Represent this situation graphically. Let us denote the cost of a erasers by ₹ x and one A4 sheets by ₹ y. Then the algebraic representation is given by the equations 2 x + 3 y = 9 and 4 x + 6 y = 18. Writing these equations in standard form we get 2 x + 3 y – 9 = 0 and 4 x + 6 y – 18 = 0.
+
+We find that both equations are represented by the same straight line. On comparing the coefficients of the two equations we find that a 2 1 3 1 a = =, = =, c = = which represents the fact that the pair 4 2 b 6 2 –18 2 of lines has infinitely many solutions.
+
+b c –9 1
+
+[Box] Can you prove that two lines of equal slope are parallel? ( Hint: Consider the equations of the two lines to be y = mx + d and y = mx + d)
+
+## xErcisE Et
+
+1. Form a pair of linear equations for each of the following problems and find their solutions. (i) The sum of two integers is +5 and their difference is –21. Find the two numbers.
+
+(ii) The difference between two numbers is 26 and one number is three times the other. Find the numbers. (iii) The coach of a cricket team buys 7 bats and 6 balls for ₹8880. Later, she buys 3 bats and 5 balls for ₹4000. Find the cost of each bat and each ball. (iv) The taxi charges in a city consist of a fixed charge together with the charge for the distance covered for every km. For a distance of 10 km, the total amount paid is ₹155 and for a journey of 15 km, the total amount paid is ₹220. What is the fixed charge and the charge per km? How much does a person have to pay for travelling a distance of 25 km? 9 (v) A fraction becomes equal to if 2 is added to both the 11 numerator and the denominator. If 3 is added to both the 5 numerator and the denominator, it becomes equal to. Find 6 the fraction.
+
+(vi) If we add 1 to the numerator and subtract 1 from the denominator, a fraction reduces to 1. It becomes equal to 1 2 (vii) Five years ago, Nuri was thrice as old as Sonu. Ten years later, Nuri will be twice as old as Sonu. How old are Nuri and Sonu? (viii) The sum of the digits of a two-digit number is 9. Also, nine times this number is twice the number obtained by reversing the order of the digits. Find the number. (ix) Meena went to a bank to withdraw ₹2000. She asked the cashier to give her ₹50 and ₹100 notes only. Meena got 25 notes in all. Find how many notes of ₹50 and ₹100 did she receive? (x) A lending library has a fixed charge for the first three days and an additional charge for each day thereafter. Saritha paid ₹27 for a book kept for seven days, while Susy paid ₹21 for the book she kept for five days. Find the fixed charge and the charge for each extra day. 2. Form a pair of linear equations and find their common solutions graphically. 10 students of Grade 9 took part in a Mathematics quiz. If the number of girls is 4 more than the number of boys, find the number of boys and girls who took part in the quiz. a b c 3. Use the ratios a,, c, to determine whether the lines b representing the following pairs of linear equations intersect at a point, are parallel or are coincident. (i) 5 x – 4 y + 8 = 0; 7 x + 6 y – 9 = 0 (ii) 9 x + 3 y + 12 = 0; 18 x + 6 y + 24 = 0 (iii) 6 x – 3 y + 10 = 0; 2 x – y + 9 = 0 if we add 1 only to the denominator. What is the fraction?
+
+4. Which of the following pairs of linear equations have solutions? If they have solutions, find them graphically. (i) x + y = 5, 2 x + 2 y = 10 (ii) x – y = 8, 3 x – 3 y = 16 (iii) 2 x + y – 6 = 0, 4 x – 2 y – 4 = 0 (iv) 2 x – 2 y – 2 = 0, 4 x – 4 y – 5 = 0 5. Half the perimeter of a rectangular garden, whose length is 4 m more than its width, is 36 m. Find the dimensions of the garden. 6. Given the linear equation 2 x + 3 y – 8 = 0, write another linear equation in two variables so that the graphs of the pair formed represent (i) intersecting lines (ii) parallel lines (iii) coincident lines. 7. Here is a problem that was posed by Mahāvīrāchārya in Gaṇita sāra saṅgraha (c. 850 CE). The price of 9 citrons and 7 fragrant wood-apples taken together is 107; and the price of 7 citrons and 9 fragrant wood-apples taken together is 101. O mathematician, tell me quickly the price of each citron and of each fragrant wood-apple. ( Hint: The given problem can be modelled as 9 x + 7 y = 107 7 x + 9 y = 101 Can you figure out a way of solving these equations without directly using elimination or the substitution method? What is special in this pair of equations? The x and y coefficients are interchanged in the 2 equations. What will happen if we add the pair of equations? What will happen if we subtract the pair of equations? Can the resulting equations be solved to find the values of x and y ?)
+
+8. 5 pencils and 7 pens together cost ₹50, whereas 7 pencils and 5 pens together cost ₹46. Find the cost of each pencil and pen. 9. Find the height of the stool.
+
+## nd of haptEr xErcisEs
+
+1. The graph of the line y = 3 x, passing through (0, 0) and (2, 6) is given below. (i) Identify the slope of the line from the graph and explain how you calculated it using the two points on the line.
+
+(ii) What is the y-intercept of the line? Explain its significance. (iii) A water tank is being filled so that the water level y (in cm) after x minutes follows this graph.
+
+(a) How high is the water after 5 minutes? (b) How many minutes will it take for the water to reach a height of 21 cm?
+
+(iv) Without drawing a new graph, determine whether the point (4, 10) lies on this line. Justify your answer. (v) Plot the point where this line intersects the line x = 3. Explain how you found the coordinates.
+
+2. In countries like the USA, temperature is measured in Fahrenheit, whereas in countries like India, it is measured in Celsius. Here is a linear equation that converts Celsius to Fahrenheit: 9 5 F = C + 32 (i) Draw the graph of the linear equation above using Celsius on the x-axis and Fahrenheit on the y-axis. (ii) If the temperature is 30 °C, what is the temperature in Fahrenheit? (iii) If the temperature is 95 °F, what is the temperature in Celsius? (iv) If the temperature is 0 °C, what is the temperature in Fahrenheit and if the temperature is 0 °F, what is the temperature in Celsius? (v) Is there a temperature which is numerically the same in both Fahrenheit and Celsius? If yes, find it.
+
+3. Solve the following system of equations graphically: 2 x + y = 6, 2 x – y – 2 = 0. 4. Find the point of intersection of the lines shown on the cover page. 5. Give a formula to find the x-intercept of the line y = mx + c. 6. A person is choosing between two mobile plans. Plan A: ₹50 monthly fee + ₹0.20 per minute of call time. Plan B: ₹30 monthly fee + ₹0.30 per minute of call time. For how many minutes of calling per month is Plan A cheaper than Plan B? For how many minutes is Plan B cheaper? Also find the number of minutes at which both plans cost the same. 7. How many lines exist that (i) have a given slope?
+
+(ii) have a given slope and pass through a given point?
+
+8. For what values of p does the pair of equations given below have a unique solution? 4 x + py + 8 = 0; 2 x + 2 y + 2 = 0.
+
+9. Find the values of a and b for which the following system of equations has infinitely many solutions: ( a + b) x – 2 by = 5 a + 2 b + 1; 3 x – y = 14. 10. Find the value of ‘ k ’ for which the following system of equations represents a pair of coincident lines: x + 2 y = 3; ( k – 1) x + ( k + 1) y = k + 3. 11. (i) Robot 1 starts from the origin and traces a path by repeatedly moving 3 units to the right and then 4 units upward. Robot 2 starts from the point (10, 0) and repeatedly moves 1 unit to the right and then 2 units upward. Will the paths traced by these two robots intersect and if so, where?
+
+(ii) Robot 1 starts from (3, 0) and traces a path by repeatedly moving 5 units to the right and then 5 units upward. Robot 2 starts from the point (7, 0) and repeatedly moves 5 units to the right and then 3 units downwards. Will the paths traced by these two robots intersect and if so, where?
+
+*12. At a certain time, Jacob notices that his digital watch reads ‘ a ’ minutes after two o’clock. Fifteen minutes later, it reads ‘ b ’ minutes after three o’ clock. He noticed that a is six times greater than b. What time was it when he looked at his watch for the second time? *13. The sum of the digits of a two-digit number is 15. The number obtained by interchanging the digits exceeds the given number by 9. Find the number. *14. In a cyclic quadrilateral ABCD, A = ( x + 7)°, B = ( y + 8)°, C = (3 y + 23)° and D = (4 x + 12)°. Find all four angles of the cyclic quadrilateral.
+
+*15. A train moving with uniform speed for a certain distance takes 6 hours less if its speed is increased by 6 km/hour. It would have taken 6 hours more had its speed been decreased by 4 km/hour. Find the distance travelled and the speed of the train. *16. The age of a father is equal to the sum of the ages of his four children. After 20 years, the sum of the ages of the children will be twice the age of the father. Find the age of the father.
+
+## Chapter Summary
+
+• An equation of the form ax + by + c = 0, where a, b and c are real numbers, such that a and b are not both zero, is called a linear equation in two variables. • A linear equation in two variables has infinitely many solutions. • An equation y = mx + d is the slope-intercept form of a linear equation in two variables. Here ‘ m ’ represents the slope and ‘ d ’ the y -intercept. The line cuts the y-axis in the point (0, d ). • Every point on the graph of a linear equation in two variables is a solution of the linear equation. Moreover, every solution of the linear equation is a point on the graph of the linear equation. • A pair of linear equations in two variables can be represented, and solved, both algebraically and graphically. • A pair of linear equations can be solved algebraically using the Method of Substitution or the Method of Elimination. • If a pair of linear equations is given by a x + b y + c = 0 and a x + b y + c = 0, then the following cases may arise: a b ⸰ : In this case, the pair of linear equations has a unique a b solution. a b c ⸰ = a b c have a solution. a b c ⸰ = =: In this case, the pair of linear equations has a b c infinitely many solutions.
+
+: In this case, the pair of linear equations does not • The graph of a pair of linear equations in two variables is represented by two lines. ⸰ If the lines intersect at a point, then that point is the unique solution of the two equations. ⸰ If the lines coincide, then there are infinitely many solutions, each point on the line being a solution. ⸰ If the lines are parallel, then the pair of equations has no solution.

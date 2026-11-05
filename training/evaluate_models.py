@@ -14,9 +14,9 @@ import spacy
 
 PROJECT_ROOT = Path(__file__).parent.parent
 
-LID_MODEL = PROJECT_ROOT / "models" / "lid_v2"
-NER_MODEL = PROJECT_ROOT / "models" / "ner_v2"
-INTENT_MODEL = PROJECT_ROOT / "models" / "intent_v2"
+LID_MODEL = PROJECT_ROOT / "models" / "lid_v3"
+NER_MODEL = PROJECT_ROOT / "models" / "ner_v3"
+INTENT_MODEL = PROJECT_ROOT / "models" / "intent_v3"
 
 LID_TESTS = [
     "Mitochondria ko cell ka powerhouse kehte hain.",
@@ -24,12 +24,15 @@ LID_TESTS = [
     "DNA replication mein enzyme kya role play karta hai?",
     "Mendel ne pea plants par experiments kiye the.",
     "Yeh process anaerobic respiration kehlata hai.",
+    "Harappan cities mein drainage system kaafi advanced tha.",
 ]
 
 INTENT_TESTS = [
     ("Sir, nucleus ka kaam kya hota hai?", "explain_concept"),
     ("Mitochondria aur chloroplast mein kya fark hai?", "compare_concepts"),
     ("Ek example do osmosis ka?", "give_example"),
+    ("Democracy ki definition kya hai?", "definition"),
+    ("Lok Sabha aur Rajya Sabha mein kya antar hai?", "compare_concepts"),
 ]
 
 
@@ -38,7 +41,7 @@ def _thick():
 
 
 def eval_lid(nlp: spacy.Language) -> None:
-    print("\n── LID Model (models/lid_v2/) ──")
+    print("\n── LID Model (models/lid_v3/) ──")
     for sent in LID_TESTS:
         print(f"Input: \"{sent}\"")
         doc = nlp(sent)
@@ -51,7 +54,7 @@ def eval_lid(nlp: spacy.Language) -> None:
 
 
 def eval_ner(nlp: spacy.Language) -> None:
-    print("\n── NER Model (models/ner_v2/) ──")
+    print("\n── NER Model (models/ner_v3/) ──")
     for sent in LID_TESTS:
         print(f"Input: \"{sent}\"")
         doc = nlp(sent)
@@ -64,7 +67,7 @@ def eval_ner(nlp: spacy.Language) -> None:
 
 
 def eval_intent(nlp: spacy.Language) -> None:
-    print("\n── Intent Model (models/intent_v2/) ──")
+    print("\n── Intent Model (models/intent_v3/) ──")
     for sent, expected in INTENT_TESTS:
         doc = nlp(sent)
         pred, score = max(doc.cats.items(), key=lambda x: x[1])

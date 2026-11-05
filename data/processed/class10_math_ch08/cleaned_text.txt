@@ -1,0 +1,217 @@
+## NTRODUCTION TO RIGONOMETRY
+
+There is perhaps nothing which so occupies the middle position of mathematics as trigonometry. – J.F. Herbart (1890)
+
+## 8.1 Introduction
+
+You have already studied about triangles, and in particular, right triangles, in your earlier classes. Let us take some examples from our surroundings where right triangles can be imagined to be formed. For instance: 1. Suppose the students of a school are visiting Qutub Minar. Now, if a student is looking at the top of the Minar, a right triangle can be imagined to be made, as shown in Fig 8.1. Can the student find out the height of the Minar, without actually measuring it? 2. Suppose a girl is sitting on the balcony of her house located on the bank of a river. She is looking down at a flower pot placed on a stair of a temple situated nearby on the other bank of the river. A right triangle is imagined to be made in this situation as shown in Fig.8.2. If you know the height at which the person is sitting, can you find the width of the river?
+
+Fig. 8.1 Fig. 8.2 3. Suppose a hot air balloon is flying in the air. A girl happens to spot the balloon in the sky and runs to her mother to tell her about it. Her mother rushes out of the house to look at the balloon.Now when the girl had spotted the balloon intially it was at point A. When both the mother and daughter came out to see it, it had already travelled to another point B. Can you find the altitude of B from the ground? In all the situations given above, the distances or heights can be found by using some mathematical techniques, which come under a branch of mathematics called ‘trigonometry’. The word ‘trigonometry’ is derived from the Greek words ‘tri’ (meaning three), ‘gon’ (meaning sides) and ‘metron’ (meaning measure). In fact, trigonometry is the study of relationships between the sides and angles of a triangle. The earliest known work on trigonometry was recorded in Egypt and Babylon. Early astronomers used it to find out the distances of the stars and planets from the Earth. Even today, most of the technologically advanced methods used in Engineering and Physical Sciences are based on trigonometrical concepts. In this chapter, we will study some ratios of the sides of a right triangle with respect to its acute angles, called trigonometric ratios of the angle. We will restrict our discussion to acute angles only. However, these ratios can be extended to other angles also. We will also define the trigonometric ratios for angles of measure 0° and 90°. We will calculate trigonometric ratios for some specific angles and establish some identities involving these ratios, called trigonometric identities.
+
+Fig. 8.3
+
+## 8.2 Trigonometric Ratios
+
+In Section 8.1, you have seen some right triangles imagined to be formed in different situations. Let us take a right triangle ABC as shown in Fig. 8.4. Here, CAB (or, in brief, angle A) is an acute angle. Note the position of the side BC with respect to angle A. It faces A. We call it the side opposite to angle A. AC is the hypotenuse of the right triangle and the side AB is a part of A. So, we call it the side adjacent to angle A.
+
+Fig. 8.4 Note that the position of sides change when you consider angle C in place of A (see Fig. 8.5). You have studied the concept of ‘ratio’ in your earlier classes. We now define certain ratios involving the sides of a right triangle, and call them trigonometric ratios. The trigonometric ratios of the angle A in right triangle ABC (see Fig. 8.4) are defined as follows:
+
+Fig. 8.5 side opposite to angle A BC hypotenuse side adjacent to angle A AB hypotenuse side opposite to angle A BC side adjacent to angle A AB 1 sine of A side opposite to angle A BC 1 cosine of A side adjacent to angle A AB 1 sine of A = AC cosine of A = AC tangent of A = hypotenuse AC cosecant of A = hypotenuse AC secant of A = side adjacent to angle A AB cotangent of A = tangent of A side opposite to angle A BC The ratios defined above are abbreviated as sin A, cos A, tan A, cosec A, sec A and cot A respectively. Note that the ratios cosec A, sec A and cot A are respectively, the reciprocals of the ratios sin A, cos A and tan A. BC Also, observe that tan A = BC AC sin A AB AB cos A AC cosA sin A .
+
+and cot A = So, the trigonometric ratios of an acute angle in a right triangle express the relationship between the angle and the length of its sides. Why don’t you try to define the trigonometric ratios for angle C in the right triangle? (See Fig. 8.5)
+
+The first use of the idea of ‘sine’ in the way we use it today was in the work Aryabhatiyam by Aryabhata, in A.D. 500. Aryabhata used the word ardha-jya for the half-chord, which was shortened to jya or jiva in due course. When the Aryabhatiyam was translated into Arabic, the word jiva was retained as it is. The word jiva was translated into sinus, which means curve, when the Arabic version was translated into Latin. Soon the word sinus, also used as sine, became common in mathematical texts throughout Europe. An English Professor of astronomy Edmund Gunter (1581–1626), first used the abbreviated notation ‘ sin ’. The origin of the terms ‘cosine’ and ‘tangent’ was much later. The cosine function arose from the need to compute the sine of the complementary angle. Aryabhatta called it kotijya. The name cosinus originated with Edmund Gunter. In 1674, the English Mathematician Sir Jonas Moore first used the abbreviated notation ‘ cos ’.
+
+Aryabhata C.E. 476 – 550 Remark: Note that the symbol sin A is used as an abbreviation for ‘the sine of the angle A’. sin A is not the product of ‘sin’ and A. ‘sin’ separated from A has no meaning. Similarly, cos Ais not the product of ‘cos’ and A. Similar interpretations follow for other trigonometric ratios also. Now, if we take a point P on the hypotenuse AC or a point Q on AC extended, of the right triangle ABC and draw PM perpendicular to AB and QN perpendicular to AB extended (see Fig. 8.6), how will the trigonometric ratios of A in PAM differ from those of A in CAB or from those of A in QAN? To answer this, first look at these triangles. Is PAM similar to CAB? From Chapter 6, recall the AA similarity criterion. Using the criterion, you will see that the triangles PAM and CAB are similar. Therefore, by the property of similar triangles, the corresponding sides of the triangles are proportional. AM AP MP So, we have Fig. 8.6 = AB AC BC MP BC = AP AC = cos A, From this, we find sin A.
+
+AM AB AP AC MP BC AM AB Similarly, tan A and so on.
+
+This shows that the trigonometric ratios of angle A in PAM not differ from those of angle A in CAB. In the same way, you should check that the value of sin A (and also of other trigonometric ratios) remains the same in QAN also. From our observations, it is now clear that the values of the trigonometric ratios of an angle do not vary with the lengths of the sides of the triangle, if the angle remains the same. Note: For the sake of convenience, we may write sin A, cos A, etc., in place of (sin A), (cos A), etc., respectively. But cosec A = (sin A) sin A (it is called sine inverse A). sin A has a different meaning, which will be discussed in higher classes. Similar conventions hold for the other trigonometric ratios as well. Sometimes, the Greek letter (theta) is also used to denote an angle. We have defined six trigonometric ratios of an acute angle. If we know any one of the ratios, can we obtain the other ratios? Let us see. 1 If in a right triangle ABC, sin A =, 3 then this means that lengths of the sides BC and AC of the triangle ABC are in the ratio 1: 3 (see Fig. 8.7). So if BC is equal to k, then AC will be 3 k, where k is any positive number. To determine other trigonometric ratios for the angle A, we need to find the length of the third side AB. Do you remember the Pythagoras theorem? Let us use it to determine the required length AB.
+
+BC 1 AC 3 , i.e., the Fig. 8.7 AB = AC – BC = (3 k) – ( k) = 8 k = (2 2 k) AB = 2 2 k AB = 2 2 k (Why is AB not – 2 2 k ?) AB 2 2 k 2 2 cos A = AC 3 k 3 Therefore, So, we get Now, Similarly, you can obtain the other trigonometric ratios of the angle A.
+
+Remark: Since the hypotenuse is the longest side in a right triangle, the value of sin A or cos A is always less than 1 (or, in particular, equal to 1). Let us consider some examples.
+
+4 3 Example 1: Given tan A =, find the other trigonometric ratios of the angle A. Solution: Let us first draw a right ABC (see Fig 8.8).
+
+BC 4 AB 3 Now, we know that tan A = .
+
+Therefore, if BC = 4 k, then AB = 3 k, where k is a positive number. Now, by using the Pythagoras Theorem, we have AC = AB + BC = (4 k) + (3 k) = 25 k So, Now, we can write all the trigonometric ratios using their definitions. BC 4 k 4 Fig. 8.8 AC = 5 k sin A = AC 5 k 5 AB 3 k 3 AC 5 k 5 1 5 , cosec A = cos A = 1 3 tan A 4 1 5 cos A 3 Therefore, cot A = and sec A = sin A 4 Example 2: If B and Q are acute angles such that sin B = sin Q, then prove that B = Q. Solution: Let us consider two right triangles ABC and PQR where sin B = sin Q (see Fig. 8.9).
+
+Fig. 8.9 We have sin B = and sin Q = AC PR = AB PQ AC AB = PR PQ Then Therefore, k, say (1)
+
+Now, using Pythagoras theorem, BC = AB AC and QR = PQ – PR BC AB AC k PQ k PR k PQ PR = QR PQ PR k So, (2)
+
+PQ PR PQ PR From (1) and (2), we have AC AB BC = PR PQ QR Then, by using Theorem 6.4, ACB ~ PRQ and therefore, B = Q. Example 3: Consider ACB, right-angled at C, in which AB = 29 units, BC = 21 units and ABC = (see Fig. 8.10). Determine the values of (i) cos + sin, (ii) cos – sin Solution: In ACB, we have AC = AB BC = (29) (21)
+
+Fig. 8.10 = (29 21)(29 21) (8)(50) 400 20units AC 20 AB 29 BC 21 AB 29 , cos = So, sin = 20 21 20 21 400 441 29 29 21 20 (21 20)(21 20) 41 29 Now, (i) cos + sin = 1, 29 841 and (ii) cos – sin = . 841 29 29 Example 4: In a right triangle ABC, right-angled at B, if tan A = 1, then verify that 2 sin A cos A = 1.
+
+BC AB BC = AB Solution: In ABC, tan A = = 1 (see Fig 8.11)
+
+i.e., Let AB = BC = k, where k is a positive number.
+
+Fig. 8.11 Now, AC = AB BC = ( k) ( k) k 2 BC 1 AC 2 AB 1 AC 2 Therefore, sin A = and cos A = 1 1 2 2 So, 2 sin A cos A = 2 1, which is the required value.
+
+Example 5: In OPQ, right-angled at P, OP = 7 cm and OQ – PQ = 1 cm (see Fig. 8.12). Determine the values of sin Q and cos Q. Solution: In OPQ, we have OQ = OP + PQ i.e., i.e., i.e., i.e., (1 + PQ) = OP + PQ (Why?) 1 + PQ + 2PQ = OP + PQ 1 + 2PQ = 7 PQ = 24 cm and OQ = 1 + PQ = 25 cm (Why?)
+
+Fig. 8.12 7 25 24 25 So, sin Q = and cos Q =
+
+[Box] AC AB PR PQ
+
+## EXERCISE 8.1
+
+Fig. 8.13
+
+## 8.3 Trigonometric Ratios of Some Specific Angles
+
+From geometry, you are already familiar with the construction of angles of 30°, 45°, 60° and 90°. In this section, we will find the values of the trigonometric ratios for these angles and, of course, for 0°.
+
+Trigonometric Ratios of 45° In ABC, right-angled at B, if one angle is 45°, then the other angle is also 45°, i.e., A = C = 45° (see Fig. 8.14). So, Now, Suppose BC = AB = a. Then by Pythagoras Theorem, AC = AB + BC = a + a = 2 a, and, therefore, AC = a 2 Using the definitions of the trigonometric ratios, we have: side opposite to angle 45° BC a 1 hypotenuse BC = AB (Why?)
+
+Fig. 8.14 sin 45° = AC a 2 2 side adjacent toangle 45° AB a 1 hypotenuse cos 45° = AC a 2 2 side opposite to angle 45° BC a side adjacent to angle 45° AB a tan 45° = 1 1 sin 45 1 cos 45 1 tan 45 Also, cosec 45° = 2, sec 45° = 2, cot 45° = 1.
+
+Trigonometric Ratios of 30° and 60° Let us now calculate the trigonometric ratios of 30° and 60°. Consider an equilateral triangle ABC. Since each angle in an equilateral triangle is 60°, therefore, A = B = C = 60°. Draw the perpendicular AD from A to the side BC (see Fig. 8.15). Now Therefore, and Now observe that: ABD is a right triangle, right-angled at D with BAD = 30° and ABD = 60° (see Fig. 8.15).
+
+Fig. 8.15 ABD ACD (Why?) BD = DC BAD = CAD (CPCT)
+
+As you know, for finding the trigonometric ratios, we need to know the lengths of the sides of the triangle. So, let us suppose that AB = 2 a. 1 Then, BD = BC = a 2 and Therefore, Now, we have: sin 30° = AD = AB – BD = (2 a) – ( a) = 3 a, AD = a 3 BD a 1 AB 2 a 2 BD a 1 AD a 3 3 1 sin 30 1 tan 30 AD a 3 3 AB 2 a 2 , cos 30° = tan 30° = .
+
+1 cos 30 3 2 Also, cosec 30° = 2, sec 30° = cot 30° = 3.
+
+Similarly, AD a 3 3 AB 2 a 2 sin 60° = , cos 60° =, tan 60° =, cosec 60° = sec 60° = 2 and cot 60° = Trigonometric Ratios of 0° and 90° Let us see what happens to the trigonometric ratios of angle A, if it is made smaller and smaller in the right triangle ABC (see Fig. 8.16), till it becomes zero. As A gets smaller and smaller, the length of the side BC decreases.The point C gets closer to point B, and finally when A becomes very close to 0°, AC becomes almost the same as AB (see Fig. 8.17).
+
+Fig. 8.16 Fig. 8.17 When A is very close to 0°, BC gets very close to 0 and so the value of BC sin A = is very close to 0. Also, when A is very close to 0°, AC is nearly the AC AB AC same as AB and so the value of cos A = is very close to 1.
+
+This helps us to see how we can define the values of sin A and cos A when A = 0°. We define: sin 0° = 0 and cos 0° = 1. Using these, we have: sin 0° tan 0° = 1 , tan 0° = 0, cot 0° = which is not defined. (Why?)
+
+cos 0° 1 cos 0 1 , which is again not defined.(Why?) sin 0 sec 0° = = 1 and cosec 0° = Now, let us see what happens to the trigonometric ratios of A, when it is made larger and larger in ABC till it becomes 90°. As A gets larger and larger, C gets smaller and smaller. Therefore, as in the case above, the length of the side AB goes on decreasing. The point A gets closer to point B. Finally when A is very close to 90°, C becomes very close to 0° and the side AC almost coincides with side BC (see Fig. 8.18).
+
+Fig. 8.18 When C is very close to 0°, A is very close to 90°, side AC is nearly the same as side BC, and so sin A is very close to 1. Also when A is very close to 90°, C is very close to 0°, and the side AB is nearly zero, so cos A is very close to 0. So, we define: Now, why don’t you find the other trigonometric ratios of 90°? We shall now give the values of all the trigonometric ratios of 0°, 30°, 45°, 60° and 90° in Table 8.1, for ready reference.
+
+sin 90° = 1 and cos 90° = 0.
+
+Table 8.1 Remark: From the table above you can observe that as A increases from 0° to 90°, sin A increases from 0 to 1 and cos A decreases from 1 to 0. Let us illustrate the use of the values in the table above through some examples. Example 6: In ABC, right-angled at B, AB = 5 cm and ACB = 30° (see Fig. 8.19). Determine the lengths of the sides BC and AC. Solution: To find the length of the side BC, we will choose the trigonometric ratio involving BC and the given side AB. Since BC is the side adjacent to angle C and AB is the side opposite to angle C, therefore AB BC 5 i.e., which gives Fig. 8.19 = tan C 1 3 = tan 30° = BC BC = 5 3 cm To find the length of the side AC, we consider AB sin 30° = (Why?)
+
+AC 1 5 = 2 AC i.e., i.e., Note that alternatively we could have used Pythagoras theorem to determine the third side in the example above, AC = 10 cm i.e., AC = AB BC 5 (5 3) cm = 10cm.
+
+Example 7: In PQR, right-angled at Q (see Fig. 8.20), PQ = 3 cm and PR = 6 cm. Determine QPR and PRQ. Solution: Given PQ = 3 cm and PR = 6 cm. PQ Therefore, = sin R PR 3 1 6 2 PRQ = 30° QPR = 60°. (Why?)
+
+Fig. 8.20 or sin R = So, and therefore, You may note that if one of the sides and any other part (either an acute angle or any side) of a right triangle is known, the remaining sides and angles of the triangle can be determined. Example 8: If sin (A – B) = cos (A + B) = 0° < A + B 90°, A > B, find A 2 and B.
+
+1 , 1 , 2 1 2 1 2 Solution: Since, sin (A – B) =, therefore, A – B = 30° (Why?)
+
+(1)
+
+Also, since cos (A + B) =, therefore, A + B = 60° (Why?) Solving (1) and (2), we get: A = 45° and B = 15°.
+
+(2)
+
+[Box] 1. In ABC, right-angled at B, AB = 24 cm, BC = 7 cm. Determine: (i) sin A, cos A (ii) sin C, cos C 2. In Fig. 8.13, find tan P – cot R. 3 3. If sin A = calculate cos A and tan A. 4 4. Given 15 cot A = 8, find sin A and sec A. 13 5. Given sec = calculate all other trigonometric ratios. 12 6. If A and B are acute angles such that cos A = cos B, then show that A = B. 7 7. If cot =, evaluate: (i) 8
+
+[Box] (1 sin )(1 sin) (1 cos )(1 cos) 1 tan A 1 + tan A
+
+[Box] 8. If 3 cot A = 4, check whether
+
+[Box] = cos A – sin A or not. 1 3
+
+[Box] 9. In triangle ABC, right-angled at B, if tan A = find the value of: (i) sin A cos C + cos A sin C (ii) cos A cos C – sin A sin C 10. In PQR, right-angled at Q, PR + QR = 25 cm and PQ = 5 cm. Determine the values of sin P, cos P and tan P. 11. State whether the following are true or false. Justify your answer. (i) The value of tan A is always less than 1. 12 (ii) sec A = for some value of angle A. 5 (iii) cos A is the abbreviation used for the cosecant of angle A. (iv) cot A is the product of cot and A. 4 (v) sin = for some angle. 3
+
+[Box] 1 2 1 3
+
+[Table]  A | 0° | 30° | 45° | 60° | 90° / sin A cos A tan A cosec A sec A cot A | 0 1 0 Not defined 1 Not defined | 1 2 3 2 1 3 2 2 3 3 | 1 2 1 2 1 2 2 1 | 3 2 1 2 3 2 3 2 1 3 | 1 0 Not defined 1 Not defined 0
+
+## EXERCISE 8.2
+
+[Box] 1. Evaluate the following: (i) sin 60° cos 30° + sin 30° cos 60° cos 45° (iii)
+
+[Box] (ii) 2 tan 45° + cos 30° – sin 60° sin 30° + tan 45° – cosec 60° (iv) sec 30° + cos 60° + cot 45° sec 30° + cosec 30°
+
+[Box] 5 cos 60 4 sec 30 tan 45 (v)
+
+[Box] sin 30 cos 30
+
+[Box] 2. Choose the correct option and justify your choice:
+
+[Box] 2 tan 30 (i) 1 tan 30 (A) sin 60° (B) cos 60°
+
+[Box] 1 tan 45 (ii) 1 tan 45 (A) tan 90° (B) 1 (iii) sin 2A = 2 sin A is true when A = (A) 0°
+
+[Box] 2 tan 30 1 tan 30 (A) cos 60° (B) sin 60°
+
+[Box] 3. If tan (A + B) = 3 and tan (A – B) =; 0° < A+ B 90°; A> B, find Aand B.
+
+[Box] 4. State whether the following are true or false. Justify your answer. (i) sin (A + B) = sin A + sin B. (ii) The value of sin increases as increases. (iii) The value of cos increases as increases. (iv) sin = cos for all values of. (v) cot A is not defined for A = 0°.
+
+## 8.4 Trigonometric Identities
+
+You may recall that an equation is called an identity when it is true for all values of the variables involved. Similarly, an equation involving trigonometric ratios of an angle is called a trigonometric identity, if it is true for all values of the angle(s) involved. In this section, we will prove one trigonometric identity, and use it further to prove other useful trigonometric identities. In ABC, right-angled at B (see Fig. 8.21), we have: AB + BC = AC Dividing each term of (1) by AC, we get Fig. 8.21 (1)
+
+AB BC AC = AC AC AC i.e., = i.e., i.e., This is true for all A such that 0° A 90°. So, this is a trigonometric identity. Let us now divide (1) by AB. We get AB BC AC = (cos A) + (sin A) = 1 cos A + sin A = 1 (2)
+
+AB AB AB or, = i.e., Is this equation true for A = 0°? Yes, it is. What about A = 90°? Well, tan A and sec A are not defined for A = 90°. So, (3) is true for all A such that 0° A 90°. Let us see what we get on dividing (1) by BC. We get AB BC AC = 1 + tan A = sec A (3)
+
+BC BC BC AB BC BC BC cot A + 1 = cosec A AC = BC i.e., i.e., Note that cosec A and cot A are not defined for A = 0°. Therefore (4) is true for all A such that 0° < A 90°. Using these identities, we can express each trigonometric ratio in terms of other trigonometric ratios, i.e., if any one of the ratios is known, we can also determine the values of other trigonometric ratios. Let us see how we can do this using these identities. Suppose we know that 1 tan A = Then, cot A = 3. 3 (4)
+
+1 4 , sec A =, and cos A = 3 3 2 3 3 2 Since, sec A = 1 + tan A = 1 Again, sin A = . Therefore, cosec A = 2.
+
+Example 9: Express the ratios cos A, tan A and sec A in terms of sin A. Solution: Since cos A + sin A = 1, therefore, cos A = 1 – sin A, i.e., cos A = 1 sin A This gives cos A = 1 sin A (Why?)
+
+sin A cos A 1 – sin A sin A 1 cos A 1 sin A 1 Hence, tan A = = and sec A = Example 10: Prove that sec A (1 – sin A)(sec A + tan A) = 1. Solution:
+
+1 (1 sin A) cos A 1 sin A cos A cos A LHS = sec A (1 – sin A)(sec A + tan A) = (1 sin A)(1 + sin A) 1 sin A = cos A = cos A cos A 1 = RHS cos A cot A – cos A cosec A – 1 cot A + cos A cosec A + 1 cos A Example 11: Prove that cos A cot A – cos A sin A cot A + cos A cos A sin A 1 = Solution: LHS = cos A 1 sin A 1 1 sin A 1 sin A 1 sin A cos A 1 cosec A – 1 cosec A + 1 1 = RHS cos A sin cos 1 sin cos 1 sec tan 1 Example 12: Prove that sec = 1 + tan. Solution: Since we will apply the identity involving sec and tan, let us first convert the LHS (of the identity we need to prove) in terms of sec and tan by dividing numerator and denominator by cos sin – cos + 1 tan 1 sec sin + cos – 1 tan 1 sec , using the identity LHS = (tan sec) 1 {(tan sec) 1} (tan sec) = (tan sec) 1 {(tan sec) 1} (tan sec)
+
+(tan sec) (tan sec) = {tan sec 1} (tan sec)
+
+– 1 tan sec = (tan sec 1) (tan sec)
+
+–1 tan sec sec tan 1 , = which is the RHS of the identity, we are required to prove.
+
+[Box] AB BC AC AC
+
+[Box] AB BC AB AB
+
+[Box] 3 1 4 2
+
+[Box] 1 cos A 1
+
+## EXERCISE 8.3
+
+[Box] 1. Express the trigonometric ratios sin A, sec A and tan A in terms of cot A. 2. Write all the other trigonometric ratios of A in terms of sec A. 3. Choose the correct option. Justify your choice. (i) 9 sec A – 9 tan A = (A) 1 (ii) (1 + tan + sec) (1 + cot – cosec) = (A) 0 (iii) (sec A + tan A) (1 – sin A) = (A) sec A
+
+[Box] 1 tan A (iv) 1 + cot A (A) sec A
+
+[Box] 4. Prove the following identities, where the angles involved are acute angles for which the expressions are defined.
+
+[Box] 1 cos 1 cos cot 1 sec cosec cos A 1 sin A (ii) 1 + sin A cos A
+
+[Box] (i) (cosec – cot) =
+
+[Box] 2 sec A tan 1 cot 1 tan [ Hint: Write the expression in terms of sin and cos ] 1 sec A sin A sec A 1 – cos A cos A – sin A + 1 cos A + sin A – 1 1 sin A 1 – sin A
+
+[Box] [ Hint: Simplify LHS and RHS separately]
+
+[Box] cosec A + cot A, using the identity cosec A= 1 + cot A.
+
+[Box] sin 2 sin (vii) 2 cos cos
+
+[Box] sec A + tan A tan
+
+[Box] (viii) (sin A + cosec A) + (cos A + sec A) = 7 + tan A + cot A
+
+## 8.5 Summary
+
+[Box] (ix) (cosec A – sin A)(sec A – cos A)
+
+[Box] tan A + cot A
+
+[Box] [ Hint: Simplify LHS and RHS separately] 1 tan A 1 tan A (x) 1 + cot A 1 – cot A
+
+[Box] In this chapter, you have studied the following points: 1. In a right triangle ABC, right-angled at B, side opposite to angle A hypotenuse side adjacent to angle A hypotenuse sin A =
+
+[Box] , cos A = side opposite toangle A side adjacent to angle A 1 sin A tan A =
+
+[Box] . 1 cos A
+
+[Box] 1 cot A sin A cos A
+
+[Box] 2. cosec A =; sec A =; tan A =, tan A = 3. If one of the trigonometric ratios of an acute angle is known, the remaining trigonometric ratios of the angle can be easily determined. 4. The values of trigonometric ratios for angles 0°, 30°, 45°, 60° and 90°. 5. The value of sin Aor cos Anever exceeds 1, whereas the value of sec A(0° A< 90°) or cosec A (0° < A 90º) is always greater than or equal to 1. 6. sin A + cos A = 1, sec A – tan A = 1 for 0° A < 90°, cosec A= 1 + cot A for 0° < A 90º.

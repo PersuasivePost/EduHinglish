@@ -30,6 +30,10 @@ Social Science class 9/
 *.pth
 *.gguf
 *.ckpt
+# Model archives downloaded from Google Drive
+*.zip
+# Gemma tokenizer (33MB) is identical to the base model's on Hugging Face
+models/gemma_*/adapter/tokenizer.json
 
 # Model cache (external downloaded models, not our trained ones)
 model_cache/
@@ -77,3 +81,9 @@ outputs/pipeline_results/*.json
 
 data/ncert_kaggle
 
+
+# Staging folder for scripts/publish_kaggle_dataset.py
+outputs/kaggle_dataset/
+
+# Backend chat history (SQLite)
+backend/data/

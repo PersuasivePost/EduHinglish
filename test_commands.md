@@ -176,7 +176,7 @@ python training/evaluate_muril.py
 graph TD
     A[Cleaned NCERT Text] -->|chunker.py| B[Paragraph Chunks with Metadata]
     B -->|embedder.py| C[Dense Vector Embeddings]
-    C -->|build_knowledge_base.py| D[ChromaDB ncert_biology Collection]
+    C -->|build_knowledge_base.py| D[ChromaDB ncert_textbooks Collection]
     E[Student Hinglish Query] -->|retriever.py| F[Top-k matching NCERT paragraphs]
 ```
 
@@ -220,49 +220,40 @@ pytest tests/test_retriever.py
 ### 1. Architectural Flow
 ```mermaid
 graph TD
-    A[data/unified_biology_dataset_v2.json] -->|prepare_seq2seq_data.py| B[Hugging Face seq2seq dataset splits]
-    B -->|train_indicbart.py| C[Fine-tuned IndicBART model]
+    A[data/bio_9_10.json + data/ss_9_10.json] -->|Gemma chat format| B[Fine-tune Gemma-3-4b-it with QLoRA on Colab]
+    B --> C[models/gemma_eduhinglish_v2/adapter]
     D[Student Question] -->|pipeline.py| E[M1 Preprocessing]
     E -->|M2 Retriever| F[ChromaDB Context Chunks]
-    F -->|M3 Generator| G[Grounded Hinglish Explanation]
+    F -->|M3 Generator + LoRA adapter| G[Grounded Hinglish Answer]
 ```
 
-* **Input:** Unified dataset JSON and student Hinglish questions.
+* **Input:** The curated QA datasets and student Hinglish questions.
 * **Processing:**
-  1. Unified dataset is split into training and validation sets for sequence-to-sequence learning.
-  2. Formats inputs into Type A (Direct Translation), Type B (Query-Grounded), and Type C (Topic-Conditioned) prompts.
-  3. Tokenizes text using the `ai4bharat/IndicBART` tokenizer.
-  4. Fine-tunes IndicBART model on generative tasks.
-  5. Integration combines M1 preprocessor, M2 ChromaDB retriever, and M3 generator.
-* **Desired Output:** A grounded Hinglish response generator; pipeline taking questions and returning context-grounded Hinglish explanations.
+  1. `scripts/build_dataset.py` renders every entry into the Gemma chat format (`Context / Question / Intent Type / instruction`).
+  2. `training/colab_notebooks/05_gemma_finetune_v4_resumable.ipynb` fine-tunes `google/gemma-3-4b-it` with QLoRA on a Colab GPU.
+  3. `src/generator.py` loads the base model plus the adapter and rebuilds the same prompt at inference time.
+  4. Integration combines M1 preprocessor, M2 ChromaDB retriever, and M3 generator.
+* **Desired Output:** Context-grounded Hinglish answers.
 
 ### 2. Execution Commands
 
-#### Step A: Prepare Seq2Seq Generative Splits
+#### Step A: Build the Gemma Training Data
 ```bash
-python training/prepare_seq2seq_data.py
+python scripts/build_dataset.py <entries.json> --chapter <chapter_key>
 ```
-* **What it does:** Filters short sentences, formats prompts (Types A/B/C), and writes the Hugging Face dataset to `training/data/indicbart_seq2seq_dataset/`.
+* **What it does:** Validates a chapter's entries and appends them to `data/bio_9_10.json` or `data/ss_9_10.json` in Gemma format.
 
-#### Step B: Fine-Tune IndicBART Generative Model (Colab/Local)
-```bash
-python training/train_indicbart.py
-```
-* **What it does:** Trains IndicBART seq2seq transformer model to translate/respond.
+#### Step B: Fine-Tune Gemma (Colab)
+Open `training/colab_notebooks/05_gemma_finetune_v4_resumable.ipynb` on a Colab GPU and run all cells (re-run after a disconnect to resume).
+* **What it does:** QLoRA fine-tunes Gemma-3-4b-it on all five subjects and saves the LoRA adapter.
 
-#### Step C: Evaluate Generative Performance
-```bash
-python training/evaluate_generator.py
-```
-* **What it does:** Evaluates output translations against ground truth on test splits using BLEU, length ratios, and CMI delta.
-
-#### Step D: Local Generator Inference Test
+#### Step C: Local Generator Inference Test
 ```bash
 python src/generator.py
 ```
-* **What it does:** Runs local inference on sample sentences to check generator post-processing.
+* **What it does:** Loads Gemma plus the adapter and answers a sample question from mock retrieved chunks. Needs a GPU (or a lot of patience on CPU).
 
-#### Step E: Run Unified End-to-End QA Pipeline (M1 → M2 → M3)
+#### Step D: Run Unified End-to-End QA Pipeline (M1 → M2 → M3)
 ```bash
 python src/pipeline.py --query "Mitochondria ka cell mein kya function hota hai?"
 ```
@@ -285,7 +276,6 @@ Generate the updated training and validation splits for all downstream models:
 ```bash
 python training/prepare_spacy_data.py
 python training/prepare_hf_data.py
-python training/prepare_seq2seq_data.py
 ```
 
 ### 3. Re-train Phase 3 Baselines (spaCy)
@@ -303,11 +293,9 @@ python training/train_muril_lid.py
 python training/train_muril_intent.py
 ```
 
-### 5. Re-train Phase 6 Generator (IndicBART)
-Fine-tune the sequence-to-sequence model on the updated seq2seq splits:
-```bash
-python training/train_indicbart.py
-```
+### 5. Re-train Phase 6 Generator (Gemma)
+Rebuild the Gemma data with `scripts/build_dataset.py`, then re-run
+`training/colab_notebooks/05_gemma_finetune_v4_resumable.ipynb` on Colab.
 
 ### 6. Rebuild Vector Database (Optional)
 If your dataset changes involved adding or modifying the raw NCERT text corpus, you must also rebuild the ChromaDB knowledge base:

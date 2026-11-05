@@ -1,8 +1,8 @@
 # EduHinglish — Implementation Plan v2.0
 
-> **Goal:** Upgrade EduHinglish from a biology-only, 5-intent, broken translation system into a
-> full CBSE Class 9–10 multi-subject Hinglish LLM using Gemma-3-4B-it for QA and IndicBART for
-> bidirectional Hinglish↔English translation.
+> **Goal:** Upgrade EduHinglish from a biology-only, 5-intent system with a broken generator into a
+> full CBSE Class 9–10 multi-subject Hinglish LLM using Gemma-3-4B-it to answer directly in
+> Hinglish from retrieved NCERT context.
 
 ---
 
@@ -13,9 +13,9 @@
 | Dataset | `unified_biology_dataset_v2.json` — 950 biology sentence pairs | Too small, wrong format, biology-only |
 | LID Model | MuRIL, 5 tags (HI/EN/NE/UNIV/MIX) | Missing NUM, SYM — breaks on numericals & chemistry |
 | Intent Model | MuRIL, 5 intents (biology only) | No solve_numerical, chemical_reaction, derivation etc. |
-| Generator | IndicBART fine-tuned for translation | Hallucination, repetition — wrong task framing |
+| Generator | Earlier seq2seq generator (retired) | Hallucination, repetition — wrong task framing |
 | Vector DB | 10 biology chapters (Class 9 & 10) | Needs all subjects |
-| Pipeline | M1→M2→M3 wired | M3 broken; no translator module |
+| Pipeline | M1→M2→M3 wired | M3 broken |
 
 ---
 
@@ -39,22 +39,10 @@ Student Query (Hinglish / Hindi / English)
   └─ Output: [context_chunk_1, context_chunk_2, context_chunk_3]
          │
          ▼
-[M3-A] IndicBART Translator (Hinglish → English)  ────────────────
-  │  Input: student's Hinglish query
-  │  Output: clean English query
-  └─ e.g. "Newton ka 3rd law samjhao" → "Explain Newton's 3rd law"
-         │
-         ▼
-[M3-B] Gemma-3-4B-it (English QA)  ──────────────────────────────
-  │  Input: context (RAG) + English query + intent
-  │  Generates: detailed English answer (3–6 sentences)
+[M3] Gemma-3-4B-it (Hinglish QA)  ────────────────────────────────
+  │  Input: context (RAG) + student's query + intent hint
+  │  Generates: grounded answer in Roman Hinglish
   └─ Adapts response style per intent (solve / explain / list etc.)
-         │
-         ▼
-[M3-C] IndicBART Translator (English → Hinglish)  ────────────────
-  │  Input: Gemma's English answer
-  │  Output: Natural Hinglish answer
-  └─ e.g. "Newton's 3rd law states..." → "Newton ka 3rd law kehta hai..."
          │
          ▼
 Final Hinglish Answer → M5 UI
@@ -92,7 +80,7 @@ Final Hinglish Answer → M5 UI
 | `10-agri-sci.xlsx` | Agricultural Science |
 
 **Total: 19 Excel files. All columns: `question`, `answer`, `context`, `class`**
-**All data is in English — Hinglish versions will be auto-generated using IndicBART.**
+**All data is in English — Hinglish versions are written by hand alongside it.**
 
 ---
 
@@ -125,20 +113,11 @@ Each Excel row → one JSON record:
 
 ---
 
-### 1.2 — Auto-generate Hinglish using IndicBART
+### 1.2 — Hinglish Questions and Answers
 
-**File to create:** `training/generate_hinglish_pairs.py` *(NEW)*
-
-Run **base** IndicBART (before fine-tuning) to translate each English question + answer into Hinglish:
-```python
-# For each record in cbse_qa_dataset.json:
-question_hinglish = indicbart_translate(question_english, direction="en→hi")
-answer_hinglish   = indicbart_translate(answer_english,   direction="en→hi")
-```
-
-> **Note:** These are **approximate** Hinglish translations. Quality will improve after IndicBART is
-> fine-tuned on the translation dataset in Phase 4. For now, they give enough signal to train
-> MuRIL LID and Intent models.
+Hinglish versions of every question and answer are written by hand next to the English ones
+(Roman script only, technical terms kept in English), so the LID and Intent models and Gemma
+train on natural student-style Hinglish.
 
 **Output:** `data/cbse_qa_dataset_with_hinglish.json` (same records, `null` fields now populated)
 
@@ -272,67 +251,7 @@ INTENT2ID = {
 
 ---
 
-## Phase 4 — IndicBART: Retrain as Bidirectional Translator
-
-IndicBART's new role is **translation only** — not QA generation. Fine-tuned on Hinglish ↔ English
-sentence pairs derived from the Excel dataset.
-
-### Why This Role Change?
-IndicBART was pre-trained on the **Samanantar** corpus — millions of Hindi↔English parallel
-sentence pairs. Translation is exactly what it was built for. QA generation requires instruction
-following, which it was never trained for → hallucination and repetition result.
-
-### Training Data Format
-
-**File to create:** `training/prepare_translation_data.py` *(NEW)*
-
-From `cbse_qa_dataset_labeled.json`, extract parallel pairs in **both directions**:
-
-```python
-# Direction 1: Hinglish → English  (used at query time: M3-A)
-{
-    "source": "Newton ka 3rd law kya hota hai?",
-    "target": "What is Newton's 3rd law?",
-    "direction": "hi2en"
-}
-
-# Direction 2: English → Hinglish  (used at answer time: M3-C)
-{
-    "source": "Newton's 3rd law states that every action has an equal and opposite reaction.",
-    "target": "Newton ka 3rd law kehta hai ki har action ka ek equal aur opposite reaction hota hai.",
-    "direction": "en2hi"
-}
-```
-
-Both questions AND answers generate pairs:
-- ~21,000 QA pairs × 2 (Q + A) × 2 (directions) = **~84,000 translation pairs**
-
-### IndicBART Tokenizer Configuration
-```python
-# For EN → HI translation (M3-C):
-tokenizer.src_lang = "en_XX"
-tokenizer.tgt_lang = "hi_IN"
-forced_bos_token_id = tokenizer.lang_code_to_id["hi_IN"]
-
-# For HI → EN translation (M3-A):
-tokenizer.src_lang = "hi_IN"
-tokenizer.tgt_lang = "en_XX"
-forced_bos_token_id = tokenizer.lang_code_to_id["en_XX"]
-```
-
-**File to create:** `training/train_indicbart_translator.py` *(NEW)*
-
-Key differences vs old `training/train_indicbart.py`:
-- No Type A/B/C pairs — single clean `(source, target, direction)` format
-- Bidirectional training in same dataset
-- `no_repeat_ngram_size=3` and `repetition_penalty=1.3` added to generation config
-- `forced_bos_token_id` set per direction
-
-**Model saved to:** `models/indicbart_translator_v1/`
-
----
-
-## Phase 5 — Gemma-3-4B-it: Fine-tune for NCERT QA
+## Phase 4 — Gemma-3-4B-it: Fine-tune for NCERT QA
 
 ### Model
 `google/gemma-3-4b-it` — 4 billion parameter instruction-tuned model. Fine-tuned with QLoRA on
@@ -400,47 +319,26 @@ QUANTIZATION   = "4bit"  # QLoRA: bitsandbytes NF4
 
 ---
 
-## Phase 6 — Pipeline Wiring: M3 Refactor
-
-### New Module
-
-**File to create:** `src/translator.py` *(NEW)*
-
-```python
-class HinglishTranslator:
-    """
-    IndicBART-based bidirectional translator.
-
-    Methods:
-        translate(text, direction="hi2en") → str   (Hinglish → English)
-        translate(text, direction="en2hi") → str   (English → Hinglish)
-    """
-```
+## Phase 5 — Pipeline Wiring: M3 Refactor
 
 ### `src/generator.py` — Modified
 
-**Old behaviour:** Loads IndicBART, generates Hinglish directly from English NCERT context.
+**Old behaviour:** Loaded a seq2seq model and generated Hinglish directly from English NCERT context.
 
-**New behaviour:** Loads Gemma-3-4B-it, generates a detailed English answer given:
-- Retrieved English context (from M2)
-- English query (translated by M3-A)
-- Intent label (from M1)
+**New behaviour:** Loads Gemma-3-4B-it with the LoRA adapter and answers in Hinglish given:
+- Retrieved NCERT context (from M2)
+- The student's query
+- Intent label (from M1), left out when the classifier is unsure
 
 ### `src/pipeline.py` — Modified (M3 section)
 
 ```python
-# ── Old M3 (one step) ─────────────────────────────────────────────
-answer_hinglish = generator.generate(context + query_hinglish)
-
-# ── New M3 (three steps) ──────────────────────────────────────────
-query_english   = translator.translate(query_hinglish, direction="hi2en")   # M3-A
-answer_english  = gemma.generate(context, query_english, intent)             # M3-B
-answer_hinglish = translator.translate(answer_english, direction="en2hi")    # M3-C
+answer_hinglish = generator.generate_answer(query, retrieved_chunks, intent, intent_confidence)
 ```
 
 ---
 
-## Phase 7 — Vector DB Expansion (All Subjects)
+## Phase 6 — Vector DB Expansion (All Subjects)
 
 Currently only 10 biology chapters are indexed in ChromaDB. Expand to all Class 9 & 10 subjects.
 
@@ -476,40 +374,31 @@ Each phase is sequential — its output is consumed by the next.
 
 ```
 Phase 1a │ training/convert_excel_to_json.py      → data/cbse_qa_dataset.json
-Phase 1b │ training/generate_hinglish_pairs.py    → data/cbse_qa_dataset_with_hinglish.json
 Phase 1c │ training/auto_label_intents.py         → data/cbse_qa_dataset_labeled.json  ★ MAIN
          │
 Phase 2  │ [MODIFY] train_muril_lid.py            → models/muril_lid_v3/        (7 tags)
 Phase 3  │ [MODIFY] train_muril_intent.py         → models/muril_intent_v3/     (12 intents)
          │
-Phase 4  │ training/prepare_translation_data.py   →
-         │ training/train_indicbart_translator.py → models/indicbart_translator_v1/
-         │
-Phase 5  │ training/prepare_gemma_data.py         →
+Phase 4  │ training/prepare_gemma_data.py         →
          │ training/train_gemma_ncert.py          → models/gemma_ncert_v1/
          │
-Phase 6  │ [NEW]    src/translator.py             → HinglishTranslator class
-         │ [MODIFY] src/generator.py              → Gemma QA engine
-         │ [MODIFY] src/pipeline.py               → M1→M2→M3-A→M3-B→M3-C wired
+Phase 5  │ [MODIFY] src/generator.py              → Gemma QA engine
+         │ [MODIFY] src/pipeline.py               → M1→M2→M3 wired
          │
-Phase 7  │ [MODIFY] src/chunker.py + embedder.py → ChromaDB re-indexed (all subjects)
+Phase 6  │ [MODIFY] src/chunker.py + embedder.py → ChromaDB re-indexed (all subjects)
 ```
 
 ---
 
 ## Complete File Changelist
 
-### New Files (8)
+### New Files (4)
 | File | Phase | Purpose |
 |---|---|---|
 | `training/convert_excel_to_json.py` | 1a | Merge all 19 Excel files → unified JSON |
-| `training/generate_hinglish_pairs.py` | 1b | Auto-generate Hinglish Q&A via IndicBART |
 | `training/auto_label_intents.py` | 1c | Rule-based intent assignment |
-| `training/prepare_translation_data.py` | 4 | Build 84k bidirectional translation pairs |
-| `training/train_indicbart_translator.py` | 4 | Fine-tune IndicBART as translator |
-| `training/prepare_gemma_data.py` | 5 | Build Gemma chat-format QA dataset |
-| `training/train_gemma_ncert.py` | 5 | Fine-tune Gemma with QLoRA |
-| `src/translator.py` | 6 | HinglishTranslator inference class |
+| `training/prepare_gemma_data.py` | 4 | Build Gemma chat-format QA dataset |
+| `training/train_gemma_ncert.py` | 4 | Fine-tune Gemma with QLoRA |
 
 ### Modified Files (8)
 | File | Change | Phase |
@@ -518,17 +407,15 @@ Phase 7  │ [MODIFY] src/chunker.py + embedder.py → ChromaDB re-indexed (all 
 | `training/prepare_spacy_data.py` | Add NUM/SYM regex detection logic | 2 |
 | `training/train_muril_intent.py` | Expand `INTENT2ID` to 12; `NUM_INTENTS=12` | 3 |
 | `training/prepare_hf_data.py` | Update intent label list to 12 classes | 3 |
-| `src/generator.py` | Replace IndicBART QA → Gemma-3-4B-it QA | 6 |
-| `src/pipeline.py` | Wire M3-A → M3-B → M3-C | 6 |
-| `src/chunker.py` | Expand `CHAPTER_MAP` to all subjects | 7 |
-| `src/retriever.py` | Add subject/class filter to `retrieve()` | 7 |
+| `src/generator.py` | Replace seq2seq generator → Gemma-3-4B-it QA | 5 |
+| `src/pipeline.py` | Wire Gemma generator into M3 | 5 |
+| `src/chunker.py` | Expand `CHAPTER_MAP` to all subjects | 6 |
+| `src/retriever.py` | Add subject/class filter to `retrieve()` | 6 |
 
 ### Superseded Files (keep but archive — do not delete)
 | File | Replaced By |
 |---|---|
 | `data/unified_biology_dataset_v2.json` | `data/cbse_qa_dataset_labeled.json` |
-| `training/train_indicbart.py` | `training/train_indicbart_translator.py` |
-| `training/prepare_seq2seq_data.py` | `training/prepare_translation_data.py` |
 
 ---
 
@@ -539,9 +426,8 @@ Phase 7  │ [MODIFY] src/chunker.py + embedder.py → ChromaDB re-indexed (all 
 | Phase 1 — data scripts | Local Mac | None (pure Python) |
 | Phase 2 — MuRIL LID retrain | Google Colab (free T4) | T4 16GB |
 | Phase 3 — MuRIL Intent retrain | Google Colab (free T4) | T4 16GB |
-| Phase 4 — IndicBART translator | Google Colab (free T4) | T4 16GB |
-| Phase 5 — Gemma-3-4B-it QLoRA | Google Colab Pro (A100) | A100 40GB |
-| Phase 6–7 — code changes | Local Mac | None |
+| Phase 4 — Gemma-3-4B-it QLoRA | Google Colab Pro (A100) | A100 40GB |
+| Phase 5–6 — code changes | Local Mac | None |
 
 > **Gemma inference after training:** A T4 with 4-bit quantization (bitsandbytes) is sufficient.
 > Mac CPU inference is possible but slow (~30s per answer).
@@ -553,11 +439,6 @@ Phase 7  │ [MODIFY] src/chunker.py + embedder.py → ChromaDB re-indexed (all 
 - **Hindi & English literature Excels** (`Class 9 Hindi.xlsx`, `class 9 English.xlsx`,
   `10-eng.xlsx`) — these are passage-based comprehension QA sets, structurally different from
   factual NCERT questions. Include or exclude based on project scope.
-
-- **Phase 1b quality caveat** — The Hinglish generated by base (untuned) IndicBART will be
-  Devanagari-heavy and somewhat stiff. This is acceptable for bootstrapping LID/Intent training.
-  After Phase 4 (translator fine-tuning), re-running Phase 1b will produce much better Roman
-  Hinglish — optionally refresh the dataset at that point.
 
 - **Intent label noise** — Rule-based labeling (Phase 1c) will mislabel edge cases
   (e.g., "What is the formula for..." could be `definition` or `formula_request`). The MuRIL

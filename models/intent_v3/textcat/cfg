@@ -1,0 +1,21 @@
+{
+  "labels":[
+    "explain_concept",
+    "definition",
+    "compare_concepts",
+    "give_example",
+    "application_reallife",
+    "list_enumerate",
+    "describe_function",
+    "analytical",
+    "short_answer",
+    "numerical_problem",
+    "mcq",
+    "true_false",
+    "fill_blank",
+    "one_word",
+    "assertion_reason"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

@@ -25,7 +25,7 @@ A 5-module integrated AI system:
 | -------------------------- | ---------------------------------------------------------------------- | -------------- |
 | **M1: Input Processing**   | Script detection → Normalization → Multi-layer LID → Intent extraction | ✅ Complete    |
 | **M2: NCERT Retriever**    | RAG pipeline over NCERT textbook chunks using ChromaDB                 | ✅ Complete    |
-| **M3: Hinglish Generator** | Fine-tuned IndicBART / Gemma-3-4b-it seq2seq Hinglish explanations     | 📋 In Progress |
+| **M3: Hinglish Generator** | Fine-tuned Gemma-3-4b-it (QLoRA) Hinglish answers from NCERT context | 📋 In Progress |
 | **M4: GEC Engine**         | Code-mix-aware grammar error correction                                | 📋 Planned     |
 | **M5: Web Interface**      | Streamlit / Flutter UI with FastAPI backend                            | 📋 Planned     |
 
@@ -67,8 +67,8 @@ The system can now "read" and retrieve relevant sections from NCERT textbooks.
 
 ## Current Status: Phase 6 — Hinglish Answer Generation 🚀
 
-We are currently working on **M3**, where the retrieved NCERT English context is transformed into natural Hinglish explanations. 
-**New Plan:** We are leveraging our massively scaled QA dataset to fine-tune **IndicBART** and **Gemma-3-4b-it** using PEFT/LoRA to achieve state-of-the-art Hinglish generation capabilities.
+We are currently working on **M3**, where the retrieved NCERT context is turned into natural Hinglish answers. 
+**Plan:** We are leveraging our massively scaled QA dataset to fine-tune **Gemma-3-4b-it** using QLoRA for grounded Hinglish answer generation.
 
 ---
 
@@ -136,7 +136,7 @@ Structured Output (JSON with step-by-step trace)
 | M2     | Vector DB         | ChromaDB (dev) / Pinecone (production) | Fully local in development; Pinecone provides managed vector search in production                                        |
 | M2     | Re-ranker         | cross-encoder/ms-marco-MiniLM-L-12-v2  | Lightweight cross-encoder; improves precision@3 significantly                                                            |
 | M3     | Data Enrichment   | Gemini API                             | Asynchronous LLM generation for scaling Hinglish translation datasets.                                                   |
-| M3     | Generator         | IndicBART / Gemma-3-4b-it              | Fine-tuning advanced LLMs for state-of-the-art native Hinglish output                                                    |
+| M3     | Generator         | Gemma-3-4b-it                          | Fine-tuning advanced LLMs for state-of-the-art native Hinglish output                                                    |
 | M3     | Fine-tuning       | LoRA via PEFT (HuggingFace)            | Efficient fine-tuning on Colab T4 GPU                                                                                    |
 | M4     | English GEC       | GECToR (BEA-2019 + Lang-8)             | Best English GEC F1; token edit-based, not seq2seq                                                                       |
 | M4     | Hindi GEC         | Rule-based (gender/verb agreement)     | Handles 3 most common Hinglish grammar error types                                                                       |
@@ -156,6 +156,6 @@ Structured Output (JSON with step-by-step trace)
 - [x] Phase 3 — spaCy model training (LID, NER, Intent)
 - [x] Phase 4 — MuRIL fine-tuning (Colab T4)
 - [x] Phase 5 — NCERT ChromaDB knowledge base
-- [ ] Phase 6 — IndicBART & Gemma-3-4b-it Hinglish generator fine-tuning
+- [ ] Phase 6 — Gemma-3-4b-it Hinglish generator fine-tuning
 - [ ] Phase 7 — GEC engine
 - [ ] Phase 8 — Full pipeline integration + Flutter/FastAPI UI

@@ -3,12 +3,11 @@ EduHinglish — Phase 3, Task 4: Train Intent Model
 ===================================================
 Trains a spaCy textcat pipeline for student query intent.
 
-Labels: explain_concept, compare_concepts, give_example,
-        formula_request, definition
+Labels: INTENT_LABELS in training/label_config.py (QA dataset taxonomy)
 
 Usage:
   python training/train_intent.py
-  python training/train_intent.py --epochs 50 --output models/intent_v2/
+  python training/train_intent.py --epochs 50 --output models/intent_v3/
   python training/train_intent.py --arch cnn
 """
 
@@ -26,21 +25,15 @@ from spacy.tokens import DocBin
 from spacy.training import Example
 from spacy.util import compounding, minibatch
 
+from label_config import INTENT_LABELS
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-TRAIN_DATA = Path("training/data/intent_train_v2.spacy")
-DEV_DATA   = Path("training/data/intent_dev_v2.spacy")
-OUTPUT_DIR = Path("models/intent_v2")
-
-INTENT_LABELS = [
-    "explain_concept",
-    "compare_concepts",
-    "give_example",
-    "formula_request",
-    "definition",
-]
+TRAIN_DATA = Path("training/data/intent_train_v3.spacy")
+DEV_DATA   = Path("training/data/intent_dev_v3.spacy")
+OUTPUT_DIR = Path("models/intent_v3")
 
 SEED = 42
 
@@ -256,13 +249,7 @@ def train(max_epochs: int = 50, output_dir: Path = OUTPUT_DIR, arch: str = "bow"
     best_model = spacy.load(output_dir)
     dev_acc, confusion = evaluate_textcat(best_model, dev_examples)
 
-    short = {
-        "explain_concept": "explain",
-        "compare_concepts": "compare",
-        "give_example": "example",
-        "formula_request": "formula",
-        "definition": "definition",
-    }
+    short = {lbl: lbl[:9] for lbl in INTENT_LABELS}
 
     print("\n  Confusion matrix (dev):")
     header = "Predicted →  " + "  ".join(f"{short[lbl]:<9s}" for lbl in INTENT_LABELS)

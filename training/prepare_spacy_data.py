@@ -1,11 +1,12 @@
 """
 EduHinglish — Phase 3, Task 1: Prepare spaCy Training Data
 ============================================================
-Converts data/unified_biology_dataset_v2.json into .spacy binary
+Converts data/unified_dataset_v3.json (scripts/build_unified_dataset.py)
+into .spacy binary
 files for three training tasks:
 
   1. LID  — token-level language identification (HI/EN/NE/UNIV/MIX)
-  2. NER  — science named-entity recognition
+  2. NER  — biology + social science named-entity recognition
   3. Intent — student-query intent classification
 
 Usage:
@@ -30,22 +31,14 @@ import spacy
 from spacy.tokens import Doc, DocBin
 from spacy.vocab import Vocab
 
+from label_config import INTENT_LABELS, LID_LABELS, NER_LABELS
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CONSTANTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_DATASET = Path("data/unified_biology_dataset_v2.json")
+DEFAULT_DATASET = Path("data/unified_dataset_v3.json")
 OUTPUT_DIR      = Path("training/data")
-
-LID_LABELS = ["HI", "EN", "NE", "UNIV", "MIX"]
-
-INTENT_LABELS = [
-    "explain_concept",
-    "compare_concepts",
-    "give_example",
-    "formula_request",
-    "definition",
-]
 
 # ── NER entity lists ─────────────────────────────────────────────────────────
 
@@ -97,12 +90,68 @@ INSTRUMENTS = {
     "test tube", "petri dish",
 }
 
+# ── Social Science (class 9) ─────────────────────────────────────────────────
+
+PERSONS = {
+    "buddha", "mahavira", "ashoka", "chandragupta maurya", "samudragupta",
+    "rudradaman", "karikala", "karikala chola", "nedunjeral adan",
+    "herodotus", "champollion", "xuanzang", "avvaiyar", "hammurabi",
+    "indira gandhi", "jagjivan ram", "babu jagjivan ram", "ambedkar",
+    "b r ambedkar", "jahangir", "aesop",
+}
+
+PLACES = {
+    "india", "egypt", "mesopotamia", "china", "africa", "europe", "asia",
+    "west asia", "central asia", "greece", "rome", "iraq", "iran", "turkey",
+    "punjab", "gujarat", "bihar", "tamil nadu", "karnataka", "kashmir",
+    "madhya pradesh", "uttar pradesh", "himachal pradesh", "andhra pradesh",
+    "harappa", "mohenjo daro", "lothal", "dholavira", "rakhigarhi",
+    "kanchipuram", "magadha", "kannauj", "junagadh", "girnar", "sanchi",
+    "poompuhar", "olduvai gorge", "sundarbans", "himalaya", "himalayas",
+    "deccan", "andaman", "nicobar islands", "bay of bengal",
+    "persian gulf", "pacific ocean", "indian ocean", "mediterranean",
+    "fertile crescent", "ganga", "indus", "sindhu", "sarasvati", "nile",
+    "tigris", "euphrates", "kaveri", "yellow river", "san andreas fault",
+}
+
+CIVILISATIONS = {
+    "harappan civilisation", "indus valley civilisation", "harappan",
+    "harappans", "vedic", "vedic period", "mauryan empire", "mauryas",
+    "guptas", "cholas", "cheras", "pandyas", "nandas", "sumerians",
+    "akkadians", "babylonians", "assyrian", "shang", "zhou", "qin",
+    "bronze age", "iron age", "stone age", "palaeolithic", "mesolithic",
+    "neolithic", "chalcolithic", "sangam", "silk route",
+    "industrial revolution", "renaissance",
+}
+
+INSTITUTIONS = {
+    "lok sabha", "rajya sabha", "vidhan sabha", "vidhan parishad",
+    "gram sabha", "gram panchayat", "panchayati raj", "parliament",
+    "election commission", "supreme court", "high court",
+    "constitution of india", "fundamental rights", "union budget",
+    "legislative assembly", "state assemblies", "union territories",
+    "universal adult franchise", "representation of the people act",
+}
+
+# Social science concepts share the CONCEPT label with biology concepts
+CONCEPTS |= {
+    "democracy", "federalism", "sovereignty", "secularism", "elections",
+    "market equilibrium", "demand curve", "supply curve", "opportunity cost",
+    "scarcity", "economic system", "plate tectonics", "erosion", "monsoon",
+    "climate change", "global warming", "troposphere", "stratosphere",
+    "weathering", "delta", "carbon footprint",
+}
+
 NER_CATEGORIES = {
-    "SCIENTIST":  SCIENTISTS,
-    "ORGANELLE":  ORGANELLES,
-    "PROCESS":    PROCESSES,
-    "CONCEPT":    CONCEPTS,
-    "INSTRUMENT": INSTRUMENTS,
+    "SCIENTIST":    SCIENTISTS,
+    "ORGANELLE":    ORGANELLES,
+    "PROCESS":      PROCESSES,
+    "CONCEPT":      CONCEPTS,
+    "INSTRUMENT":   INSTRUMENTS,
+    "PERSON":       PERSONS,
+    "PLACE":        PLACES,
+    "CIVILISATION": CIVILISATIONS,
+    "INSTITUTION":  INSTITUTIONS,
 }
 
 SEED = 42
@@ -174,6 +223,7 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
     _thick()
 
     docs: list[Doc] = []
+    silver_docs: list[Doc] = []
     skipped = 0
     label_counter: Counter = Counter()
 
@@ -224,26 +274,31 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
         doc = Doc(nlp.vocab, words=tokens)
         for i, tag in enumerate(tags):
             doc[i].tag_ = tag
-        docs.append(doc)
+        # Silver (auto-tagged) docs go to train only so dev stays gold
+        if entry.get("lid_label_source") == "silver":
+            silver_docs.append(doc)
+        else:
+            docs.append(doc)
 
     # Split
     train_docs, dev_docs = split_train_dev(docs)
+    train_docs += silver_docs
 
     # Save
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     train_db = DocBin(attrs=["TAG"], store_user_data=False)
     for d in train_docs:
         train_db.add(d)
-    train_db.to_disk(OUTPUT_DIR / "lid_train_v2.spacy")
+    train_db.to_disk(OUTPUT_DIR / "lid_train_v3.spacy")
 
     dev_db = DocBin(attrs=["TAG"], store_user_data=False)
     for d in dev_docs:
         dev_db.add(d)
-    dev_db.to_disk(OUTPUT_DIR / "lid_dev_v2.spacy")
+    dev_db.to_disk(OUTPUT_DIR / "lid_dev_v3.spacy")
 
     # Stats
     total_tokens = sum(label_counter.values())
-    print(f"\n  Docs created   : {len(docs)}")
+    print(f"\n  Docs created   : {len(docs)} gold + {len(silver_docs)} silver")
     print(f"  Docs skipped   : {skipped}")
     print(f"  Total tokens   : {total_tokens}")
     print(f"  Train docs     : {len(train_docs)}")
@@ -255,8 +310,8 @@ def prepare_lid(dataset: list[dict], nlp: spacy.Language) -> None:
         pct = cnt * 100 // max(total_tokens, 1)
         print(f"    {lbl:6s} {cnt:6d} ({pct:3d}%)")
     print()
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_train_v2.spacy'}")
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_dev_v2.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_train_v3.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'lid_dev_v3.spacy'}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -356,12 +411,12 @@ def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
     train_db = DocBin(store_user_data=False)
     for d in train_docs:
         train_db.add(d)
-    train_db.to_disk(OUTPUT_DIR / "ner_train_v2.spacy")
+    train_db.to_disk(OUTPUT_DIR / "ner_train_v3.spacy")
 
     dev_db = DocBin(store_user_data=False)
     for d in dev_docs:
         dev_db.add(d)
-    dev_db.to_disk(OUTPUT_DIR / "ner_dev_v2.spacy")
+    dev_db.to_disk(OUTPUT_DIR / "ner_dev_v3.spacy")
 
     # Stats
     total_spans = sum(span_counter.values())
@@ -372,12 +427,12 @@ def prepare_ner(dataset: list[dict], nlp: spacy.Language) -> None:
     print(f"  Dev docs          : {len(dev_docs)}")
     print()
     print("  NER spans by label:")
-    for cat in ["SCIENTIST", "ORGANELLE", "PROCESS", "CONCEPT", "INSTRUMENT"]:
+    for cat in NER_LABELS:
         cnt = span_counter[cat]
         print(f"    {cat:14s}: {cnt}")
     print()
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_train_v2.spacy'}")
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_dev_v2.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_train_v3.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'ner_dev_v3.spacy'}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -430,12 +485,12 @@ def prepare_intent(dataset: list[dict], nlp: spacy.Language) -> None:
     train_db = DocBin(store_user_data=True)  # store cats via user_data
     for d in train_docs:
         train_db.add(d)
-    train_db.to_disk(OUTPUT_DIR / "intent_train_v2.spacy")
+    train_db.to_disk(OUTPUT_DIR / "intent_train_v3.spacy")
 
     dev_db = DocBin(store_user_data=True)
     for d in dev_docs:
         dev_db.add(d)
-    dev_db.to_disk(OUTPUT_DIR / "intent_dev_v2.spacy")
+    dev_db.to_disk(OUTPUT_DIR / "intent_dev_v3.spacy")
 
     # Stats
     print(f"\n  Total intent entries: {len(docs)}")
@@ -447,8 +502,8 @@ def prepare_intent(dataset: list[dict], nlp: spacy.Language) -> None:
         cnt = intent_counter[lbl]
         print(f"    {lbl:20s}: {cnt}")
     print()
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_train_v2.spacy'}")
-    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_dev_v2.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_train_v3.spacy'}")
+    print(f"  ✓ Saved: {OUTPUT_DIR / 'intent_dev_v3.spacy'}")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

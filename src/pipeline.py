@@ -15,9 +15,11 @@ Usage:
     python pipeline.py --sentence "Your Hinglish sentence here"
     python pipeline.py --demo 1       # run a specific demo (1-4)
     python pipeline.py --query "Mitochondria ka kaam kya hai?"  # full M1→M2→M3
+    python pipeline.py --query "Ohm ka law kya hai?" --subject physics --class 10
 """
 
 import json
+import os
 import time
 import argparse
 from pathlib import Path
@@ -38,6 +40,15 @@ try:
     _M2_M3_AVAILABLE = True
 except ImportError:
     _M2_M3_AVAILABLE = False
+
+# Subject names accepted by answer_query(subject=...) → chunk metadata "subject"
+SUBJECT_ALIASES = {
+    "biology": "biology", "bio": "biology",
+    "chemistry": "chemistry", "chem": "chemistry",
+    "physics": "physics", "phys": "physics",
+    "mathematics": "mathematics", "maths": "mathematics", "math": "mathematics",
+    "social_science": "social_science", "social science": "social_science", "ss": "social_science",
+}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -78,13 +89,19 @@ class EduHinglishPipeline:
         "ek", "yeh", "woh", "bhi", "hi", "toh", "ne", "par", "pe",
     }
 
-    def __init__(self, mode: str = "preprocess"):
+    def __init__(self, mode: str = "preprocess", adapter_path: str = None,
+                 db_path: str = None, use_intent_model: bool = True):
         """
         Initialize the pipeline.
 
         Args:
             mode: "preprocess" — M1 only (current behavior, lightweight)
                   "full"       — M1 + M2 + M3 (loads embedder, retriever, generator)
+            adapter_path:     Gemma LoRA adapter (local folder or Hub repo id).
+                              None = $EDUHINGLISH_ADAPTER, then models/gemma_eduhinglish_v4|v3.
+            db_path:          ChromaDB folder. None = $EDUHINGLISH_KB_PATH or src/knowledge_base.
+            use_intent_model: Load the MuRIL intent classifier (skipped with a
+                              warning when its weights are missing).
         """
         self.mode = mode
         print(f"  EduHinglish — Pipeline  v2.0  (mode={mode})")
@@ -99,6 +116,7 @@ class EduHinglishPipeline:
         self.embedder  = None
         self.retriever = None
         self.generator = None
+        self.intent_clf = None
 
         if mode == "full":
             if not _M2_M3_AVAILABLE:
@@ -108,11 +126,24 @@ class EduHinglishPipeline:
                 self.mode = "preprocess"
             else:
                 project_root = Path(__file__).parent.parent
-                db_path = str(project_root / "src" / "knowledge_base")
+                db_path = db_path or os.environ.get(
+                    "EDUHINGLISH_KB_PATH", str(project_root / "src" / "knowledge_base"))
 
                 self.embedder  = NCERTEmbedder()
                 self.retriever = NCERTRetriever(db_path=db_path)
-                self.generator = HinglishGenerator()
+                if self.retriever.get_collection_stats()["total_documents"] == 0:
+                    print("\n[WARN] Knowledge base is empty. Build it with:\n"
+                          "         python scripts/build_knowledge_base.py --force")
+
+                if use_intent_model:
+                    try:
+                        from intent_classifier import IntentClassifier
+                        self.intent_clf = IntentClassifier()
+                    except Exception as exc:  # missing weights / offline
+                        print(f"\n[WARN] Intent classifier not loaded ({exc}).\n"
+                              "       Gemma will answer without an intent hint.")
+
+                self.generator = HinglishGenerator(adapter_path=adapter_path)
 
         print(f"\n[OK] All modules loaded. Pipeline ready (mode={self.mode}).")
 
@@ -301,20 +332,30 @@ class EduHinglishPipeline:
 
     # ── Full pipeline: M1→M2→M3 ───────────────────────────────────────────────
 
-    def answer_query(self, query: str) -> dict:
+    def answer_query(self, query: str, top_k: int = 3, subject: str = None,
+                     class_num: str = None, language: str = "hinglish",
+                     max_new_tokens: int = 256) -> dict:
         """
         Full pipeline: student query → preprocessing → retrieval → generation.
         Only available in mode="full".
 
         Steps:
-          1. M1: Run process() to detect language, normalize, extract key terms
-          2. M2: Use retriever.search(query, embedder, top_k=3) to find chunks
-          3. M3: Use generator.generate_answer(query, chunks) to generate answer
+          1. M1: Run process() to detect language/normalize, MuRIL predicts intent
+          2. M2: Use retriever.search(query, embedder, top_k) to find chunks
+                 (optionally filtered by subject / class)
+          3. M3: generator.generate_answer(query, chunks, intent) generates answer
+
+        Args:
+            subject:   biology | chemistry | physics | mathematics | social_science
+                       (short forms bio/chem/phys/maths/ss work too). None = all.
+            class_num: "9" or "10". None = both.
+            language:  "hinglish" or "english" answer.
 
         Returns:
             dict with keys:
               - "query":          original query
               - "preprocessing":  M1 output (script detection, LID, normalization)
+              - "intent":         MuRIL prediction (or None)
               - "retrieval":      list of retrieved chunk summaries
               - "generation":     generated Hinglish answer
               - "pipeline_trace": ordered list of step names + timings
@@ -336,13 +377,25 @@ class EduHinglishPipeline:
         print(f"\n  {Fore.CYAN}[STEP 1/3] M1 — Preprocessing{Style.RESET_ALL}")
         t0 = time.time()
         m1_result = self.process(query)
+        intent_result = self.intent_clf.predict(query) if self.intent_clf else None
+        if intent_result:
+            print(f"\n  Intent: {intent_result['intent']} ({intent_result['confidence']:.2f})")
         t1 = time.time()
         pipeline_trace.append({"step": "M1_preprocessing", "time_sec": round(t1 - t0, 3)})
 
         # ── Step 2: M2 — NCERT Retrieval ──────────────────────────────────────
         print(f"\n  {Fore.CYAN}[STEP 2/3] M2 — NCERT Retrieval{Style.RESET_ALL}")
         t2 = time.time()
-        retrieved_chunks = self.retriever.search(query, self.embedder, top_k=3)
+        filters = {}
+        if subject:
+            key = subject.strip().lower()
+            if key not in SUBJECT_ALIASES:
+                raise ValueError(f"Unknown subject {subject!r}. Use one of: {sorted(set(SUBJECT_ALIASES.values()))}")
+            filters["subject"] = SUBJECT_ALIASES[key]
+        if class_num:
+            filters["class"] = str(class_num)
+        retrieved_chunks = self.retriever.search(query, self.embedder, top_k=top_k,
+                                                 filters=filters or None)
         t3 = time.time()
         pipeline_trace.append({"step": "M2_retrieval", "time_sec": round(t3 - t2, 3)})
 
@@ -363,6 +416,8 @@ class EduHinglishPipeline:
             retrieval_summary.append({
                 "text_preview": text_preview,
                 "chapter": chapter,
+                "subject": meta.get("subject", ""),
+                "class": meta.get("class", ""),
                 "score": score,
                 "chunk_id": chunk.get("chunk_id", ""),
             })
@@ -370,7 +425,13 @@ class EduHinglishPipeline:
         # ── Step 3: M3 — Hinglish Generation ──────────────────────────────────
         print(f"\n  {Fore.CYAN}[STEP 3/3] M3 — Hinglish Generation{Style.RESET_ALL}")
         t4 = time.time()
-        gen_result = self.generator.generate_answer(query, retrieved_chunks)
+        gen_result = self.generator.generate_answer(
+            query, retrieved_chunks,
+            intent=intent_result["intent"] if intent_result else None,
+            intent_confidence=intent_result["confidence"] if intent_result else None,
+            language=language,
+            max_new_tokens=max_new_tokens,
+        )
         t5 = time.time()
         pipeline_trace.append({"step": "M3_generation", "time_sec": round(t5 - t4, 3)})
 
@@ -389,6 +450,7 @@ class EduHinglishPipeline:
         return {
             "query": query,
             "preprocessing": m1_result,
+            "intent": intent_result,
             "retrieval": retrieval_summary,
             "generation": gen_result,
             "pipeline_trace": pipeline_trace,
@@ -453,12 +515,18 @@ def main():
                         help="Run a specific demo (1-4)")
     parser.add_argument("--query", type=str, default=None,
                         help="Student query for full M1→M2→M3 pipeline")
+    parser.add_argument("--subject", type=str, default=None,
+                        help="Restrict retrieval: biology|chemistry|physics|mathematics|social_science")
+    parser.add_argument("--class", dest="class_num", type=str, default=None, choices=["9", "10"],
+                        help="Restrict retrieval to one class")
+    parser.add_argument("--adapter", type=str, default=None,
+                        help="Gemma LoRA adapter folder or Hub repo id")
     args = parser.parse_args()
 
     # ── Full pipeline mode (--query) ──────────────────────────────────────────
     if args.query:
-        pipeline = EduHinglishPipeline(mode="full")
-        result = pipeline.answer_query(args.query)
+        pipeline = EduHinglishPipeline(mode="full", adapter_path=args.adapter)
+        result = pipeline.answer_query(args.query, subject=args.subject, class_num=args.class_num)
 
         # Save
         out_path = (

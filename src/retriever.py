@@ -30,7 +30,7 @@ class NCERTRetriever:
     def __init__(
         self,
         db_path: str = "src/knowledge_base",
-        collection_name: str = "ncert_biology",
+        collection_name: str = "ncert_textbooks",
         db_type: str = "chroma",
     ):
         """
@@ -261,6 +261,8 @@ def main():
         "DNA replication mein enzyme kya role play karta hai?",
         "Stomata ka function kya hai?",
         "Cell division mein mitosis aur meiosis ka fark batao",
+        "Harappan cities ki drainage system kaisi thi?",
+        "Lok Sabha ke elections kaise hote hain?",
     ]
 
     for query in test_queries:

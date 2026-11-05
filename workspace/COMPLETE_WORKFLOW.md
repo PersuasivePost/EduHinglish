@@ -1,6 +1,6 @@
 # EduHinglish — Complete End-to-End Development & Training Workflow
 
-> **Overview:** This document provides the complete, step-by-step workflow for the EduHinglish system: from raw dataset collection to preprocessing, spaCy baseline training, MuRIL transformer fine-tuning, RAG vector indexing, IndicBART bidirectional translator fine-tuning, Gemma-3-4B-it QLoRA QA fine-tuning, and full end-to-end pipeline integration.
+> **Overview:** This document provides the complete, step-by-step workflow for the EduHinglish system: from raw dataset collection to preprocessing, spaCy baseline training, MuRIL transformer fine-tuning, RAG vector indexing, Gemma-3-4B-it QLoRA QA fine-tuning, and full end-to-end pipeline integration.
 
 ---
 
@@ -20,16 +20,8 @@ Student Query (Hinglish / Hindi / English)
   └── Filtered retrieval by Subject & Class
          │
          ▼
-[M3-A] IndicBART Translator (Hinglish → English)
-  └── Converts student query to clean English
-         │
-         ▼
-[M3-B] Gemma-3-4B-it QA Engine (NCERT-Grounded English QA)
-  └── Generates grounded, intent-styled English response
-         │
-         ▼
-[M3-C] IndicBART Translator (English → Hinglish)
-  └── Translates English response into natural Roman Hinglish
+[M3] Gemma-3-4B-it QA Engine (NCERT-grounded)
+  └── Generates a grounded, intent-aware answer in Roman Hinglish
          │
          ▼
 Final Hinglish Response (Sent to M5 UI)
@@ -81,7 +73,7 @@ Convert raw NCERT Excel QA sheets (Class 9 & 10 across Biology, History, Civics,
 ## Phase 2 — Data Preprocessing & Annotation Formatting
 
 ### 2.1 Objective
-Format the raw dataset into training formats for spaCy (DocBin), HuggingFace Datasets (PyTorch), seq2seq translation, and Gemma instruction tuning.
+Format the raw dataset into training formats for spaCy (DocBin), HuggingFace Datasets (PyTorch), and Gemma instruction tuning.
 
 ### 2.2 LID Tagset & Intent Class Taxonomies
 
@@ -197,54 +189,28 @@ python src/embedder.py --chunks_file data/processed/chunks_class9.json --db_path
 
 ---
 
-## Phase 6 — IndicBART Bidirectional Translator Fine-Tuning
+## Phase 6 — Gemma-3-4B-it QLoRA Fine-Tuning for NCERT QA
 
 ### 6.1 Objective
-Fine-tune `ai4bharat/IndicBART` (244M params) for bidirectional translation between Roman Hinglish and formal English (`Hinglish → English` and `English → Hinglish`).
+Fine-tune `google/gemma-3-4b-it` (4 billion parameter model) with 4-bit QLoRA to generate grounded, high-quality NCERT answers in Hinglish given the question, an optional intent hint and RAG context.
 
-### 6.2 Execution Steps
-1. **Prepare Seq2Seq Translation Dataset:**
-   ```bash
-   python training/prepare_translation_data.py \
-     --input_file data/cbse_qa_dataset_labeled.json \
-     --output_dir data/processed/translation/
-   ```
-2. **Fine-tune IndicBART Translator:**
-   ```bash
-   python training/train_indicbart_translator.py \
-     --data_dir data/processed/translation/ \
-     --output_dir models/indicbart_translator_v1/ \
-     --epochs 6 \
-     --batch_size 8 \
-     --lr 5e-5
-   ```
-
----
-
-## Phase 7 — Gemma-3-4B-it QLoRA Fine-Tuning for NCERT QA
-
-### 7.1 Objective
-Fine-tune `google/gemma-3-4b-it` (4 billion parameter model) with 4-bit QLoRA to generate grounded, high-quality NCERT answers in English given query intent and RAG context.
-
-### 7.2 Gemma Native Chat Template Format
+### 6.2 Gemma Native Chat Template Format
+Rendered by `scripts/build_dataset.py` and rebuilt identically at inference time by `src/generator.py`. Gemma has no system role, so the NCERT context goes in the user turn. About 12% of records omit the `Intent Type` line (intent dropout).
 ```
 <start_of_turn>user
-You are an expert NCERT tutor for Indian students (Class {class}).
+Context:
+{context}
 
-Subject: {subject}
-Chapter context:
-{context_english}
+Question:
+{question}
 
-Student's question: {question_english}
-Query type: {intent}
-Style instruction: {style_instruction}
-<end_of_turn>
+Intent Type: {intent}
+Answer the question in Hinglish using only the given context.<end_of_turn>
 <start_of_turn>model
-{answer_english}
-<end_of_turn>
+{answer}<end_of_turn>
 ```
 
-### 7.3 Training Configuration (`training/train_gemma_ncert.py`)
+### 6.3 Training Configuration (`training/train_gemma_ncert.py`)
 ```python
 MODEL_NAME     = "google/gemma-3-4b-it"
 QUANTIZATION   = "4bit"  # bitsandbytes NF4
@@ -256,7 +222,7 @@ GRAD_ACCUM     = 4       # Effective batch size = 16
 MAX_SEQ_LEN    = 1024
 ```
 
-### 7.4 Execution Commands
+### 6.4 Execution Commands
 1. **Prepare Gemma Chat Dataset:**
    ```bash
    python training/prepare_gemma_data.py \
@@ -273,16 +239,14 @@ MAX_SEQ_LEN    = 1024
 
 ---
 
-## Phase 8 — Pipeline Integration & Inference
+## Phase 7 — Pipeline Integration & Inference
 
-### 8.1 Module Summary
+### 7.1 Module Summary
 - **`M1` (`src/muril_processor.py`)**: Predicts word LID and 12-class query intent.
 - **`M2` (`src/retriever.py`)**: Retrieves top-3 NCERT chunks from ChromaDB.
-- **`M3-A` (`src/translator.py`)**: Translates Hinglish query → English query.
-- **`M3-B` (`src/generator.py`)**: Runs Gemma-3-4B-it QA engine on context + English query.
-- **`M3-C` (`src/translator.py`)**: Translates English answer → Roman Hinglish.
+- **`M3` (`src/generator.py`)**: Runs Gemma-3-4B-it with the LoRA adapter on context + question (+ intent) and answers in Roman Hinglish.
 
-### 8.2 Testing Full Pipeline Inference
+### 7.2 Testing Full Pipeline Inference
 ```bash
 python src/pipeline.py --query "Newton ka 3rd law samjhao" --subject "Physics" --class_num "9"
 ```
@@ -298,6 +262,5 @@ python src/pipeline.py --query "Newton ka 3rd law samjhao" --subject "Physics" -
 | **Phase 3** | spaCy baseline models | spaCy | CPU / Local |
 | **Phase 4** | MuRIL LID & Intent | `google/muril-base-cased` | Colab T4 (16GB VRAM) |
 | **Phase 5** | Vector DB creation | `paraphrase-multilingual-MiniLM-L12-v2` | CPU / Local |
-| **Phase 6** | IndicBART Translator | `ai4bharat/IndicBART` | Colab T4 (16GB VRAM) |
-| **Phase 7** | Gemma NCERT QA Fine-tuning | `google/gemma-3-4b-it` | Colab Pro A100 (40GB VRAM) |
-| **Phase 8** | Full Pipeline Wiring | All models integrated | Colab / T4 GPU |
+| **Phase 6** | Gemma NCERT QA Fine-tuning | `google/gemma-3-4b-it` | Colab Pro A100 (40GB VRAM) |
+| **Phase 7** | Full Pipeline Wiring | All models integrated | Colab / T4 GPU |

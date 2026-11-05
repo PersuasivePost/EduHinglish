@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EduHinglish</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <button id="new-chat" class="new-chat">＋ New chat</button>
+    <div class="chats-label">Chats</div>
+    <nav id="chat-list"></nav>
+    <div id="health" class="health" title="Model server status">
+      <span class="dot"></span><span class="health-text">Checking model…</span>
+    </div>
+  </aside>
+  <div id="backdrop"></div>
+
+  <main>
+    <header>
+      <button id="menu" class="icon-btn" aria-label="Open chats">☰</button>
+      <span class="brand">EduHinglish</span>
+      <div class="settings">
+        <select id="subject" aria-label="Subject">
+          <option value="">Any subject</option>
+          <option value="biology">Biology</option>
+          <option value="chemistry">Chemistry</option>
+          <option value="physics">Physics</option>
+          <option value="mathematics">Maths</option>
+          <option value="social_science">Social Science</option>
+        </select>
+        <select id="class_num" aria-label="Class">
+          <option value="">Class 9/10</option>
+          <option value="9">Class 9</option>
+          <option value="10">Class 10</option>
+        </select>
+        <select id="language" aria-label="Answer language">
+          <option value="hinglish">Hinglish</option>
+          <option value="english">English</option>
+        </select>
+      </div>
+    </header>
+
+    <section id="messages">
+      <div id="empty" class="empty">
+        <h1>Aaj kya padhna hai?</h1>
+        <div class="examples">
+          <button class="example">Ohm ka law kya hai aur iska formula kya hai?</button>
+          <button class="example">Photosynthesis kaise hota hai?</button>
+          <button class="example">French Revolution kyun hua tha?</button>
+        </div>
+      </div>
+    </section>
+
+    <form id="composer">
+      <div class="input-wrap">
+        <textarea id="input" rows="1" placeholder="Apna sawaal likho…" maxlength="1000"></textarea>
+        <button id="send" type="submit" aria-label="Send" disabled>↑</button>
+      </div>
+      <p class="hint">Answers come from NCERT Class 9–10 books and can be wrong. Each answer takes 10–40 s.</p>
+    </form>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

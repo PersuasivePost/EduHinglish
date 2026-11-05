@@ -21,6 +21,28 @@ from colorama import Fore, Style, init as colorama_init
 colorama_init(autoreset=True)
 
 
+def _chapter_map() -> dict:
+    """Folder name -> chunk metadata, from the build_dataset chapter registry."""
+    import sys
+    scripts_dir = str(Path(__file__).resolve().parent.parent / "scripts")
+    if scripts_dir not in sys.path:
+        sys.path.insert(0, scripts_dir)
+    from build_dataset import CHAPTERS
+
+    chapter_map = {}
+    for folder, ch in CHAPTERS.items():
+        meta = {
+            "subject": ch.subject.lower().replace(" ", "_"),
+            "class_num": ch.cls,
+            "chapter_num": ch.num,
+            "chapter_title": ch.title,
+        }
+        if ch.sub_subject:  # ChromaDB metadata values cannot be None
+            meta["sub_subject"] = ch.sub_subject
+        chapter_map[folder] = meta
+    return chapter_map
+
+
 class NCERTChunker:
     """
     Splits cleaned NCERT chapter text into paragraph-level chunks
@@ -31,48 +53,11 @@ class NCERTChunker:
     """
 
     # ── Chapter metadata mapping ─────────────────────────────────────────────
-    CHAPTER_MAP = {
-        "class9_ch01": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch01",
-            "chapter_title": "Exploration: Entering the World of Secondary Science",
-        },
-        "class9_ch02": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch02",
-            "chapter_title": "Cell: The Building Block of Life",
-        },
-        "class9_ch03": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch03",
-            "chapter_title": "Tissues in Action",
-        },
-        "class9_ch11": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch11",
-            "chapter_title": "Reproduction: How Life Continues",
-        },
-        "class9_ch12": {
-            "subject": "biology", "class_num": "9", "chapter_num": "ch12",
-            "chapter_title": "Patterns in Life: Diversity and Classification",
-        },
-        "class10_ch05": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch05",
-            "chapter_title": "Life Processes",
-        },
-        "class10_ch06": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch06",
-            "chapter_title": "Control and Coordination",
-        },
-        "class10_ch07": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch07",
-            "chapter_title": "How do Organisms Reproduce?",
-        },
-        "class10_ch08": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch08",
-            "chapter_title": "Heredity",
-        },
-        "class10_ch13": {
-            "subject": "biology", "class_num": "10", "chapter_num": "ch13",
-            "chapter_title": "Our Environment",
-        },
-    }
+    # Keys are folder names under data/processed/. Only folders listed here are
+    # indexed. Built from scripts/build_dataset.py CHAPTERS so the knowledge base
+    # and the curated datasets share one chapter registry.
+    CHAPTER_MAP = _chapter_map()
+
 
     def __init__(self, chunk_size: int = 200, chunk_overlap: int = 30):
         """
@@ -85,6 +70,31 @@ class NCERTChunker:
         print(f"[OK] NCERTChunker initialized (chunk_size={chunk_size}, overlap={chunk_overlap})")
 
     # ── Text cleaning ────────────────────────────────────────────────────────
+
+    @staticmethod
+    def _is_doubled(token: str) -> bool:
+        """True for PDF-overprint tokens where every character is doubled ("PPMM", "117733")."""
+        return (any(c.isalnum() for c in token) and len(token) >= 2 and len(token) % 2 == 0
+                and all(token[i] == token[i + 1] for i in range(0, len(token), 2)))
+
+    def _strip_doubled_tokens(self, line: str) -> str:
+        """
+        Remove inline InDesign page footers such as
+        "CChhaapptteerr 77..iinndddd 117733 1188--JJuunn--2266 1122::0022::3322 PPMM".
+        Drops runs of 3+ doubled tokens, and single doubled tokens of 10+ chars.
+        """
+        tokens = line.split(" ")
+        keep = [True] * len(tokens)
+        i = 0
+        while i < len(tokens):
+            j = i
+            while j < len(tokens) and self._is_doubled(tokens[j]):
+                j += 1
+            for k in range(i, j):
+                if j - i >= 3 or len(tokens[k]) >= 10:
+                    keep[k] = False
+            i = max(j, i + 1)
+        return " ".join(t for t, k in zip(tokens, keep) if k)
 
     def _clean_text(self, text: str) -> str:
         """
@@ -139,6 +149,9 @@ class NCERTChunker:
                         break
                 if pairs_match and len(clean_chars) >= 10:
                     continue
+
+            # Remove inline doubled-character page footers (common in ss9 PDFs)
+            stripped = self._strip_doubled_tokens(stripped).strip()
 
             # Remove lines shorter than 20 characters (likely headers/artifacts)
             if len(stripped) < 20:
@@ -281,6 +294,7 @@ class NCERTChunker:
                     "folder_name": folder_name,
                     "chunk_index": idx,
                     "total_chunks": total_chunks,
+                    **({"sub_subject": metadata["sub_subject"]} if "sub_subject" in metadata else {}),
                 },
             })
 
@@ -291,7 +305,7 @@ class NCERTChunker:
         Scan processed_dir for all chapter directories and chunk them all.
 
         Args:
-            processed_dir: Path to the directory containing class*_ch*/ folders.
+            processed_dir: Path to the directory containing chapter folders.
 
         Returns:
             Merged list of all chunks across all chapters.
@@ -312,11 +326,7 @@ class NCERTChunker:
         all_chunks = []
         chapter_stats = []
 
-        # Find all chapter directories matching class*_ch*
-        chapter_dirs = sorted([
-            d for d in processed_path.iterdir()
-            if d.is_dir() and re.match(r"class\d+_ch\d+", d.name)
-        ])
+        chapter_dirs = sorted(d for d in processed_path.iterdir() if d.is_dir())
 
         for chapter_dir in chapter_dirs:
             folder_name = chapter_dir.name
