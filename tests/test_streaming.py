@@ -78,13 +78,23 @@ def test_backend_stream_saves_only_on_done():
         fake.fail = True
         ev = sse_events(client.post("/api/chat/stream", json={"message": "Newton ka law?"}))
         assert ev == [{"type": "error", "status": 503, "detail": "Model server unreachable"}]
-        assert db.list_chats() == []                              # nothing saved on failure
+        assert db.list_chats("dev-local-user") == []                              # nothing saved on failure
         fake.fail = False
         ev = sse_events(client.post("/api/chat/stream", json={"message": "Newton ka law?"}))
         assert [e["type"] for e in ev] == ["status", "token", "done"]
         assert ev[-1]["assistant_message"]["content"] == "F = ma" and ev[-1]["chat"]["title"] == "Newton ka law?"
-        assert len(db.list_chats()) == 1
+        assert len(db.list_chats("dev-local-user")) == 1
         assert client.post("/api/chat/stream", json={"message": "hello", "chat_id": "nope"}).status_code == 404
+        # nothing to answer -> clear 400, the model is never called
+        r = client.post("/api/chat/stream", json={"message": "??"})
+        assert r.status_code == 400 and "sawaal" in r.json()["detail"]
+        # share link works with the model offline, and shows only the shared snapshot
+        fake.fail = True
+        chat_id = ev[-1]["chat"]["id"]
+        token = client.post(f"/api/chats/{chat_id}/share").json()["share_token"]
+        page = client.get(f"/s/{token}")
+        assert page.status_code == 200 and "F = ma" in page.text
+        assert client.get("/s/doesnotexist").status_code == 404
 
 
 if __name__ == "__main__":

@@ -42,6 +42,15 @@ try:
 except ImportError:
     _M2_M3_AVAILABLE = False
 
+# Retrieval scores are cosine similarity (1 = identical). Below this there is no usable NCERT passage.
+MIN_RELEVANCE = float(os.environ.get("MIN_RELEVANCE", "0.25"))
+NOT_FOUND_REPLY = {
+    "hinglish": "Mujhe NCERT Class 9-10 mein is sawaal ka jawab nahi mila. Sawaal ko thoda detail mein likho "
+                "(jaise topic ya chapter ka naam), ya subject chunke dobara try karo.",
+    "english": "I could not find an answer to this in the NCERT Class 9-10 books. Try asking in more detail "
+               "(for example, name the topic or chapter), or pick a subject and try again.",
+}
+
 # Subject names accepted by answer_query(subject=...) → chunk metadata "subject"
 SUBJECT_ALIASES = {
     "biology": "biology", "bio": "biology",
@@ -441,6 +450,22 @@ class EduHinglishPipeline:
                 "score": score,
                 "chunk_id": chunk.get("chunk_id", ""),
             })
+
+        # No good NCERT match -> say so instead of letting the model invent an answer from unrelated text
+        best = max((c.get("relevance_score", 0.0) for c in retrieved_chunks), default=0.0)
+        if best < MIN_RELEVANCE:
+            print(f"  Best retrieval score {best:.2f} < {MIN_RELEVANCE}: skipping generation")
+            reply = NOT_FOUND_REPLY.get(language, NOT_FOUND_REPLY["hinglish"])
+            emit({"type": "meta", "standalone_query": query,
+                  "intent": intent_result["intent"] if intent_result else None,
+                  "intent_confidence": intent_result["confidence"] if intent_result else None, "sources": []})
+            emit({"type": "token", "text": reply})
+            pipeline_trace.append({"step": "total", "time_sec": round(time.time() - t0, 3)})
+            return {"query": original_query, "standalone_query": query, "preprocessing": m1_result,
+                    "intent": intent_result, "retrieval": [],
+                    "generation": {"query": query, "context_used": "", "context_sources": [],
+                                   "hinglish_answer": reply, "prompt_intent": None, "generation_config": {}},
+                    "pipeline_trace": pipeline_trace}
 
         # ── Step 3: M3 — Hinglish Generation ──────────────────────────────────
         print(f"\n  {Fore.CYAN}[STEP 3/3] M3 — Hinglish Generation{Style.RESET_ALL}")

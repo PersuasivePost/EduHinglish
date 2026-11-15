@@ -21,3 +21,9 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 DB_PATH = os.environ.get("DB_PATH", str(Path(__file__).resolve().parent.parent / "data" / "eduhinglish.db"))
 # How many earlier messages of a chat are sent to the model for follow-up questions
 HISTORY_MESSAGES = int(os.environ.get("HISTORY_MESSAGES", "6"))
+# Google sign-in. Comma-separated OAuth client ids (web + Android/iOS + the server/web one the app uses).
+# Empty = sign-in off: everyone is one local user (fine for local testing, NOT for the public deployment).
+GOOGLE_CLIENT_IDS = [c.strip() for c in os.environ.get("GOOGLE_CLIENT_IDS", "").split(",") if c.strip()]
+# Signs our session tokens. Set a long random value on Render: python -c "import secrets; print(secrets.token_hex(32))"
+JWT_SECRET = os.environ.get("JWT_SECRET", "dev-only-change-me")
+SESSION_DAYS = int(os.environ.get("SESSION_DAYS", "30"))

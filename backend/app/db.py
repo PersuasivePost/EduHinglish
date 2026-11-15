@@ -7,6 +7,7 @@ Every query below is written once with :name / ? placeholders; _pg_sql() adapts 
 
 import json
 import re
+import secrets
 import sqlite3
 import time
 import uuid
@@ -16,6 +17,14 @@ from pathlib import Path
 from . import config
 
 SCHEMA = """
+CREATE TABLE IF NOT EXISTS users (
+    id          TEXT PRIMARY KEY,
+    google_sub  TEXT NOT NULL UNIQUE,
+    email       TEXT,
+    name        TEXT,
+    picture     TEXT,
+    created_at  REAL NOT NULL
+);
 CREATE TABLE IF NOT EXISTS chats (
     id          TEXT PRIMARY KEY,
     title       TEXT NOT NULL,
@@ -23,7 +32,10 @@ CREATE TABLE IF NOT EXISTS chats (
     class_num   TEXT,
     language    TEXT NOT NULL DEFAULT 'hinglish',
     created_at  REAL NOT NULL,
-    updated_at  REAL NOT NULL
+    updated_at  REAL NOT NULL,
+    user_id     TEXT,
+    share_token TEXT,
+    share_upto  REAL
 );
 CREATE TABLE IF NOT EXISTS messages (
     id                 TEXT PRIMARY KEY,
@@ -62,15 +74,33 @@ class _PgConn:
         return self._conn.execute(_pg_sql(sql), params)
 
 
+# Columns added after the first release; older databases get them on startup.
+_NEW_CHAT_COLUMNS = {"user_id": "TEXT", "share_token": "TEXT", "share_upto": "REAL"}
+
+
 def init():
     if USE_PG:
         with connect() as db:
             for stmt in filter(None, (s.strip() for s in PG_SCHEMA.split(";"))):
                 db.execute(stmt)
+            for col, typ in _NEW_CHAT_COLUMNS.items():
+                db.execute(f"ALTER TABLE chats ADD COLUMN IF NOT EXISTS {col} "
+                           f"{'DOUBLE PRECISION' if typ == 'REAL' else typ}")
+            _create_indexes(db)
         return
     Path(config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
     with connect() as db:
         db.executescript(SCHEMA)
+        have = {r["name"] for r in db.execute("PRAGMA table_info(chats)")}
+        for col, typ in _NEW_CHAT_COLUMNS.items():
+            if col not in have:
+                db.execute(f"ALTER TABLE chats ADD COLUMN {col} {typ}")
+        _create_indexes(db)
+
+
+def _create_indexes(db):
+    db.execute("CREATE INDEX IF NOT EXISTS idx_chats_user ON chats(user_id, updated_at)")
+    db.execute("CREATE INDEX IF NOT EXISTS idx_chats_share ON chats(share_token)")
 
 
 @contextmanager
@@ -108,41 +138,106 @@ def _message(row) -> dict:
     return m
 
 
-# ── Chats ────────────────────────────────────────────────────────────────────
+# ── Users ────────────────────────────────────────────────────────────────────
 
-def create_chat(title: str, subject=None, class_num=None, language="hinglish") -> dict:
+def upsert_user(google_sub: str, email=None, name=None, picture=None) -> dict:
+    """Create the user on first Google sign-in, refresh name/picture on later ones."""
+    with connect() as db:
+        row = db.execute("SELECT * FROM users WHERE google_sub = ?", (google_sub,)).fetchone()
+        if row:
+            db.execute("UPDATE users SET email = ?, name = ?, picture = ? WHERE id = ?",
+                       (email, name, picture, row["id"]))
+            uid = row["id"]
+        else:
+            uid = uuid.uuid4().hex
+            db.execute("INSERT INTO users (id, google_sub, email, name, picture, created_at)"
+                       " VALUES (?, ?, ?, ?, ?, ?)", (uid, google_sub, email, name, picture, time.time()))
+        return dict(db.execute("SELECT * FROM users WHERE id = ?", (uid,)).fetchone())
+
+
+def get_user(user_id: str):
+    with connect() as db:
+        row = db.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+        return dict(row) if row else None
+
+
+# ── Chats (always scoped to the owner's user_id) ─────────────────────────────
+
+_PUBLIC_CHAT_COLS = "id, title, subject, class_num, language, created_at, updated_at, share_token"
+
+
+def create_chat(user_id: str, title: str, subject=None, class_num=None, language="hinglish") -> dict:
     now = time.time()
     chat = {"id": uuid.uuid4().hex, "title": title, "subject": subject, "class_num": class_num,
-            "language": language, "created_at": now, "updated_at": now}
+            "language": language, "created_at": now, "updated_at": now, "user_id": user_id}
     with connect() as db:
-        db.execute("INSERT INTO chats VALUES (:id, :title, :subject, :class_num, :language, :created_at, :updated_at)",
+        db.execute("INSERT INTO chats (id, title, subject, class_num, language, created_at, updated_at, user_id)"
+                   " VALUES (:id, :title, :subject, :class_num, :language, :created_at, :updated_at, :user_id)",
                    chat)
-    return chat
+    return get_chat(chat["id"], user_id)
 
 
-def list_chats() -> list[dict]:
+def list_chats(user_id: str) -> list[dict]:
     with connect() as db:
-        return [_chat(r) for r in db.execute("SELECT * FROM chats ORDER BY updated_at DESC")]
+        return [_chat(r) for r in db.execute(
+            f"SELECT {_PUBLIC_CHAT_COLS} FROM chats WHERE user_id = ? ORDER BY updated_at DESC", (user_id,))]
 
 
-def get_chat(chat_id: str):
+def get_chat(chat_id: str, user_id: str):
+    """None when the chat does not exist OR belongs to someone else (same answer, nothing leaks)."""
     with connect() as db:
-        row = db.execute("SELECT * FROM chats WHERE id = ?", (chat_id,)).fetchone()
+        row = db.execute(f"SELECT {_PUBLIC_CHAT_COLS} FROM chats WHERE id = ? AND user_id = ?",
+                         (chat_id, user_id)).fetchone()
         return _chat(row) if row else None
 
 
-def update_chat(chat_id: str, **fields) -> dict | None:
+def update_chat(chat_id: str, user_id: str, **fields) -> dict | None:
     fields = {k: v for k, v in fields.items() if k in {"title", "subject", "class_num", "language"}}
     fields["updated_at"] = time.time()
     sets = ", ".join(f"{k} = :{k}" for k in fields)
     with connect() as db:
-        db.execute(f"UPDATE chats SET {sets} WHERE id = :id", {**fields, "id": chat_id})
-    return get_chat(chat_id)
+        db.execute(f"UPDATE chats SET {sets} WHERE id = :id AND user_id = :user_id",
+                   {**fields, "id": chat_id, "user_id": user_id})
+    return get_chat(chat_id, user_id)
 
 
-def delete_chat(chat_id: str) -> bool:
+def delete_chat(chat_id: str, user_id: str) -> bool:
     with connect() as db:
-        return db.execute("DELETE FROM chats WHERE id = ?", (chat_id,)).rowcount > 0
+        return db.execute("DELETE FROM chats WHERE id = ? AND user_id = ?", (chat_id, user_id)).rowcount > 0
+
+
+# ── Sharing: a read-only snapshot at an unguessable link ─────────────────────
+
+def share_chat(chat_id: str, user_id: str):
+    """Publish the chat as it is now. Messages sent later are not visible until shared again."""
+    chat = get_chat(chat_id, user_id)
+    if not chat:
+        return None
+    token = chat.get("share_token") or secrets.token_urlsafe(16)
+    with connect() as db:
+        db.execute("UPDATE chats SET share_token = ?, share_upto = ? WHERE id = ? AND user_id = ?",
+                   (token, time.time(), chat_id, user_id))
+    return get_chat(chat_id, user_id)
+
+
+def unshare_chat(chat_id: str, user_id: str) -> bool:
+    with connect() as db:
+        return db.execute("UPDATE chats SET share_token = NULL, share_upto = NULL WHERE id = ? AND user_id = ?",
+                          (chat_id, user_id)).rowcount > 0
+
+
+def get_shared(token: str):
+    """(title, messages) for a share link, or None. Needs no login and no model server."""
+    if not token:
+        return None
+    with connect() as db:
+        chat = db.execute("SELECT id, title, subject, share_upto FROM chats WHERE share_token = ?",
+                          (token,)).fetchone()
+        if not chat:
+            return None
+        rows = db.execute("SELECT * FROM messages WHERE chat_id = ? AND created_at <= ? ORDER BY created_at",
+                          (chat["id"], chat["share_upto"] or 0))
+        return dict(chat), [_message(r) for r in rows]
 
 
 # ── Messages ─────────────────────────────────────────────────────────────────
@@ -166,8 +261,11 @@ def list_messages(chat_id: str) -> list[dict]:
         return [_message(r) for r in rows]
 
 
-def set_feedback(message_id: str, value: int) -> dict | None:
+def set_feedback(message_id: str, user_id: str, value: int) -> dict | None:
+    """Only the chat's owner can rate its messages."""
     with connect() as db:
-        db.execute("UPDATE messages SET feedback = ? WHERE id = ? AND role = 'assistant'", (value, message_id))
-        row = db.execute("SELECT * FROM messages WHERE id = ?", (message_id,)).fetchone()
+        db.execute("UPDATE messages SET feedback = ? WHERE id = ? AND role = 'assistant' AND chat_id IN"
+                   " (SELECT id FROM chats WHERE user_id = ?)", (value, message_id, user_id))
+        row = db.execute("SELECT * FROM messages WHERE id = ? AND chat_id IN"
+                         " (SELECT id FROM chats WHERE user_id = ?)", (message_id, user_id)).fetchone()
         return _message(row) if row else None

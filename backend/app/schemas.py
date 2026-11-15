@@ -72,6 +72,28 @@ class ChatOut(BaseModel):
     language: str = "hinglish"
     created_at: float
     updated_at: float
+    share_token: Optional[str] = Field(None, description="Set while the chat has a public read-only link")
+
+
+class UserOut(BaseModel):
+    id: str
+    name: Optional[str] = None
+    email: Optional[str] = None
+    picture: Optional[str] = None
+
+
+class GoogleLogin(BaseModel):
+    id_token: str = Field(..., min_length=20)
+
+
+class SessionOut(BaseModel):
+    token: str
+    user: UserOut
+
+
+class AuthConfig(BaseModel):
+    enabled: bool
+    google_client_id: Optional[str] = Field(None, description="Web client id, for the web sign-in button")
 
 
 class ChatDetail(ChatOut):
