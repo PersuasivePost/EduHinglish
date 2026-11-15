@@ -218,9 +218,18 @@ class HinglishGenerator:
         do_sample: bool = False,
         temperature: float = 0.7,
         top_p: float = 0.9,
+        adapter_enabled: bool = True,
+        on_token=None,
     ) -> dict:
         """
         Generate a reply for an already-built user prompt (see build_prompt()).
+
+        on_token: optional callable(str) invoked with each new piece of text as it is
+        generated (used for streaming). The full text is still returned at the end.
+
+        adapter_enabled=False runs the plain Gemma base model for tasks the adapter was
+        not trained on (e.g. rewriting follow-up questions). It only works while the
+        adapter is a separate PeftModel (4-bit/CUDA); a merged model ignores it.
 
         Returns:
             dict with keys "input", "output" and "generation_config".
@@ -250,12 +259,21 @@ class HinglishGenerator:
             gen_kwargs["temperature"] = temperature
             gen_kwargs["top_p"] = top_p
 
-        with torch.no_grad():
-            output_ids = self.model.generate(**inputs, **gen_kwargs)
+        from contextlib import nullcontext
 
-        # Decode only the newly generated tokens (skip the echoed prompt)
-        new_tokens = output_ids[0][inputs["input_ids"].shape[-1]:]
-        output_text = self.tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+        def run_generate():
+            adapter_ctx = (self.model.disable_adapter()
+                           if not adapter_enabled and hasattr(self.model, "disable_adapter") else nullcontext())
+            with torch.no_grad(), adapter_ctx:
+                return self.model.generate(**inputs, **gen_kwargs)
+
+        if on_token is None:
+            output_ids = run_generate()
+            # Decode only the newly generated tokens (skip the echoed prompt)
+            new_tokens = output_ids[0][inputs["input_ids"].shape[-1]:]
+            output_text = self.tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+        else:
+            output_text = self._generate_streaming(run_generate, gen_kwargs, on_token)
 
         return {
             "input": prompt,
@@ -263,6 +281,50 @@ class HinglishGenerator:
             "generation_config": {k: v for k, v in gen_kwargs.items()
                                   if k not in ("pad_token_id", "eos_token_id")},
         }
+
+    def _generate_streaming(self, run_generate, gen_kwargs: dict, on_token) -> str:
+        """Run run_generate() in a thread and forward text pieces to on_token as they appear."""
+        import threading
+        from transformers import TextIteratorStreamer
+
+        streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True)
+        gen_kwargs["streamer"] = streamer
+        errors = []
+
+        def worker():
+            try:
+                run_generate()
+            except Exception as e:   # unblock the reader below, then re-raise in the caller
+                errors.append(e)
+                streamer.on_finalized_text("", stream_end=True)
+
+        thread = threading.Thread(target=worker, daemon=True)
+        thread.start()
+        pieces = []
+        for piece in streamer:
+            if not pieces:
+                piece = piece.lstrip()
+            if piece:
+                pieces.append(piece)
+                on_token(piece)
+        thread.join()
+        if errors:
+            raise errors[0]
+        return "".join(pieces).strip()
+
+    def rewrite_question(self, query: str, history: list[dict]) -> str:
+        """Turn a follow-up into a standalone question (base model, greedy, short)."""
+        from followup import build_rewrite_prompt, clean_rewrite, heuristic_rewrite
+
+        try:
+            out = self.generate(build_rewrite_prompt(history, query), max_new_tokens=64,
+                                repetition_penalty=1.0, adapter_enabled=False)["output"]
+        except Exception as e:   # never fail the answer because the rewrite failed
+            print(f"  [WARN] follow-up rewrite failed ({type(e).__name__}); using heuristic")
+            return heuristic_rewrite(query, history)
+        rewritten = clean_rewrite(out, query)
+        # None = unusable output -> fall back. A rewrite equal to the query means "already standalone".
+        return rewritten if rewritten else heuristic_rewrite(query, history)
 
     # ── Pipeline answer generation (M1→M2→M3) ────────────────────────────────
 
@@ -274,9 +336,11 @@ class HinglishGenerator:
         intent_confidence: float = None,
         language: str = "hinglish",
         max_new_tokens: int = 256,
+        on_token=None,
     ) -> dict:
         """
         Generate an answer given a student query and retrieved NCERT chunks.
+        on_token: optional callable(str) that receives text pieces while generating.
         This is the PRIMARY method used in the full pipeline (M1→M2→M3).
 
         Args:
@@ -332,7 +396,7 @@ class HinglishGenerator:
 
         # 3. Build the training-format prompt and generate
         prompt = build_prompt(context, query, prompt_intent, language)
-        result = self.generate(prompt, max_new_tokens=max_new_tokens)
+        result = self.generate(prompt, max_new_tokens=max_new_tokens, on_token=on_token)
 
         return {
             "query": query,

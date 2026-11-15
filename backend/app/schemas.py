@@ -26,6 +26,7 @@ class Source(BaseModel):
 
 class AskResponse(BaseModel):
     query: str
+    standalone_query: Optional[str] = Field(None, description="The question actually answered (differs for follow-ups)")
     answer: str
     language: str
     intent: Optional[str] = None
@@ -81,6 +82,7 @@ class ChatResponse(BaseModel):
     chat: ChatOut
     user_message: MessageOut
     assistant_message: MessageOut
+    standalone_query: Optional[str] = Field(None, description="Follow-ups are rewritten; shown for debugging")
 
 
 class ChatUpdate(BaseModel):

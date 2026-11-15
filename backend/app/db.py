@@ -1,6 +1,12 @@
-"""SQLite storage for chats, messages and 👍/👎 feedback (stdlib only, one file)."""
+"""Storage for chats, messages and 👍/👎 feedback.
+
+DATABASE_URL set (e.g. a Neon connection string)  -> PostgreSQL via psycopg.
+Not set                                            -> a local SQLite file (DB_PATH), zero setup.
+Every query below is written once with :name / ? placeholders; _pg_sql() adapts it for Postgres.
+"""
 
 import json
+import re
 import sqlite3
 import time
 import uuid
@@ -35,7 +41,33 @@ CREATE INDEX IF NOT EXISTS idx_messages_chat ON messages(chat_id, created_at);
 """
 
 
+USE_PG = bool(config.DATABASE_URL)
+
+# Same tables on Postgres: timestamps are float seconds, so REAL (4 bytes) would lose precision.
+PG_SCHEMA = SCHEMA.replace("REAL", "DOUBLE PRECISION")
+
+
+def _pg_sql(sql: str) -> str:
+    """':name' -> '%(name)s' and '?' -> '%s' (psycopg's placeholder styles)."""
+    return re.sub(r":(\w+)", r"%(\1)s", sql).replace("?", "%s")
+
+
+class _PgConn:
+    """Gives a psycopg connection the sqlite-style execute(sql, params) the queries below use."""
+
+    def __init__(self, conn):
+        self._conn = conn
+
+    def execute(self, sql: str, params=None):
+        return self._conn.execute(_pg_sql(sql), params)
+
+
 def init():
+    if USE_PG:
+        with connect() as db:
+            for stmt in filter(None, (s.strip() for s in PG_SCHEMA.split(";"))):
+                db.execute(stmt)
+        return
     Path(config.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
     with connect() as db:
         db.executescript(SCHEMA)
@@ -43,6 +75,18 @@ def init():
 
 @contextmanager
 def connect():
+    if USE_PG:
+        import psycopg
+        from psycopg.rows import dict_row
+
+        # prepare_threshold=None: Neon's pooled endpoint (pgbouncer) does not support prepared statements
+        conn = psycopg.connect(config.DATABASE_URL, row_factory=dict_row, prepare_threshold=None)
+        try:
+            yield _PgConn(conn)
+            conn.commit()
+        finally:
+            conn.close()
+        return
     db = sqlite3.connect(config.DB_PATH)
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA foreign_keys = ON")

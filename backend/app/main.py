@@ -13,11 +13,13 @@ Run (from the repo root):
 Chat page: http://localhost:8000      API docs: http://localhost:8000/docs
 """
 
+import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -71,20 +73,22 @@ async def health():
 
 # ── Chat ─────────────────────────────────────────────────────────────────────
 
-@app.post("/api/chat", response_model=ChatResponse)
-async def chat(req: ChatRequest):
-    """Send a message. Creates a new chat when chat_id is omitted.
+def _chat_history(req: ChatRequest) -> list[dict]:
+    """Earlier messages of this chat, so follow-up questions ("aur iska formula?") are understood."""
+    if not req.chat_id:
+        return []
+    _chat_or_404(req.chat_id)
+    return [{"role": m["role"], "content": m["content"]}
+            for m in db.list_messages(req.chat_id)[-config.HISTORY_MESSAGES:]]
 
-    The model is called first; nothing is saved if it fails, so the client can simply retry.
-    """
-    if req.chat_id:
-        _chat_or_404(req.chat_id)
-    try:
-        res = await app.state.model.ask({"query": req.message, "subject": req.subject,
-                                         "class_num": req.class_num, "language": req.language})
-    except ModelServerError as e:
-        _raise(e)
 
+def _model_payload(req: ChatRequest, history: list[dict]) -> dict:
+    return {"query": req.message, "subject": req.subject, "class_num": req.class_num,
+            "language": req.language, "history": history}
+
+
+def _save_turn(req: ChatRequest, res: dict) -> ChatResponse:
+    """Store the question and the model's answer (only called once the model has answered)."""
     settings = {"subject": req.subject, "class_num": req.class_num, "language": req.language}
     if req.chat_id:
         chat = db.update_chat(req.chat_id, **settings)
@@ -94,7 +98,50 @@ async def chat(req: ChatRequest):
     bot_msg = db.add_message(chat["id"], "assistant", res.get("answer", ""),
                              intent=res.get("intent"), intent_confidence=res.get("intent_confidence"),
                              sources=res.get("sources", []), timings=res.get("timings", {}))
-    return ChatResponse(chat=db.get_chat(chat["id"]), user_message=user_msg, assistant_message=bot_msg)
+    return ChatResponse(chat=db.get_chat(chat["id"]), user_message=user_msg, assistant_message=bot_msg,
+                        standalone_query=res.get("standalone_query"))
+
+
+@app.post("/api/chat", response_model=ChatResponse)
+async def chat(req: ChatRequest):
+    """Send a message. Creates a new chat when chat_id is omitted.
+
+    With a chat_id, the last few messages are sent along so follow-up questions
+    are understood. The model is called first; nothing is saved if it fails,
+    so the client can simply retry.
+    """
+    history = _chat_history(req)
+    try:
+        res = await app.state.model.ask(_model_payload(req, history))
+    except ModelServerError as e:
+        _raise(e)
+    return _save_turn(req, res)
+
+
+@app.post("/api/chat/stream")
+async def chat_stream(req: ChatRequest):
+    """Same as /api/chat but streamed as Server-Sent Events, so the answer appears as it is written.
+
+    Events (one `data: {json}` line each): status {stage}, meta {standalone_query, intent, sources},
+    token {text}, then done {chat, user_message, assistant_message, standalone_query} or
+    error {status, detail}. Nothing is saved unless "done" is sent.
+    """
+    history = _chat_history(req)   # 404 for an unknown chat happens before the stream starts
+
+    async def events():
+        try:
+            async for ev in app.state.model.ask_stream(_model_payload(req, history)):
+                if ev.get("type") == "done":
+                    saved = _save_turn(req, ev)
+                    ev = {"type": "done", **saved.model_dump(mode="json")}
+                elif ev.get("type") == "error":
+                    ev = {"type": "error", "status": 502, "detail": f"Model server: {ev.get('detail')}"}
+                yield f"data: {json.dumps(ev, ensure_ascii=False)}\n\n"
+        except ModelServerError as e:
+            yield f"data: {json.dumps({'type': 'error', 'status': e.status_code, 'detail': e.detail})}\n\n"
+
+    return StreamingResponse(events(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
 
 @app.get("/api/chats", response_model=list[ChatOut])

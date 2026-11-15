@@ -29,6 +29,7 @@ from datetime import datetime
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
 
+from followup import is_followup
 from preprocessing  import EnglishPreprocessor
 from script_detector import ScriptDetector, HinglishNormalizer, WordLevelLID
 
@@ -334,7 +335,7 @@ class EduHinglishPipeline:
 
     def answer_query(self, query: str, top_k: int = 3, subject: str = None,
                      class_num: str = None, language: str = "hinglish",
-                     max_new_tokens: int = 256) -> dict:
+                     max_new_tokens: int = 256, history: list = None, on_event=None) -> dict:
         """
         Full pipeline: student query → preprocessing → retrieval → generation.
         Only available in mode="full".
@@ -350,10 +351,18 @@ class EduHinglishPipeline:
                        (short forms bio/chem/phys/maths/ss work too). None = all.
             class_num: "9" or "10". None = both.
             language:  "hinglish" or "english" answer.
+            history:   earlier turns [{"role": "user"|"assistant", "content": str}, ...].
+                       A follow-up ("aur iska formula?") is rewritten into a standalone
+                       question first; everything after that is single-turn as in training.
+            on_event:  optional callable(dict) for streaming. Receives
+                       {"type": "status", "stage": "rewrite"|"retrieve"|"generate"},
+                       {"type": "meta", standalone_query, intent, intent_confidence, sources}
+                       (before generation) and {"type": "token", "text"} while generating.
 
         Returns:
             dict with keys:
               - "query":          original query
+              - "standalone_query": the question actually used (== query if no rewrite)
               - "preprocessing":  M1 output (script detection, LID, normalization)
               - "intent":         MuRIL prediction (or None)
               - "retrieval":      list of retrieved chunk summaries
@@ -375,7 +384,17 @@ class EduHinglishPipeline:
 
         # ── Step 1: M1 — Preprocessing ────────────────────────────────────────
         print(f"\n  {Fore.CYAN}[STEP 1/3] M1 — Preprocessing{Style.RESET_ALL}")
+        def emit(event: dict):
+            if on_event:
+                on_event(event)
+
+        original_query = query
         t0 = time.time()
+        if history and is_followup(query, history):
+            emit({"type": "status", "stage": "rewrite"})
+            query = self.generator.rewrite_question(query, history)
+            print(f"  Follow-up rewritten: \"{original_query}\" -> \"{query}\"")
+            pipeline_trace.append({"step": "followup_rewrite", "time_sec": round(time.time() - t0, 3)})
         m1_result = self.process(query)
         intent_result = self.intent_clf.predict(query) if self.intent_clf else None
         if intent_result:
@@ -386,6 +405,7 @@ class EduHinglishPipeline:
         # ── Step 2: M2 — NCERT Retrieval ──────────────────────────────────────
         print(f"\n  {Fore.CYAN}[STEP 2/3] M2 — NCERT Retrieval{Style.RESET_ALL}")
         t2 = time.time()
+        emit({"type": "status", "stage": "retrieve"})
         filters = {}
         if subject:
             key = subject.strip().lower()
@@ -425,12 +445,18 @@ class EduHinglishPipeline:
         # ── Step 3: M3 — Hinglish Generation ──────────────────────────────────
         print(f"\n  {Fore.CYAN}[STEP 3/3] M3 — Hinglish Generation{Style.RESET_ALL}")
         t4 = time.time()
+        emit({"type": "meta", "standalone_query": query,
+              "intent": intent_result["intent"] if intent_result else None,
+              "intent_confidence": intent_result["confidence"] if intent_result else None,
+              "sources": retrieval_summary})
+        emit({"type": "status", "stage": "generate"})
         gen_result = self.generator.generate_answer(
             query, retrieved_chunks,
             intent=intent_result["intent"] if intent_result else None,
             intent_confidence=intent_result["confidence"] if intent_result else None,
             language=language,
             max_new_tokens=max_new_tokens,
+            on_token=(lambda text: emit({"type": "token", "text": text})) if on_event else None,
         )
         t5 = time.time()
         pipeline_trace.append({"step": "M3_generation", "time_sec": round(t5 - t4, 3)})
@@ -448,7 +474,8 @@ class EduHinglishPipeline:
         print(f"  {'='*60}")
 
         return {
-            "query": query,
+            "query": original_query,
+            "standalone_query": query,
             "preprocessing": m1_result,
             "intent": intent_result,
             "retrieval": retrieval_summary,
