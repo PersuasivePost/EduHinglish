@@ -74,7 +74,7 @@ class _ShareSheetState extends ConsumerState<_ShareSheet> {
           Text(
             link == null
                 ? 'Link banane par is chat ka abhi tak ka hissa public ho jaata hai. Link wala koi bhi ise padh sakta hai '
-                    '(sirf padh sakta hai, login nahi chahiye). Baad ke messages tab dikhenge jab tum link refresh karo.'
+                    '(sirf padh sakta hai, sign in nahi chahiye). Baad ke messages tab dikhenge jab tum link refresh karo.'
                 : 'Link wala koi bhi is chat ko padh sakta hai. Naye messages dikhane ke liye "Refresh link" dabao.',
             style: TextStyle(color: cs.onSurfaceVariant, height: 1.4),
           ),

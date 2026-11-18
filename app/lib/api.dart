@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'config.dart';
 import 'models.dart';
 
 class AuthConfig {
@@ -45,7 +46,7 @@ class ApiClient {
       };
 
   /// Link anyone can open (no app, no login) to read a shared chat.
-  String shareUrl(String shareToken) => '$baseUrl/s/$shareToken';
+  String shareUrl(String shareToken) => shareLink(shareToken, baseUrl);
 
   Future<dynamic> _json(Future<http.Response> Function() call) async {
     try {
@@ -106,6 +107,13 @@ class ApiClient {
   }
 
   Future<AppUser> me() async => AppUser.fromJson(Map<String, dynamic>.from(await _json(() => _http.get(_uri('/api/me'), headers: _headers()))));
+
+  /// A shared chat, for anyone with the link (no login, no token needed).
+  Future<(Chat, List<Message>)> sharedChat(String shareToken) async {
+    final j = Map<String, dynamic>.from(await _json(() => _http.get(_uri('/api/shared/$shareToken'))));
+    final msgs = (j['messages'] as List).map((m) => Message.fromJson(Map<String, dynamic>.from(m as Map))).toList();
+    return (Chat.fromJson(j), msgs);
+  }
 
   /// Publishes (or refreshes) the read-only link of a chat.
   Future<Chat> shareChat(String id) async => Chat.fromJson(
